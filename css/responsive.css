@@ -1,0 +1,64 @@
+/* =======================================
+   SIGMA EDU PRO
+   Responsive Style
+======================================= */
+
+@media (max-width:992px){
+
+.sidebar{
+
+    min-height:auto;
+
+}
+
+.card{
+
+    margin-bottom:20px;
+
+}
+
+}
+
+@media (max-width:768px){
+
+h1,h2,h3{
+
+    font-size:22px;
+
+}
+
+.navbar-brand{
+
+    font-size:18px;
+
+}
+
+.card{
+
+    border-radius:15px;
+
+}
+
+}
+
+@media (max-width:576px){
+
+body{
+
+    font-size:14px;
+
+}
+
+.sidebar{
+
+    padding:10px;
+
+}
+
+.card{
+
+    margin-bottom:15px;
+
+}
+
+}
