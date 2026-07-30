@@ -1,0 +1,61 @@
+/* =======================================
+   SIGMA EDU PRO
+   Dashboard Style
+======================================= */
+
+body{
+    background:#f4f7fb;
+    font-family:'Poppins',sans-serif;
+}
+
+/* Sidebar */
+
+.sidebar{
+    min-height:100vh;
+    background:#0d6efd;
+}
+
+.sidebar .nav-link{
+    color:white;
+    padding:12px;
+    border-radius:10px;
+    margin-bottom:6px;
+    transition:.3s;
+}
+
+.sidebar .nav-link:hover{
+    background:rgba(255,255,255,.2);
+}
+
+.sidebar .nav-link.active{
+    background:white;
+    color:#0d6efd;
+}
+
+/* Card */
+
+.card{
+    border:none;
+    border-radius:18px;
+    box-shadow:0 10px 30px rgba(0,0,0,.08);
+}
+
+/* Header */
+
+.navbar{
+    box-shadow:0 4px 20px rgba(0,0,0,.08);
+}
+
+/* Statistik */
+
+.card h2{
+    font-weight:700;
+}
+
+/* Footer */
+
+footer{
+    padding:20px;
+    text-align:center;
+    color:#888;
+}
