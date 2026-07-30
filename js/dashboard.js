@@ -24,7 +24,42 @@ if (tanggalElement) {
     tanggalElement.innerHTML =
         tanggal.toLocaleDateString("id-ID", opsi);
 }
+// =============================
+// Statistik Dashboard
+// =============================
 
+const request = indexedDB.open("SIGMA_EDU_PRO", 1);
+
+request.onsuccess = function (event) {
+
+    const db = event.target.result;
+
+    tampilkanTotal(db, "guru", "totalGuru");
+    tampilkanTotal(db, "siswa", "totalSiswa");
+    tampilkanTotal(db, "kelas", "totalKelas");
+
+};
+
+function tampilkanTotal(db, storeName, elementId) {
+
+    if (!db.objectStoreNames.contains(storeName)) return;
+
+    const tx = db.transaction(storeName, "readonly");
+    const store = tx.objectStore(storeName);
+
+    const count = store.count();
+
+    count.onsuccess = function () {
+
+        const el = document.getElementById(elementId);
+
+        if (el) {
+            el.innerHTML = count.result;
+        }
+
+    };
+
+}
 // Jam Digital
 function updateJam() {
 
