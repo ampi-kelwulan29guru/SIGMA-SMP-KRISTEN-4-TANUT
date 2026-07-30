@@ -1,57 +1,47 @@
 // ======================================
 // SIGMA EDU PRO
-// Modul Login
+// Sistem Login Guru
 // ======================================
 
-// Tombol tampil/sembunyikan password
-const togglePassword = document.getElementById("togglePassword");
-const passwordInput = document.getElementById("password");
+const USERNAME = "admin";
+const PASSWORD = "12345";
 
-if (togglePassword && passwordInput) {
+// Fungsi Login
+function loginGuru() {
 
-    togglePassword.addEventListener("click", function () {
+    const username = document.getElementById("username").value.trim();
+    const password = document.getElementById("password").value.trim();
 
-        const type =
-            passwordInput.getAttribute("type") === "password"
-                ? "text"
-                : "password";
+    if (username === USERNAME && password === PASSWORD) {
 
-        passwordInput.setAttribute("type", type);
+        localStorage.setItem("login", "true");
 
-        this.innerHTML =
-            type === "password"
-                ? '<i class="bi bi-eye"></i>'
-                : '<i class="bi bi-eye-slash"></i>';
+        alert("Login berhasil!");
 
-    });
+        window.location.href = "pages/dashboard.html";
+
+    } else {
+
+        alert("Username atau Password salah!");
+
+    }
 
 }
 
-// Login sederhana
-const loginForm = document.getElementById("loginForm");
+// Tombol Enter
+document.addEventListener("keydown", function(e){
 
-if (loginForm) {
+    if(e.key==="Enter"){
+        loginGuru();
+    }
 
-    loginForm.addEventListener("submit", function (e) {
+});
 
-        e.preventDefault();
+// Logout
+function logout(){
 
-        const username = document.getElementById("username").value.trim();
-        const password = document.getElementById("password").value.trim();
+    localStorage.removeItem("login");
 
-        // Username dan password sementara
-        if (username === "admin" && password === "12345") {
-
-            alert("Login berhasil!");
-
-            window.location.href = "pages/dashboard.html";
-
-        } else {
-
-            alert("NIP/NIK atau Password salah!");
-
-        }
-
-    });
+    window.location.href="../index.html";
 
 }
