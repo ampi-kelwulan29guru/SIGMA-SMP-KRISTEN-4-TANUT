@@ -1,101 +1,123 @@
 <!DOCTYPE html>
 <html lang="id">
+
 <head>
+
     <meta charset="UTF-8">
+
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
     <title>SIGMA EDU PRO</title>
 
-  <!-- Bootstrap 5 -->
-<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
+    <!-- Bootstrap 5 -->
 
-<!-- Bootstrap Icons -->
-<link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.css" rel="stylesheet">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
 
-<!-- Google Font -->
-<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <!-- Bootstrap Icons -->
 
-<!-- CSS -->
-<link rel="stylesheet" href="css/style.css">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.css" rel="stylesheet">
+
+    <!-- Google Font -->
+
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+
+    <!-- CSS -->
+
+    <link rel="stylesheet" href="css/style.css">
 
 </head>
-<!-- Bootstrap JS -->
-<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
-    
+
 <body>
 
-    <!-- JavaScript -->
-<script src="js/app.js"></script>
-<script src="js/auth.js"></script>
-<script src="js/db.js"></script>
-<!-- ================= LOADING ================= -->
+<!-- ===================== LOADING ===================== -->
 
 <div id="loadingScreen">
 
     <div class="spinner-border text-light"></div>
 
-    <h2 class="mt-3">SIGMA EDU PRO</h2>
-
-    <p>Memuat aplikasi...</p>
-
 </div>
 
-<!-- ================= LOGIN ================= -->
+<!-- ===================== LOGIN ===================== -->
 
-<section id="loginPage">
-
-<div class="container">
-
-<div class="row justify-content-center align-items-center vh-100">
-
-<div class="col-lg-5">
+<section class="login-container">
 
 <div class="login-card">
 
 <div class="text-center mb-4">
 
-<img src="assets/logo.png" width="120">
+<i class="bi bi-mortarboard-fill display-1 text-warning"></i>
 
-<h2 class="mt-3 fw-bold">
+<h1 class="fw-bold mt-3">
 
 SIGMA EDU PRO
 
-</h2>
+</h1>
 
 <p>
 
-Sistem Informasi Guru dan Manajemen Administrasi
+Sistem Informasi Guru dan Administrasi Sekolah
 
 </p>
 
 </div>
 
+<form id="loginForm">
+
 <div class="mb-3">
 
-<label>NIP / NIK</label>
+<label class="form-label">
+
+<i class="bi bi-person-fill"></i>
+
+NIP / NIK
+
+</label>
 
 <input
+
 type="text"
+
 id="username"
+
 class="form-control"
-placeholder="Masukkan NIP atau NIK">
+
+placeholder="Masukkan NIP atau NIK"
+
+required>
 
 </div>
 
-<div class="mb-3">
+<div class="mb-4">
 
-<label>Password</label>
+<label class="form-label">
+
+<i class="bi bi-lock-fill"></i>
+
+Password
+
+</label>
 
 <div class="input-group">
 
 <input
+
 type="password"
+
 id="password"
-class="form-control">
+
+class="form-control"
+
+placeholder="Masukkan Password"
+
+required>
 
 <button
+
+type="button"
+
 class="btn btn-outline-secondary"
-type="button">
+
+id="togglePassword">
 
 <i class="bi bi-eye"></i>
 
@@ -106,661 +128,15 @@ type="button">
 </div>
 
 <button
-class="btn btn-primary w-100"
-id="loginBtn">
 
-MASUK
+type="submit"
+
+class="btn btn-warning btn-login">
+
+<i class="bi bi-box-arrow-in-right"></i>
+
+LOGIN
 
 </button>
 
-<div class="text-center mt-4">
-
-<small>
-
-© 2026 SIGMA EDU PRO
-
-</small>
-
-</div>
-
-</div>
-
-</div>
-
-</div>
-
-</div>
-
-</section>
-
-<!-- ================= DASHBOARD ================= -->
-
-<div id="dashboard" style="display:none;">
-
-<!-- Sidebar -->
-
-<aside class="sidebar">
-
-<div class="logo-area">
-
-<img src="assets/logo.png" width="70">
-
-<h3>SIGMA</h3>
-
-<small>SMP Kristen 4 Tanimbar Utara</small>
-
-</div>
-
-<ul class="menu">
-
-<li class="active">
-
-<i class="bi bi-house-door-fill"></i>
-
-Dashboard
-
-</li>
-
-<li>
-
-<i class="bi bi-people-fill"></i>
-
-Data Guru
-
-</li>
-
-<li>
-
-<i class="bi bi-mortarboard-fill"></i>
-
-Data Siswa
-
-</li>
-
-<li>
-
-<i class="bi bi-building"></i>
-
-Data Kelas
-
-</li>
-
-<li>
-
-<i class="bi bi-book-fill"></i>
-
-Mata Pelajaran
-
-</li>
-
-<li>
-
-<i class="bi bi-check2-square"></i>
-
-Absensi
-
-</li>
-
-<li>
-
-<i class="bi bi-journal-bookmark-fill"></i>
-
-Jurnal Mengajar
-
-</li>
-
-<li>
-
-<i class="bi bi-clipboard-data-fill"></i>
-
-Rekap Nilai
-
-</li>
-
-<li>
-
-<i class="bi bi-bar-chart-fill"></i>
-
-Laporan
-
-</li>
-
-<li>
-
-<i class="bi bi-cloud-arrow-down-fill"></i>
-
-Backup
-
-</li>
-
-<li>
-
-<i class="bi bi-gear-fill"></i>
-
-Pengaturan
-
-</li>
-
-</ul>
-
-</aside>
-
-<!-- ================= CONTENT ================= -->
-
-<main class="main-content">
-
-<header class="topbar">
-
-<div>
-
-<h3>Dashboard</h3>
-
-<small id="tanggal"></small>
-
-</div>
-
-<div class="top-right">
-
-<button class="btn btn-light">
-
-<i class="bi bi-bell"></i>
-
-</button>
-
-<button class="btn btn-light">
-
-<i class="bi bi-moon-stars"></i>
-
-</button>
-
-<div class="user-profile">
-
-<i class="bi bi-person-circle fs-3"></i>
-
-<div>
-
-<b>Abraham Kelwulan</b>
-
-<br>
-
-<small>Guru</small>
-
-</div>
-
-</div>
-
-<button
-class="btn btn-danger">
-
-Logout
-
-</button>
-
-</div>
-
-</header>
-<section class="container-fluid mt-4">
-<!-- ================= KARTU STATISTIK ================= -->
-
-<div class="row g-4">
-
-    <div class="col-lg-3 col-md-6">
-
-        <div class="card shadow border-0 rounded-4 bg-primary text-white">
-
-            <div class="card-body">
-
-                <h6>Total Guru</h6>
-
-                <h2 id="totalGuru">16</h2>
-
-                <i class="bi bi-person-badge-fill fs-1 float-end opacity-50"></i>
-
-            </div>
-
-        </div>
-
-    </div>
-
-    <div class="col-lg-3 col-md-6">
-
-        <div class="card shadow border-0 rounded-4 bg-success text-white">
-
-            <div class="card-body">
-
-                <h6>Total Siswa</h6>
-
-                <h2 id="totalSiswa">218</h2>
-
-                <i class="bi bi-mortarboard-fill fs-1 float-end opacity-50"></i>
-
-            </div>
-
-        </div>
-
-    </div>
-
-    <div class="col-lg-3 col-md-6">
-
-        <div class="card shadow border-0 rounded-4 bg-warning text-dark">
-
-            <div class="card-body">
-
-                <h6>Total Kelas</h6>
-
-                <h2 id="totalKelas">8</h2>
-
-                <i class="bi bi-building fs-1 float-end opacity-50"></i>
-
-            </div>
-
-        </div>
-
-    </div>
-
-    <div class="col-lg-3 col-md-6">
-
-        <div class="card shadow border-0 rounded-4 bg-danger text-white">
-
-            <div class="card-body">
-
-                <h6>Mata Pelajaran</h6>
-
-                <h2 id="totalMapel">12</h2>
-
-                <i class="bi bi-book-fill fs-1 float-end opacity-50"></i>
-
-            </div>
-
-        </div>
-
-    </div>
-
-</div>
-
-<!-- ================= GRAFIK & KALENDER ================= -->
-
-<div class="row mt-4">
-
-    <div class="col-lg-8">
-
-        <div class="card shadow border-0 rounded-4">
-
-            <div class="card-header bg-white">
-
-                <h5 class="mb-0">
-
-                    <i class="bi bi-bar-chart-fill text-primary"></i>
-
-                    Grafik Kehadiran
-
-                </h5>
-
-            </div>
-
-            <div class="card-body">
-
-                <canvas id="attendanceChart" height="120"></canvas>
-
-            </div>
-
-        </div>
-
-    </div>
-
-    <div class="col-lg-4">
-
-        <div class="card shadow border-0 rounded-4">
-
-            <div class="card-header bg-white">
-
-                <h5 class="mb-0">
-
-                    <i class="bi bi-calendar3"></i>
-
-                    Kalender
-
-                </h5>
-
-            </div>
-
-            <div class="card-body">
-
-                <div id="calendarBox" class="text-center">
-
-                    <h2 id="todayDate">--</h2>
-
-                    <p id="todayDay">Hari</p>
-
-                    <hr>
-
-                    <div id="digitalClock" class="fs-3 fw-bold">
-
-                        00:00:00
-
-                    </div>
-
-                </div>
-
-            </div>
-
-        </div>
-
-    </div>
-
-</div>
-
-<!-- ================= AKTIVITAS ================= -->
-
-<div class="row mt-4">
-
-    <div class="col-lg-6">
-
-        <div class="card shadow border-0 rounded-4">
-
-            <div class="card-header bg-white">
-
-                <h5>
-
-                    <i class="bi bi-activity text-success"></i>
-
-                    Aktivitas Hari Ini
-
-                </h5>
-
-            </div>
-
-            <div class="card-body">
-
-                <ul class="list-group list-group-flush">
-
-                    <li class="list-group-item">
-
-                        ✅ Absensi Kelas VIII A
-
-                    </li>
-
-                    <li class="list-group-item">
-
-                        📖 Jurnal Mengajar IPS
-
-                    </li>
-
-                    <li class="list-group-item">
-
-                        📝 Input Nilai PPKn
-
-                    </li>
-
-                </ul>
-
-            </div>
-
-        </div>
-
-    </div>
-
-    <div class="col-lg-6">
-
-        <div class="card shadow border-0 rounded-4">
-
-            <div class="card-header bg-white">
-
-                <h5>
-
-                    <i class="bi bi-megaphone-fill text-danger"></i>
-
-                    Pengumuman
-
-                </h5>
-
-            </div>
-
-            <div class="card-body">
-
-                <div class="alert alert-primary">
-
-                    Selamat datang di
-
-                    <b>SIGMA EDU PRO</b>
-
-                </div>
-
-                <div class="alert alert-warning">
-
-                    Jangan lupa melakukan backup data setiap minggu.
-
-                </div>
-
-            </div>
-
-        </div>
-
-    </div>
-
-</div>        <!-- ================= FOOTER ================= -->
-
-        <footer class="mt-4 text-center text-secondary">
-
-            <hr>
-
-            <p class="mb-0">
-
-                © 2026 SIGMA EDU PRO | Sistem Informasi Guru dan Manajemen Administrasi
-
-            </p>
-
-        </footer>
-
-    </section>
-
-</main>
-
-</div>
-
-<!-- ================= MODAL PROFIL ================= -->
-
-<div class="modal fade" id="profileModal" tabindex="-1">
-
-    <div class="modal-dialog">
-
-        <div class="modal-content">
-
-            <div class="modal-header">
-
-                <h5 class="modal-title">
-
-                    Profil Guru
-
-                </h5>
-
-                <button
-                    type="button"
-                    class="btn-close"
-                    data-bs-dismiss="modal">
-                </button>
-
-            </div>
-
-            <div class="modal-body text-center">
-
-                <i class="bi bi-person-circle display-1 text-primary"></i>
-
-                <h4 class="mt-3">
-
-                    Abraham Kelwulan
-
-                </h4>
-
-                <p>
-
-                    Guru SMP Kristen 4 Tanimbar Utara
-
-                </p>
-
-                <hr>
-
-                <p>
-
-                    NIP / NIK
-
-                </p>
-
-                <b id="profilNip">
-
-                    -
-
-                </b>
-
-            </div>
-
-        </div>
-
-    </div>
-
-</div>
-
-<!-- Bootstrap -->
-<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
-
-<!-- Chart.js -->
-<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
-
-<script>
-
-window.onload = function(){
-
-    setTimeout(function(){
-
-        document.getElementById("loadingScreen").style.display="none";
-
-    },1200);
-
-}
-
-/* ================= JAM DIGITAL ================= */
-
-function updateClock(){
-
-    const now = new Date();
-
-    const jam = now.toLocaleTimeString("id-ID");
-
-    const tanggal = now.toLocaleDateString("id-ID",{
-
-        weekday:"long",
-
-        year:"numeric",
-
-        month:"long",
-
-        day:"numeric"
-
-    });
-
-    const jamBox = document.getElementById("digitalClock");
-
-    const tanggalBox = document.getElementById("todayDate");
-
-    const headerTanggal = document.getElementById("tanggal");
-
-    if(jamBox) jamBox.innerHTML = jam;
-
-    if(tanggalBox) tanggalBox.innerHTML = tanggal;
-
-    if(headerTanggal) headerTanggal.innerHTML = tanggal;
-
-}
-
-setInterval(updateClock,1000);
-
-updateClock();
-
-/* ================= LOGIN ================= */
-
-document.getElementById("loginBtn").addEventListener("click",function(){
-
-    const user=document.getElementById("username").value.trim();
-
-    const pass=document.getElementById("password").value.trim();
-
-    if(user===""||pass===""){
-
-        alert("Silakan isi NIP/NIK dan Password.");
-
-        return;
-
-    }
-
-    document.getElementById("loginPage").style.display="none";
-
-    document.getElementById("dashboard").style.display="flex";
-
-});
-
-/* ================= LOGOUT ================= */
-
-document.querySelector(".btn-danger").addEventListener("click",function(){
-
-    if(confirm("Yakin ingin logout?")){
-
-        document.getElementById("dashboard").style.display="none";
-
-        document.getElementById("loginPage").style.display="block";
-
-    }
-
-});
-
-/* ================= CHART ================= */
-
-const ctx=document.getElementById("attendanceChart");
-
-if(ctx){
-
-new Chart(ctx,{
-
-type:"bar",
-
-data:{
-
-labels:["Sen","Sel","Rab","Kam","Jum"],
-
-datasets:[{
-
-label:"Kehadiran",
-
-data:[95,97,96,94,98]
-
-}]
-
-},
-
-options:{
-
-responsive:true,
-
-plugins:{
-
-legend:{
-
-display:true
-
-}
-
-}
-
-}
-
-});
-
-}
-
-</script>
-
-</body>
-
-</html>
-<!-- ================= DASHBOARD CONTENT ================= -->
-
-<section class="container-fluid mt-4">
+</form>
