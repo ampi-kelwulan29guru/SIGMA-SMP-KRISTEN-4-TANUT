@@ -1,70 +1,55 @@
-// =====================================
+// ===================================
 // SIGMA EDU PRO
-// Dashboard JavaScript
-// =====================================
+// Dashboard Script
+// ===================================
+
+// Cek apakah pengguna sudah login
+if (localStorage.getItem("login") !== "true") {
+    window.location.href = "../index.html";
+}
+
+// Menampilkan tanggal
+const tanggal = new Date();
+
+const opsi = {
+    weekday: "long",
+    year: "numeric",
+    month: "long",
+    day: "numeric"
+};
+
+const tanggalElement = document.getElementById("tanggal");
+
+if (tanggalElement) {
+    tanggalElement.innerHTML =
+        tanggal.toLocaleDateString("id-ID", opsi);
+}
 
 // Jam Digital
-function updateClock() {
-    const now = new Date();
+function updateJam() {
 
-    const jam = String(now.getHours()).padStart(2, "0");
-    const menit = String(now.getMinutes()).padStart(2, "0");
-    const detik = String(now.getSeconds()).padStart(2, "0");
+    const sekarang = new Date();
 
-    const clock = document.getElementById("digitalClock");
+    const jam =
+        String(sekarang.getHours()).padStart(2, "0");
 
-    if (clock) {
-        clock.innerHTML = `${jam}:${menit}:${detik}`;
+    const menit =
+        String(sekarang.getMinutes()).padStart(2, "0");
+
+    const detik =
+        String(sekarang.getSeconds()).padStart(2, "0");
+
+    const jamElement = document.getElementById("jam");
+
+    if (jamElement) {
+
+        jamElement.innerHTML =
+            jam + ":" + menit + ":" + detik;
+
     }
+
 }
 
-setInterval(updateClock, 1000);
-updateClock();
+setInterval(updateJam, 1000);
 
-// Tanggal
-function updateDate() {
-    const now = new Date();
-
-    const hari = [
-        "Minggu",
-        "Senin",
-        "Selasa",
-        "Rabu",
-        "Kamis",
-        "Jumat",
-        "Sabtu"
-    ];
-
-    const bulan = [
-        "Januari",
-        "Februari",
-        "Maret",
-        "April",
-        "Mei",
-        "Juni",
-        "Juli",
-        "Agustus",
-        "September",
-        "Oktober",
-        "November",
-        "Desember"
-    ];
-
-    const tanggal = document.getElementById("todayDate");
-    const namaHari = document.getElementById("todayDay");
-
-    if (tanggal) {
-        tanggal.innerHTML =
-            now.getDate() + " " +
-            bulan[now.getMonth()] + " " +
-            now.getFullYear();
-    }
-
-    if (namaHari) {
-        namaHari.innerHTML = hari[now.getDay()];
-    }
-}
-
-updateDate();
-
-console.log("Dashboard SIGMA EDU PRO siap dijalankan.");
+updateJam();
