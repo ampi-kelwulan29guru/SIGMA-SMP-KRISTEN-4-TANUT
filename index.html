@@ -1,0 +1,301 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>SIGMA EDU PRO</title>
+
+    <!-- Bootstrap -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
+
+    <!-- Bootstrap Icons -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.css" rel="stylesheet">
+
+    <!-- Google Font -->
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+
+    <!-- CSS -->
+    <link rel="stylesheet" href="css/style.css">
+    <link rel="stylesheet" href="css/dashboard.css">
+    <link rel="stylesheet" href="css/responsive.css">
+
+</head>
+
+<body>
+
+<!-- ================= LOADING ================= -->
+
+<div id="loadingScreen">
+
+    <div class="spinner-border text-light"></div>
+
+    <h2 class="mt-3">SIGMA EDU PRO</h2>
+
+    <p>Memuat aplikasi...</p>
+
+</div>
+
+<!-- ================= LOGIN ================= -->
+
+<section id="loginPage">
+
+<div class="container">
+
+<div class="row justify-content-center align-items-center vh-100">
+
+<div class="col-lg-5">
+
+<div class="login-card">
+
+<div class="text-center mb-4">
+
+<img src="assets/logo.png" width="120">
+
+<h2 class="mt-3 fw-bold">
+
+SIGMA EDU PRO
+
+</h2>
+
+<p>
+
+Sistem Informasi Guru dan Manajemen Administrasi
+
+</p>
+
+</div>
+
+<div class="mb-3">
+
+<label>NIP / NIK</label>
+
+<input
+type="text"
+id="username"
+class="form-control"
+placeholder="Masukkan NIP atau NIK">
+
+</div>
+
+<div class="mb-3">
+
+<label>Password</label>
+
+<div class="input-group">
+
+<input
+type="password"
+id="password"
+class="form-control">
+
+<button
+class="btn btn-outline-secondary"
+type="button">
+
+<i class="bi bi-eye"></i>
+
+</button>
+
+</div>
+
+</div>
+
+<button
+class="btn btn-primary w-100"
+id="loginBtn">
+
+MASUK
+
+</button>
+
+<div class="text-center mt-4">
+
+<small>
+
+© 2026 SIGMA EDU PRO
+
+</small>
+
+</div>
+
+</div>
+
+</div>
+
+</div>
+
+</div>
+
+</section>
+
+<!-- ================= DASHBOARD ================= -->
+
+<div id="dashboard" style="display:none;">
+
+<!-- Sidebar -->
+
+<aside class="sidebar">
+
+<div class="logo-area">
+
+<img src="assets/logo.png" width="70">
+
+<h3>SIGMA</h3>
+
+<small>SMP Kristen 4 Tanimbar Utara</small>
+
+</div>
+
+<ul class="menu">
+
+<li class="active">
+
+<i class="bi bi-house-door-fill"></i>
+
+Dashboard
+
+</li>
+
+<li>
+
+<i class="bi bi-people-fill"></i>
+
+Data Guru
+
+</li>
+
+<li>
+
+<i class="bi bi-mortarboard-fill"></i>
+
+Data Siswa
+
+</li>
+
+<li>
+
+<i class="bi bi-building"></i>
+
+Data Kelas
+
+</li>
+
+<li>
+
+<i class="bi bi-book-fill"></i>
+
+Mata Pelajaran
+
+</li>
+
+<li>
+
+<i class="bi bi-check2-square"></i>
+
+Absensi
+
+</li>
+
+<li>
+
+<i class="bi bi-journal-bookmark-fill"></i>
+
+Jurnal Mengajar
+
+</li>
+
+<li>
+
+<i class="bi bi-clipboard-data-fill"></i>
+
+Rekap Nilai
+
+</li>
+
+<li>
+
+<i class="bi bi-bar-chart-fill"></i>
+
+Laporan
+
+</li>
+
+<li>
+
+<i class="bi bi-cloud-arrow-down-fill"></i>
+
+Backup
+
+</li>
+
+<li>
+
+<i class="bi bi-gear-fill"></i>
+
+Pengaturan
+
+</li>
+
+</ul>
+
+</aside>
+
+<!-- ================= CONTENT ================= -->
+
+<main class="main-content">
+
+<header class="topbar">
+
+<div>
+
+<h3>Dashboard</h3>
+
+<small id="tanggal"></small>
+
+</div>
+
+<div class="top-right">
+
+<button class="btn btn-light">
+
+<i class="bi bi-bell"></i>
+
+</button>
+
+<button class="btn btn-light">
+
+<i class="bi bi-moon-stars"></i>
+
+</button>
+
+<div class="user-profile">
+
+<i class="bi bi-person-circle fs-3"></i>
+
+<div>
+
+<b>Abraham Kelwulan</b>
+
+<br>
+
+<small>Guru</small>
+
+</div>
+
+</div>
+
+<button
+class="btn btn-danger">
+
+Logout
+
+</button>
+
+</div>
+
+</header>
+
+<!-- ================= DASHBOARD CONTENT ================= -->
+
+<section class="container-fluid mt-4">
