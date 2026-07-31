@@ -7,7 +7,9 @@ const USERNAME = "admin";
 const PASSWORD = "12345";
 
 // Fungsi Login
-function loginGuru() {
+function loginGuru(e) {
+
+    if (e) e.preventDefault();
 
     const username = document.getElementById("username").value.trim();
     const password = document.getElementById("password").value.trim();
@@ -15,9 +17,7 @@ function loginGuru() {
     if (username === USERNAME && password === PASSWORD) {
 
         localStorage.setItem("login", "true");
-
         alert("Login berhasil!");
-
         window.location.href = "pages/dashboard.html";
 
     } else {
@@ -25,23 +25,21 @@ function loginGuru() {
         alert("Username atau Password salah!");
 
     }
-
 }
 
-// Tombol Enter
-document.addEventListener("keydown", function(e){
+// Jalankan setelah halaman selesai dimuat
+document.addEventListener("DOMContentLoaded", () => {
 
-    if(e.key==="Enter"){
-        loginGuru();
+    const form = document.getElementById("loginForm");
+
+    if (form) {
+        form.addEventListener("submit", loginGuru);
     }
 
 });
 
 // Logout
-function logout(){
-
+function logout() {
     localStorage.removeItem("login");
-
-    window.location.href="../index.html";
-
+    window.location.href = "../index.html";
 }
