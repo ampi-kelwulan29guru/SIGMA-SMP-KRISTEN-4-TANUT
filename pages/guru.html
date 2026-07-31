@@ -77,6 +77,7 @@
                                     <th class="ps-3">No</th>
                                     <th>NIP / NUPTK</th>
                                     <th>Nama Lengkap</th>
+                                    <th>Jabatan</th>
                                     <th>Mata Pelajaran</th>
                                     <th>No. HP/WA</th>
                                     <th class="text-center">Aksi</th>
@@ -111,6 +112,19 @@
                     <div class="mb-3">
                         <label class="form-label fw-bold">Nama Lengkap & Gelar</label>
                         <input type="text" id="nama" class="form-control" placeholder="Contoh: Bpk. John Doe, S.Pd." required>
+                    </div>
+                    <div class="mb-3">
+                        <label class="form-label fw-bold">Jabatan</label>
+                        <select id="jabatan" class="form-select" required>
+                            <option value="" selected disabled>-- Pilih Jabatan --</option>
+                            <option value="Kepala Sekolah">Kepala Sekolah</option>
+                            <option value="Wakil Kepala Sekolah">Wakil Kepala Sekolah</option>
+                            <option value="Wali Kelas">Wali Kelas</option>
+                            <option value="Guru Mata Pelajaran">Guru Mata Pelajaran</option>
+                            <option value="Guru BK">Guru BK</option>
+                            <option value="Guru Piket">Guru Piket</option>
+                            <option value="Staf TU">Staf TU / Administrasi</option>
+                        </select>
                     </div>
                     <div class="mb-3">
                         <label class="form-label fw-bold">Mata Pelajaran Utama</label>
