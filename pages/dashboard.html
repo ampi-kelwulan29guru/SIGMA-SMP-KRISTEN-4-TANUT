@@ -17,9 +17,9 @@
 <div class="container-fluid">
     <div class="row">
 
-        <!-- Sidebar -->
+        <!-- Sidebar Navigation -->
         <div class="col-lg-2 sidebar p-3">
-            <h3 class="text-white text-center mb-4">SIGMA EDU PRO</h3>
+            <h3 class="text-white text-center mb-4 fw-bold">SIGMA EDU<br>PRO</h3>
             <ul class="nav flex-column">
                 <li class="nav-item">
                     <a class="nav-link active" href="dashboard.html"><i class="bi bi-speedometer2 me-2"></i>Dashboard</a>
@@ -53,40 +53,81 @@
             </ul>
         </div>
 
-        <!-- Content Area -->
+        <!-- Main Content Area -->
         <div class="col-lg-10 p-4">
 
-            <div class="d-flex justify-content-between align-items-center mb-4 bg-white p-3 rounded shadow-sm">
-                <div>
-                    <h4 class="fw-bold text-primary mb-0">Selamat Datang di SIGMA EDU PRO</h4>
-                    <small class="text-muted">SMP Kristen 4 Tanut</small>
+            <!-- Header Section (Logo, Nama Sekolah, Jam, dan Kartu Ringkas) -->
+            <div class="card border-0 shadow-sm p-3 mb-4 rounded-3">
+                <div class="row align-items-center">
+                    <div class="col-md-5 d-flex align-items-center">
+                        <img src="../assets/logo.png" alt="Logo" class="me-3" style="width: 55px; height: 55px; object-fit: contain;" onerror="this.src='https://via.placeholder.com/55'">
+                        <div>
+                            <h5 class="fw-bold mb-0 text-dark">SMP Kristen 4 Tanut</h5>
+                            <small class="text-muted fw-semibold">SIGMA EDU PRO</small>
+                        </div>
+                    </div>
+                    
+                    <div class="col-md-3 text-center my-2 my-md-0">
+                        <small class="text-muted d-block fw-semibold" id="tanggalRealtime">Jumat, 31 Juli 2026</small>
+                        <span class="fs-4 fw-bold text-primary" id="jamRealtime">16:54:18</span>
+                    </div>
+
+                    <div class="col-md-4">
+                        <div class="row g-2 text-center text-white">
+                            <div class="col-4">
+                                <div class="bg-primary p-2 rounded-3 shadow-sm">
+                                    <small style="font-size: 11px;">Total Guru</small>
+                                    <h5 id="totalGuru" class="fw-bold mb-0">0</h5>
+                                </div>
+                            </div>
+                            <div class="col-4">
+                                <div class="bg-primary p-2 rounded-3 shadow-sm">
+                                    <small style="font-size: 11px;">Total Siswa</small>
+                                    <h5 id="totalSiswa" class="fw-bold mb-0">0</h5>
+                                </div>
+                            </div>
+                            <div class="col-4">
+                                <div class="bg-primary p-2 rounded-3 shadow-sm">
+                                    <small style="font-size: 11px;">Total Kelas</small>
+                                    <h5 id="totalKelas" class="fw-bold mb-0">0</h5>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
                 </div>
             </div>
 
-            <!-- Kartu Statistik Rekapitulasi -->
-            <div class="row g-3 mb-4">
-                <div class="col-md-3">
-                    <div class="card bg-primary text-white p-3 shadow-sm border-0">
-                        <small>Total Guru</small>
-                        <h2 id="totalGuru" class="fw-bold mb-0">0</h2>
-                    </div>
+            <!-- Ucapan Selamat Datang -->
+            <div class="card border-0 shadow-sm p-4 mb-4 rounded-3">
+                <h4 class="fw-bold text-primary mb-1">👋 Selamat Datang, Ampi Kelwulan </h4>
+                <p class="text-muted mb-0">Selamat datang di Sistem Administrasi Guru SMP Kristen 4 Tanut.</p>
+            </div>
+
+            <!-- Seksi Pengumuman -->
+            <div class="card border-0 shadow-sm mb-4 rounded-3 overflow-hidden">
+                <div class="bg-warning text-dark px-3 py-2 fw-bold">
+                    📣 Pengumuman
                 </div>
-                <div class="col-md-3">
-                    <div class="card bg-success text-white p-3 shadow-sm border-0">
-                        <small>Total Siswa</small>
-                        <h2 id="totalSiswa" class="fw-bold mb-0">0</h2>
-                    </div>
+                <div class="p-3 bg-white">
+                    <ul class="mb-0 ps-3">
+                        <li class="mb-1">Rapat Guru hari Jumat pukul 08.00</li>
+                        <li class="mb-1">Input nilai semester sebelum tanggal 10.</li>
+                        <li>Lengkapi absensi setiap hari.</li>
+                    </ul>
                 </div>
-                <div class="col-md-3">
-                    <div class="card bg-warning text-dark p-3 shadow-sm border-0">
-                        <small>Total Kelas</small>
-                        <h2 id="totalKelas" class="fw-bold mb-0">0</h2>
-                    </div>
+            </div>
+
+            <!-- Seksi Menu Cepat -->
+            <div class="card border-0 shadow-sm rounded-3 overflow-hidden">
+                <div class="bg-primary text-white px-3 py-2 fw-bold">
+                    ⚡ Menu Cepat
                 </div>
-                <div class="col-md-3">
-                    <div class="card bg-info text-white p-3 shadow-sm border-0">
-                        <small>Mata Pelajaran</small>
-                        <h2 id="totalMapel" class="fw-bold mb-0">0</h2>
+                <div class="p-3 bg-white">
+                    <div class="d-flex gap-2 flex-wrap">
+                        <a href="guru.html" class="btn btn-primary px-4 fw-semibold">Guru</a>
+                        <a href="siswa.html" class="btn btn-success px-4 fw-semibold">Siswa</a>
+                        <a href="kelas.html" class="btn btn-warning text-dark px-4 fw-semibold">Kelas</a>
+                        <a href="absensi.html" class="btn btn-danger px-4 fw-semibold">Absensi</a>
                     </div>
                 </div>
             </div>
@@ -95,9 +136,29 @@
     </div>
 </div>
 
-<!-- Pemanggilan script wajib berada di sini (sebelum </body>) -->
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
 <script src="../js/db.js"></script>
 <script src="../js/dashboard.js"></script>
+
+<script>
+    // Fitur Jam dan Tanggal Realtime
+    function updateClock() {
+        const now = new Date();
+        const options = { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' };
+        
+        const tanggalStr = now.toLocaleDateString('id-ID', options);
+        const jamStr = now.toTimeString().split(' ')[0];
+
+        const elTanggal = document.getElementById('tanggalRealtime');
+        const elJam = document.getElementById('jamRealtime');
+
+        if (elTanggal) elTanggal.textContent = tanggalStr;
+        if (elJam) elJam.textContent = jamStr;
+    }
+
+    setInterval(updateClock, 1000);
+    updateClock();
+</script>
+
 </body>
 </html>
