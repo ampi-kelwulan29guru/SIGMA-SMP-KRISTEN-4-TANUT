@@ -1,45 +1,40 @@
 // ======================================
-// SIGMA EDU PRO
-// Sistem Login Guru
+// SIGMA EDU PRO - LOGIN
 // ======================================
+
+console.log("AUTH.JS BERHASIL DIMUAT");
 
 const USERNAME = "admin";
 const PASSWORD = "12345";
 
-// Fungsi Login
-function loginGuru(e) {
-
-    if (e) e.preventDefault();
-
-    const username = document.getElementById("username").value.trim();
-    const password = document.getElementById("password").value.trim();
-
-    if (username === USERNAME && password === PASSWORD) {
-
-        localStorage.setItem("login", "true");
-        alert("Login berhasil!");
-        window.location.href = "pages/dashboard.html";
-
-    } else {
-
-        alert("Username atau Password salah!");
-
-    }
-}
-
-// Jalankan setelah halaman selesai dimuat
-document.addEventListener("DOMContentLoaded", () => {
+// Tunggu halaman selesai dimuat
+document.addEventListener("DOMContentLoaded", function () {
 
     const form = document.getElementById("loginForm");
 
-    if (form) {
-        form.addEventListener("submit", loginGuru);
-    }
+    form.addEventListener("submit", function (e) {
+
+        e.preventDefault();
+
+        const username = document.getElementById("username").value.trim();
+        const password = document.getElementById("password").value.trim();
+
+        console.log(username, password);
+
+        if (username === USERNAME && password === PASSWORD) {
+
+            localStorage.setItem("login", "true");
+
+            alert("Login berhasil!");
+
+            window.location.href = "pages/dashboard.html";
+
+        } else {
+
+            alert("Username atau Password salah!");
+
+        }
+
+    });
 
 });
-
-// Logout
-function logout() {
-    localStorage.removeItem("login");
-    window.location.href = "../index.html";
-}
