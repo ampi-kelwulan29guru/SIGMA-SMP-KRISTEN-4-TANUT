@@ -2,8 +2,8 @@
 <html lang="id">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Dashboard - SIGMA EDU PRO</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Data Guru - SIGMA EDU PRO</title>
 
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
     <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.css" rel="stylesheet">
@@ -17,15 +17,15 @@
 <div class="container-fluid">
     <div class="row">
 
-        <!-- Sidebar Navigation -->
+        <!-- Sidebar -->
         <div class="col-lg-2 sidebar p-3">
             <h3 class="text-white text-center mb-4 fw-bold">SIGMA EDU<br>PRO</h3>
             <ul class="nav flex-column">
                 <li class="nav-item">
-                    <a class="nav-link active" href="dashboard.html"><i class="bi bi-speedometer2 me-2"></i>Dashboard</a>
+                    <a class="nav-link" href="dashboard.html"><i class="bi bi-speedometer2 me-2"></i>Dashboard</a>
                 </li>
                 <li class="nav-item">
-                    <a class="nav-link" href="guru.html"><i class="bi bi-person-badge me-2"></i>Guru</a>
+                    <a class="nav-link active" href="guru.html"><i class="bi bi-person-badge me-2"></i>Guru</a>
                 </li>
                 <li class="nav-item">
                     <a class="nav-link" href="siswa.html"><i class="bi bi-mortarboard me-2"></i>Siswa</a>
@@ -53,81 +53,39 @@
             </ul>
         </div>
 
-        <!-- Main Content Area -->
+        <!-- Content Area -->
         <div class="col-lg-10 p-4">
 
-            <!-- Header Section (Logo, Nama Sekolah, Jam, dan Kartu Ringkas) -->
-            <div class="card border-0 shadow-sm p-3 mb-4 rounded-3">
-                <div class="row align-items-center">
-                    <div class="col-md-5 d-flex align-items-center">
-                        <img src="../assets/logo.png" alt="Logo" class="me-3" style="width: 55px; height: 55px; object-fit: contain;" onerror="this.src='https://via.placeholder.com/55'">
-                        <div>
-                            <h5 class="fw-bold mb-0 text-dark">SMP Kristen 4 Tanut</h5>
-                            <small class="text-muted fw-semibold">SIGMA EDU PRO</small>
-                        </div>
-                    </div>
-                    
-                    <div class="col-md-3 text-center my-2 my-md-0">
-                        <small class="text-muted d-block fw-semibold" id="tanggalRealtime">Jumat, 31 Juli 2026</small>
-                        <span class="fs-4 fw-bold text-primary" id="jamRealtime">16:54:18</span>
-                    </div>
-
-                    <div class="col-md-4">
-                        <div class="row g-2 text-center text-white">
-                            <div class="col-4">
-                                <div class="bg-primary p-2 rounded-3 shadow-sm">
-                                    <small style="font-size: 11px;">Total Guru</small>
-                                    <h5 id="totalGuru" class="fw-bold mb-0">0</h5>
-                                </div>
-                            </div>
-                            <div class="col-4">
-                                <div class="bg-primary p-2 rounded-3 shadow-sm">
-                                    <small style="font-size: 11px;">Total Siswa</small>
-                                    <h5 id="totalSiswa" class="fw-bold mb-0">0</h5>
-                                </div>
-                            </div>
-                            <div class="col-4">
-                                <div class="bg-primary p-2 rounded-3 shadow-sm">
-                                    <small style="font-size: 11px;">Total Kelas</small>
-                                    <h5 id="totalKelas" class="fw-bold mb-0">0</h5>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
+            <!-- Header Panel -->
+            <div class="d-flex justify-content-between align-items-center mb-4 bg-white p-3 rounded shadow-sm">
+                <div>
+                    <h4 class="fw-bold text-primary mb-0"><i class="bi bi-person-badge me-2"></i>Kelola Data Guru</h4>
+                    <small class="text-muted">SMP Kristen 4 Tanut</small>
                 </div>
+                <button class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#modalGuru">
+                    <i class="bi bi-plus-circle me-1"></i>Tambah Guru Baru
+                </button>
             </div>
 
-            <!-- Ucapan Selamat Datang -->
-            <div class="card border-0 shadow-sm p-4 mb-4 rounded-3">
-                <h4 class="fw-bold text-primary mb-1">👋 Selamat Datang, Ampi Kelwulan </h4>
-                <p class="text-muted mb-0">Selamat datang di Sistem Administrasi Guru SMP Kristen 4 Tanut.</p>
-            </div>
-
-            <!-- Seksi Pengumuman -->
-            <div class="card border-0 shadow-sm mb-4 rounded-3 overflow-hidden">
-                <div class="bg-warning text-dark px-3 py-2 fw-bold">
-                    📣 Pengumuman
-                </div>
-                <div class="p-3 bg-white">
-                    <ul class="mb-0 ps-3">
-                        <li class="mb-1">Rapat Guru hari Jumat pukul 08.00</li>
-                        <li class="mb-1">Input nilai semester sebelum tanggal 10.</li>
-                        <li>Lengkapi absensi setiap hari.</li>
-                    </ul>
-                </div>
-            </div>
-
-            <!-- Seksi Menu Cepat -->
-            <div class="card border-0 shadow-sm rounded-3 overflow-hidden">
-                <div class="bg-primary text-white px-3 py-2 fw-bold">
-                    ⚡ Menu Cepat
-                </div>
-                <div class="p-3 bg-white">
-                    <div class="d-flex gap-2 flex-wrap">
-                        <a href="guru.html" class="btn btn-primary px-4 fw-semibold">Guru</a>
-                        <a href="siswa.html" class="btn btn-success px-4 fw-semibold">Siswa</a>
-                        <a href="kelas.html" class="btn btn-warning text-dark px-4 fw-semibold">Kelas</a>
-                        <a href="absensi.html" class="btn btn-danger px-4 fw-semibold">Absensi</a>
+            <!-- Tabel Data Guru -->
+            <div class="card shadow-sm border-0">
+                <div class="card-body p-0">
+                    <div class="table-responsive">
+                        <table class="table table-hover align-middle mb-0">
+                            <thead class="table-primary">
+                                <tr>
+                                    <th class="ps-3">No</th>
+                                    <th>NIP / NUPTK</th>
+                                    <th>Nama Lengkap</th>
+                                    <th>Jabatan</th>
+                                    <th>No. HP/WA</th>
+                                    <th class="text-center">Aksi</th>
+                                </tr>
+                            </thead>
+                            <tbody id="tabelGuru">
+                                <!-- Data guru dimuat otomatis dari IndexedDB oleh js/guru.js -->
+                            </tbody>
+                        </table>
                     </div>
                 </div>
             </div>
@@ -136,29 +94,54 @@
     </div>
 </div>
 
+<!-- Modal Form Tambah Guru -->
+<div class="modal fade" id="modalGuru" tabindex="-1">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header bg-primary text-white">
+                <h5 class="modal-title fw-bold"><i class="bi bi-person-plus me-2"></i>Tambah Data Guru</h5>
+                <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal"></button>
+            </div>
+            <form id="formGuru">
+                <div class="modal-body">
+                    <div class="mb-3">
+                        <label class="form-label fw-bold">NIP / NUPTK</label>
+                        <input type="text" id="nip" class="form-control" placeholder="Contoh: 198501..." required>
+                    </div>
+                    <div class="mb-3">
+                        <label class="form-label fw-bold">Nama Lengkap & Gelar</label>
+                        <input type="text" id="nama" class="form-control" placeholder="Contoh: Bpk. John Doe, S.Pd." required>
+                    </div>
+                    <div class="mb-3">
+                        <label class="form-label fw-bold">Jabatan</label>
+                        <select id="jabatan" class="form-select" required>
+                            <option value="" selected disabled>-- Pilih Jabatan --</option>
+                            <option value="Kepala Sekolah">Kepala Sekolah</option>
+                            <option value="Wakil Kepala Sekolah">Wakil Kepala Sekolah</option>
+                            <option value="Wali Kelas">Wali Kelas</option>
+                            <option value="Guru Mata Pelajaran">Guru Mata Pelajaran</option>
+                            <option value="Guru BK">Guru BK</option>
+                            <option value="Guru Piket">Guru Piket</option>
+                            <option value="Staf TU">Staf TU / Administrasi</option>
+                        </select>
+                    </div>
+                    <div class="mb-3">
+                        <label class="form-label fw-bold">Nomor WhatsApp/HP</label>
+                        <input type="tel" id="hp" class="form-control" placeholder="08xxxxxxxxxx">
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Batal</button>
+                    <button type="submit" class="btn btn-primary"><i class="bi bi-save me-1"></i>Simpan Data</button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
 <script src="../js/db.js"></script>
 <script src="../js/dashboard.js"></script>
-
-<script>
-    // Fitur Jam dan Tanggal Realtime
-    function updateClock() {
-        const now = new Date();
-        const options = { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' };
-        
-        const tanggalStr = now.toLocaleDateString('id-ID', options);
-        const jamStr = now.toTimeString().split(' ')[0];
-
-        const elTanggal = document.getElementById('tanggalRealtime');
-        const elJam = document.getElementById('jamRealtime');
-
-        if (elTanggal) elTanggal.textContent = tanggalStr;
-        if (elJam) elJam.textContent = jamStr;
-    }
-
-    setInterval(updateClock, 1000);
-    updateClock();
-</script>
-
+<script src="../js/guru.js"></script>
 </body>
 </html>
