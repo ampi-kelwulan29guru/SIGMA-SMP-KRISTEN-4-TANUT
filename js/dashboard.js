@@ -87,3 +87,42 @@ function tampilkanTotal(db, storeName, elementId) {
     };
 
 }
+// Fungsi Logout Global
+function logout() {
+    if (confirm('Apakah Anda yakin ingin keluar dari sistem?')) {
+        // Hapus status login dari penyimpanan lokal
+        localStorage.removeItem('isLoggedIn');
+        localStorage.removeItem('userAdmin');
+        
+        // Arahkan kembali ke halaman login (index.html)
+        window.location.href = '../index.html';
+    }
+}
+
+// Fungsi Hitung Otomatis Total Guru, Siswa, dan Kelas dari IndexedDB
+async function updateDashboardStats() {
+    if (typeof getAllData === 'function') {
+        try {
+            const listGuru = await getAllData('guru');
+            const listSiswa = await getAllData('siswa');
+            const listKelas = await getAllData('kelas');
+
+            if (document.getElementById('totalGuru')) {
+                document.getElementById('totalGuru').innerText = listGuru.length;
+            }
+            if (document.getElementById('totalSiswa')) {
+                document.getElementById('totalSiswa').innerText = listSiswa.length;
+            }
+            if (document.getElementById('totalKelas')) {
+                document.getElementById('totalKelas').innerText = listKelas.length;
+            }
+        } catch (err) {
+            console.log('Database belum siap untuk statistik:', err);
+        }
+    }
+}
+
+// Jalankan saat halaman Dashboard selesai dimuat
+document.addEventListener('DOMContentLoaded', () => {
+    updateDashboardStats();
+});
