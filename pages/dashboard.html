@@ -1,244 +1,147 @@
 <!DOCTYPE html>
 <html lang="id">
 <head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Dashboard - SIGMA EDU PRO</title>
 
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.css" rel="stylesheet">
 
-<title>Dashboard - SIGMA EDU PRO</title>
-
-<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
-
-<link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.css" rel="stylesheet">
-
-<link rel="stylesheet" href="../css/style.css">
-<link rel="stylesheet" href="../css/dashboard.css">
-<link rel="stylesheet" href="../css/responsive.css">
-
+    <link rel="stylesheet" href="../css/style.css">
+    <link rel="stylesheet" href="../css/dashboard.css">
+    <link rel="stylesheet" href="../css/responsive.css">
 </head>
-<!-- Dashboard Script -->
-<script src="../js/dashboard.js"></script>
 <body>
 
 <div class="container-fluid">
+    <div class="row">
 
-<div class="row">
+        <!-- Sidebar -->
+        <div class="col-lg-2 sidebar p-3">
+            <h3 class="text-white text-center mb-4">SIGMA EDU PRO</h3>
+            <ul class="nav flex-column">
+                <li class="nav-item">
+                    <a class="nav-link active" href="#"><i class="bi bi-speedometer2 me-2"></i>Dashboard</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="guru.html"><i class="bi bi-person-badge me-2"></i>Guru</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="siswa.html"><i class="bi bi-mortarboard me-2"></i>Siswa</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="kelas.html"><i class="bi bi-building me-2"></i>Kelas</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="mapel.html"><i class="bi bi-book me-2"></i>Mapel</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="absensi.html"><i class="bi bi-calendar-check me-2"></i>Absensi</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="jurnal.html"><i class="bi bi-journal-bookmark me-2"></i>Jurnal</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="nilai.html"><i class="bi bi-award me-2"></i>Nilai</a>
+                </li>
+                <li class="nav-item mt-4">
+                    <button class="btn btn-danger w-100" onclick="logout()">
+                        <i class="bi bi-box-arrow-right me-2"></i>Logout
+                    </button>
+                </li>
+            </ul>
+        </div>
 
-<!-- Sidebar -->
+        <!-- Content Area -->
+        <div class="col-lg-10 p-4">
 
-<div class="col-lg-2 sidebar p-3">
+            <!-- Header Navbar Utama -->
+            <div class="card shadow-sm border-0 mb-4 bg-white p-3 rounded">
+                <div class="row align-items-center">
+                    
+                    <!-- 1. LOGO SEKOLAH (Di area putih paling kiri) -->
+                    <div class="col-md-4 d-flex align-items-center">
+                        <img src="../assets/logo.png" alt="Logo SMP Kristen 4 Tanut" style="height: 60px; width: auto;" class="me-3">
+                        <div>
+                            <h5 class="fw-bold mb-0 text-dark">SMP Kristen 4 Tanut</h5>
+                            <small class="text-muted">SIGMA EDU PRO</small>
+                        </div>
+                    </div>
 
-<h3 class="text-white text-center mb-4">
-SIGMA EDU PRO
-</h3>
+                    <!-- 2. JAM DIGITAL (Di tengah) -->
+                    <div class="col-md-3 text-center my-2 my-md-0">
+                        <p id="tanggal" class="text-muted mb-0 small"></p>
+                        <h3 id="jam" class="text-primary fw-bold mb-0">--:--:--</h3>
+                    </div>
 
-<ul class="nav flex-column">
+                    <!-- 3. STATISTIK KARTU (Di kanan) -->
+                    <div class="col-md-5">
+                        <div class="row g-2">
+                            <div class="col-4">
+                                <div class="bg-primary text-white rounded p-2 text-center shadow-sm">
+                                    <small style="font-size: 11px;">Total Guru</small>
+                                    <h4 id="totalGuru" class="mb-0 fw-bold">0</h4>
+                                </div>
+                            </div>
+                            <div class="col-4">
+                                <div class="bg-primary text-white rounded p-2 text-center shadow-sm">
+                                    <small style="font-size: 11px;">Total Siswa</small>
+                                    <h4 id="totalSiswa" class="mb-0 fw-bold">0</h4>
+                                </div>
+                            </div>
+                            <div class="col-4">
+                                <div class="bg-primary text-white rounded p-2 text-center shadow-sm">
+                                    <small style="font-size: 11px;">Total Kelas</small>
+                                    <h4 id="totalKelas" class="mb-0 fw-bold">0</h4>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
 
-<li class="nav-item">
-<a class="nav-link active" href="#">
-<i class="bi bi-speedometer2"></i>
-Dashboard
-</a>
-</li>
-
-<li class="nav-item">
-<a class="nav-link" href="guru.html">
-<i class="bi bi-person-badge"></i>
-Guru
-</a>
-</li>
-
-<li class="nav-item">
-<a class="nav-link" href="siswa.html">
-<i class="bi bi-mortarboard"></i>
-Siswa
-</a>
-</li>
-
-<li class="nav-item">
-<a class="nav-link" href="kelas.html">
-<i class="bi bi-building"></i>
-Kelas
-</a>
-</li>
-
-<li class="nav-item">
-<a class="nav-link" href="mapel.html">
-<i class="bi bi-book"></i>
-Mapel
-</a>
-</li>
-
-<li class="nav-item">
-<a class="nav-link" href="absensi.html">
-<i class="bi bi-calendar-check"></i>
-Absensi
-</a>
-</li>
-
-<li class="nav-item">
-<a class="nav-link" href="jurnal.html">
-<i class="bi bi-journal-bookmark"></i>
-Jurnal
-</a>
-</li>
-
-<li class="nav-item">
-<a class="nav-link" href="nilai.html">
-<i class="bi bi-award"></i>
-Nilai
-</a>
-</li>
-
-<li class="nav-item mt-4">
-
-<button
-class="btn btn-danger w-100"
-onclick="logout()">
-
-<i class="bi bi-box-arrow-right"></i>
-
-Logout
-
-</button>
-
-</li>
-
-</ul>
-
-</div>
-
-<!-- Content -->
-
-<div class="col-lg-10">
-
-<nav class="navbar bg-white rounded shadow mt-3">
-
-<div class="container-fluid">
-
-<h4 class="mb-0">
-    Dashboard Administrasi Guru
-</h4>
-
-<p id="tanggal" class="text-muted mb-1"></p>
-
-<h3 id="jam" class="text-primary fw-bold"></h3>
-
-</h4>
-
-<div>
-
-<span class="badge bg-primary">
-
-SMP Kristen 4 Tanut
-<div class="row mt-4">
-
-    <div class="col-md-4 mb-3">
-        <div class="card shadow">
-            <div class="card-body">
-                <h6>Total Guru</h6>
-                <h2 id="totalGuru">0</h2>
+                </div>
             </div>
+
+            <!-- Selamat Datang Card -->
+            <div class="card shadow-sm border-0 mb-4">
+                <div class="card-body">
+                    <h4 class="text-primary fw-bold">👋 Selamat Datang, Admin</h4>
+                    <p class="mb-0 text-secondary">Selamat datang di Sistem Administrasi Guru SMP Kristen 4 Tanut.</p>
+                </div>
+            </div>
+
+            <!-- Pengumuman -->
+            <div class="card shadow-sm border-0 mb-4">
+                <div class="card-header bg-warning fw-bold">
+                    📢 Pengumuman
+                </div>
+                <div class="card-body">
+                    <ul class="mb-0">
+                        <li>Rapat Guru hari Jumat pukul 08.00</li>
+                        <li>Input nilai semester sebelum tanggal 10.</li>
+                        <li>Lengkapi absensi setiap hari.</li>
+                    </ul>
+                </div>
+            </div>
+
+            <!-- Menu Cepat -->
+            <div class="card shadow-sm border-0">
+                <div class="card-header bg-primary text-white fw-bold">
+                    ⚡ Menu Cepat
+                </div>
+                <div class="card-body">
+                    <a href="guru.html" class="btn btn-primary m-1">Guru</a>
+                    <a href="siswa.html" class="btn btn-success m-1">Siswa</a>
+                    <a href="kelas.html" class="btn btn-warning m-1">Kelas</a>
+                    <a href="absensi.html" class="btn btn-danger m-1">Absensi</a>
+                </div>
+            </div>
+
         </div>
     </div>
-
-    <div class="col-md-4 mb-3">
-        <div class="card shadow">
-            <div class="card-body">
-                <h6>Total Siswa</h6>
-                <h2 id="totalSiswa">0</h2>
-            </div>
-        </div>
-    </div>
-
-    <div class="col-md-4 mb-3">
-        <div class="card shadow">
-            <div class="card-body">
-                <h6>Total Kelas</h6>
-                <h2 id="totalKelas">0</h2>
-            </div>
-        </div>
-    </div>
-
-</div>
-</span>
-
 </div>
 
-</div>
-
-</nav>
-
-<div class="container-fluid mt-4">
-<div class="card shadow border-0 mb-4">
-    <div class="card-body">
-
-        <h3 class="text-primary">
-            👋 Selamat Datang, Admin
-        </h3>
-
-        <p>
-            Selamat datang di Sistem Administrasi Guru
-            SMP Kristen 4 Tanut.
-        </p>
-
-        <hr>
-
-        <h5 id="tanggal"></h5>
-
-        <h2 id="jam" class="text-primary"></h2>
-
-    </div>
-</div>
-<div class="card shadow mb-4">
-
-    <div class="card-header bg-warning">
-
-        📢 Pengumuman
-
-    </div>
-
-    <div class="card-body">
-
-        <ul>
-
-            <li>Rapat Guru hari Jumat pukul 08.00</li>
-
-            <li>Input nilai semester sebelum tanggal 10.</li>
-
-            <li>Lengkapi absensi setiap hari.</li>
-
-        </ul>
-
-    </div>
-
-</div>
-<div class="card shadow">
-
-<div class="card-header bg-primary text-white">
-
-⚡ Menu Cepat
-
-</div>
-
-<div class="card-body">
-
-<a href="guru.html" class="btn btn-primary m-1">
-Guru
-</a>
-
-<a href="siswa.html" class="btn btn-success m-1">
-Siswa
-</a>
-
-<a href="kelas.html" class="btn btn-warning m-1">
-Kelas
-</a>
-
-<a href="absensi.html" class="btn btn-danger m-1">
-Absensi
-</a>
-
-</div>
-
-</div>
+<!-- Dashboard Script -->
+<script src="../js/dashboard.js"></script>
+</body>
+</html>
