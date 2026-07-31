@@ -1,128 +1,38 @@
-// ===================================
-// SIGMA EDU PRO
-// Dashboard Script
-// ===================================
-
-// Cek login
-if (localStorage.getItem("login") !== "true") {
-    window.location.href = "../index.html";
-}
-
-// =============================
-// Tanggal
-// =============================
-
-const tanggal = new Date();
-
-const opsi = {
-    weekday: "long",
-    year: "numeric",
-    month: "long",
-    day: "numeric"
-};
-
-const tanggalElement = document.getElementById("tanggal");
-
-if (tanggalElement) {
-    tanggalElement.innerHTML =
-        tanggal.toLocaleDateString("id-ID", opsi);
-}
-
-// =============================
-// Jam Digital
-// =============================
-
-function updateJam() {
-
-    const sekarang = new Date();
-
-    const jam = String(sekarang.getHours()).padStart(2, "0");
-    const menit = String(sekarang.getMinutes()).padStart(2, "0");
-    const detik = String(sekarang.getSeconds()).padStart(2, "0");
-
-    const jamElement = document.getElementById("jam");
-
-    if (jamElement) {
-        jamElement.innerHTML = jam + ":" + menit + ":" + detik;
-    }
-
-}
-
-setInterval(updateJam, 1000);
-updateJam();
-
-// =============================
-// Statistik Dashboard
-// =============================
-
-const request = indexedDB.open("SIGMA_EDU_PRO", 1);
-
-request.onsuccess = function (event) {
-
-    const db = event.target.result;
-
-    tampilkanTotal(db, "guru", "totalGuru");
-    tampilkanTotal(db, "siswa", "totalSiswa");
-    tampilkanTotal(db, "kelas", "totalKelas");
-
-};
-
-function tampilkanTotal(db, storeName, elementId) {
-
-    if (!db.objectStoreNames.contains(storeName)) return;
-
-    const tx = db.transaction(storeName, "readonly");
-    const store = tx.objectStore(storeName);
-
-    const count = store.count();
-
-    count.onsuccess = function () {
-
-        const el = document.getElementById(elementId);
-
-        if (el) {
-            el.innerHTML = count.result;
-        }
-
-    };
-
-}
-// Fungsi Logout Global
-function logout() {
-    if (confirm('Apakah Anda yakin ingin keluar dari sistem?')) {
-        // Hapus status login dari penyimpanan lokal
-        localStorage.removeItem('isLoggedIn');
-        localStorage.removeItem('userAdmin');
-        
-        // Arahkan kembali ke halaman login (index.html)
-        window.location.href = '../index.html';
-    }
-}
-
-// Fungsi Hitung Otomatis Total Guru, Siswa, dan Kelas dari IndexedDB
-async function updateDashboardStats() {
-    if (typeof getAllData === 'function') {
-        try {
-            const listGuru = await getAllData('guru');
-            const listSiswa = await getAllData('siswa');
-            const listKelas = await getAllData('kelas');
-
-            if (document.getElementById('totalGuru')) {
-                document.getElementById('totalGuru').innerText = listGuru.length;
-            }
-            if (document.getElementById('totalSiswa')) {
-                document.getElementById('totalSiswa').innerText = listSiswa.length;
-            }
-            if (document.getElementById('totalKelas')) {
-                document.getElementById('totalKelas').innerText = listKelas.length;
-            }
-        } catch (err) {
-            console.log('Database belum siap untuk statistik:', err);
-        }
-    }
-}
-
-// Jalankan saat halaman Dashboard selesai dimuat
-document.addEventListener('DOMContentLoaded', () => {
-    updateDashboardStats();
+document.addEventListener('DOMContentLoaded', async () => {
+    // Jalankan fungsi penghitung saat halaman dashboard dimuat
+    await updateDashboardStats();
 });
+
+async function updateDashboardStats() {
+    try {
+        // 1. Ambil data dari IndexedDB
+        const listGuru = await getAllData('guru');
+        const listSiswa = await getAllData('siswa');
+        const listKelas = await getAllData('kelas');
+        const listMapel = await getAllData('mapel');
+
+        // 2. Cari elemen badge/kartu statistik berdasarkan ID atau posisinya
+        const totalGuruEl = document.getElementById('totalGuru');
+        const totalSiswaEl = document.getElementById('totalSiswa');
+        const totalKelasEl = document.getElementById('totalKelas');
+        const totalMapelEl = document.getElementById('totalMapel');
+
+        // Update angka jika elemen ID ditemukan
+        if (totalGuruEl) totalGuruEl.textContent = listGuru.length;
+        if (totalSiswaEl) totalSiswaEl.textContent = listSiswa.length;
+        if (totalKelasEl) totalKelasEl.textContent = listKelas.length;
+        if (totalMapelEl) totalMapelEl.textContent = listMapel.length;
+
+        // Jika kartu di dashboard menggunakan class statistik bawaan (fallback query)
+        const statCards = document.querySelectorAll('.card h2, .card .display-6, .card-title.fs-2');
+        if (statCards.length >= 4) {
+            statCards[0].textContent = listGuru.length;
+            statCards[1].textContent = listSiswa.length;
+            statCards[2].textContent = listKelas.length;
+            statCards[3].textContent = listMapel.length;
+        }
+
+    } catch (error) {
+        console.error("Gagal memuat statistik dashboard:", error);
+    }
+}
