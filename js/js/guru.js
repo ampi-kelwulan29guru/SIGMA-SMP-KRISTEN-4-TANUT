@@ -11,7 +11,7 @@ async function loadGuru() {
     if (list.length === 0) {
         tbody.innerHTML = `
             <tr>
-                <td colspan="6" class="text-center text-muted py-4">
+                <td colspan="7" class="text-center text-muted py-4">
                     <i class="bi bi-inbox fs-2 d-block mb-2"></i>
                     Belum ada data guru tersimpan.
                 </td>
@@ -25,6 +25,7 @@ async function loadGuru() {
                 <td class="ps-3 fw-bold">${index + 1}</td>
                 <td><span class="badge bg-light text-dark border">${item.nip}</span></td>
                 <td class="fw-bold text-dark">${item.nama}</td>
+                <td><span class="badge bg-secondary">${item.jabatan || 'Guru Mata Pelajaran'}</span></td>
                 <td><span class="badge bg-info text-dark">${item.mapel}</span></td>
                 <td>${item.hp ? `<i class="bi bi-whatsapp text-success me-1"></i>${item.hp}` : '-'}</td>
                 <td class="text-center">
@@ -46,6 +47,7 @@ if (formGuru) {
         const data = {
             nip: document.getElementById('nip').value,
             nama: document.getElementById('nama').value,
+            jabatan: document.getElementById('jabatan').value,
             mapel: document.getElementById('mapel').value,
             hp: document.getElementById('hp').value
         };
