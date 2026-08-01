@@ -2,8 +2,8 @@
 <html lang="id">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1">
-    <title>Data Guru - SIGMA EDU PRO</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Dashboard - SIGMA EDU PRO</title>
 
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
     <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.css" rel="stylesheet">
@@ -17,15 +17,15 @@
 <div class="container-fluid">
     <div class="row">
 
-        <!-- Sidebar -->
+        <!-- Sidebar Navigation -->
         <div class="col-lg-2 sidebar p-3">
             <h3 class="text-white text-center mb-4 fw-bold">SIGMA EDU<br>PRO</h3>
             <ul class="nav flex-column">
                 <li class="nav-item">
-                    <a class="nav-link" href="dashboard.html"><i class="bi bi-speedometer2 me-2"></i>Dashboard</a>
+                    <a class="nav-link active" href="dashboard.html"><i class="bi bi-speedometer2 me-2"></i>Dashboard</a>
                 </li>
                 <li class="nav-item">
-                    <a class="nav-link active" href="guru.html"><i class="bi bi-person-badge me-2"></i>Guru</a>
+                    <a class="nav-link" href="guru.html"><i class="bi bi-person-badge me-2"></i>Guru</a>
                 </li>
                 <li class="nav-item">
                     <a class="nav-link" href="siswa.html"><i class="bi bi-mortarboard me-2"></i>Siswa</a>
@@ -53,88 +53,93 @@
             </ul>
         </div>
 
-        <!-- Content Area -->
+        <!-- Main Content Area -->
         <div class="col-lg-10 p-4">
 
-            <!-- Header Panel -->
-            <div class="d-flex justify-content-between align-items-center mb-4 bg-white p-3 rounded shadow-sm">
-                <div>
-                    <h4 class="fw-bold text-primary mb-0"><i class="bi bi-person-badge me-2"></i>Kelola Data Guru</h4>
-                    <small class="text-muted">SMP Kristen 4 Tanut</small>
-                </div>
-                <button class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#modalGuru">
-                    <i class="bi bi-plus-circle me-1"></i>Tambah Guru Baru
-                </button>
+            <!-- Welcome Banner -->
+            <div class="bg-primary text-white p-4 rounded-3 mb-4 shadow-sm">
+                <h2 class="fw-bold mb-1">Selamat Datang di SIGMA EDU PRO</h2>
+                <p class="mb-0">Sistem Informasi Guru dan Administrasi Sekolah - SMP Kristen 4 Tanut</p>
             </div>
 
-            <!-- Tabel Data Guru -->
-            <div class="card shadow-sm border-0">
-                <div class="card-body p-0">
-                    <div class="table-responsive">
-                        <table class="table table-hover align-middle mb-0">
-                            <thead class="table-primary">
-                                <tr>
-                                    <th class="ps-3">No</th>
-                                    <th>NIP / NUPTK</th>
-                                    <th>Nama Lengkap</th>
-                                    <th>Jabatan</th>
-                                    <th>No. HP/WA</th>
-                                    <th class="text-center">Aksi</th>
-                                </tr>
-                            </thead>
-                            <tbody id="tabelGuru">
-                                <!-- Data guru dimuat otomatis dari IndexedDB oleh js/guru.js -->
-                            </tbody>
-                        </table>
+            <!-- Ringkasan Statistik Kartu (Cards) -->
+            <div class="row g-3 mb-4">
+                <div class="col-md-3">
+                    <div class="card border-0 shadow-sm rounded-3 bg-white p-3">
+                        <div class="d-flex align-items-center">
+                            <div class="fs-1 text-primary me-3"><i class="bi bi-person-badge"></i></div>
+                            <div>
+                                <small class="text-muted fw-semibold">TOTAL GURU</small>
+                                <h3 class="fw-bold mb-0" id="totalGuru">0</h3>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="col-md-3">
+                    <div class="card border-0 shadow-sm rounded-3 bg-white p-3">
+                        <div class="d-flex align-items-center">
+                            <div class="fs-1 text-success me-3"><i class="bi bi-mortarboard"></i></div>
+                            <div>
+                                <small class="text-muted fw-semibold">TOTAL SISWA</small>
+                                <h3 class="fw-bold mb-0" id="totalSiswa">0</h3>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="col-md-3">
+                    <div class="card border-0 shadow-sm rounded-3 bg-white p-3">
+                        <div class="d-flex align-items-center">
+                            <div class="fs-1 text-warning me-3"><i class="bi bi-building"></i></div>
+                            <div>
+                                <small class="text-muted fw-semibold">TOTAL KELAS</small>
+                                <h3 class="fw-bold mb-0" id="totalKelas">0</h3>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="col-md-3">
+                    <div class="card border-0 shadow-sm rounded-3 bg-white p-3">
+                        <div class="d-flex align-items-center">
+                            <div class="fs-1 text-info me-3"><i class="bi bi-book"></i></div>
+                            <div>
+                                <small class="text-muted fw-semibold">MATA PELAJARAN</small>
+                                <h3 class="fw-bold mb-0" id="totalMapel">0</h3>
+                            </div>
+                        </div>
                     </div>
                 </div>
             </div>
 
-        </div>
-    </div>
-</div>
-
-<!-- Modal Form Tambah Guru -->
-<div class="modal fade" id="modalGuru" tabindex="-1">
-    <div class="modal-dialog">
-        <div class="modal-content">
-            <div class="modal-header bg-primary text-white">
-                <h5 class="modal-title fw-bold"><i class="bi bi-person-plus me-2"></i>Tambah Data Guru</h5>
-                <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal"></button>
+            <!-- Panel Menu Akses Cepat -->
+            <div class="card border-0 shadow-sm rounded-3 p-4 bg-white">
+                <h5 class="fw-bold mb-3 text-dark"><i class="bi bi-grid-fill me-2 text-primary"></i>Akses Cepat Administrasi</h5>
+                <div class="row g-3">
+                    <div class="col-md-3">
+                        <a href="guru.html" class="btn btn-outline-primary w-100 p-3 text-start fw-semibold rounded-3">
+                            <i class="bi bi-person-badge fs-4 d-block mb-2"></i>Kelola Data Guru
+                        </a>
+                    </div>
+                    <div class="col-md-3">
+                        <a href="siswa.html" class="btn btn-outline-success w-100 p-3 text-start fw-semibold rounded-3">
+                            <i class="bi bi-mortarboard fs-4 d-block mb-2"></i>Kelola Data Siswa
+                        </a>
+                    </div>
+                    <div class="col-md-3">
+                        <a href="absensi.html" class="btn btn-outline-warning w-100 p-3 text-start fw-semibold rounded-3">
+                            <i class="bi bi-calendar-check fs-4 d-block mb-2"></i>Input Absensi
+                        </a>
+                    </div>
+                    <div class="col-md-3">
+                        <a href="jurnal.html" class="btn btn-outline-info w-100 p-3 text-start fw-semibold rounded-3">
+                            <i class="bi bi-journal-bookmark fs-4 d-block mb-2"></i>Jurnal Mengajar
+                        </a>
+                    </div>
+                </div>
             </div>
-            <form id="formGuru">
-                <div class="modal-body">
-                    <div class="mb-3">
-                        <label class="form-label fw-bold">NIP / NUPTK</label>
-                        <input type="text" id="nip" class="form-control" placeholder="Contoh: 198501..." required>
-                    </div>
-                    <div class="mb-3">
-                        <label class="form-label fw-bold">Nama Lengkap & Gelar</label>
-                        <input type="text" id="nama" class="form-control" placeholder="Contoh: Bpk. John Doe, S.Pd." required>
-                    </div>
-                    <div class="mb-3">
-                        <label class="form-label fw-bold">Jabatan</label>
-                        <select id="jabatan" class="form-select" required>
-                            <option value="" selected disabled>-- Pilih Jabatan --</option>
-                            <option value="Kepala Sekolah">Kepala Sekolah</option>
-                            <option value="Wakil Kepala Sekolah">Wakil Kepala Sekolah</option>
-                            <option value="Wali Kelas">Wali Kelas</option>
-                            <option value="Guru Mata Pelajaran">Guru Mata Pelajaran</option>
-                            <option value="Guru BK">Guru BK</option>
-                            <option value="Guru Piket">Guru Piket</option>
-                            <option value="Staf TU">Staf TU / Administrasi</option>
-                        </select>
-                    </div>
-                    <div class="mb-3">
-                        <label class="form-label fw-bold">Nomor WhatsApp/HP</label>
-                        <input type="tel" id="hp" class="form-control" placeholder="08xxxxxxxxxx">
-                    </div>
-                </div>
-                <div class="modal-footer">
-                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Batal</button>
-                    <button type="submit" class="btn btn-primary"><i class="bi bi-save me-1"></i>Simpan Data</button>
-                </div>
-            </form>
+
         </div>
     </div>
 </div>
@@ -142,6 +147,6 @@
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
 <script src="../js/db.js"></script>
 <script src="../js/dashboard.js"></script>
-<script src="../js/guru.js"></script>
+<script src="../js/auth.js"></script>
 </body>
 </html>
