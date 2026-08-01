@@ -130,7 +130,7 @@
                         <small class="text-muted">SMP Kristen 4 Tanut</small>
                     </div>
                     <!-- Tombol Membuka Pop-up Form Input Guru -->
-                    <button class="btn btn-primary fw-semibold rounded-3 px-3 py-2" data-bs-toggle="modal" data-bs-target="#modalTambahGuru">
+                    <button class="btn btn-primary fw-semibold rounded-3 px-3 py-2" onclick="bukaModalTambah()">
                         <i class="bi bi-plus-circle me-1"></i> Tambah Guru Baru
                     </button>
                 </div>
@@ -138,7 +138,7 @@
 
             <!-- Tabel Data Guru -->
             <div class="card rounded-4 p-4 bg-white shadow-sm">
-                <div class="table-responsive">
+                <div class="table-responsive" style="min-height: 250px;">
                     <table class="table table-hover align-middle mb-0">
                         <thead class="table-light">
                             <tr>
@@ -150,7 +150,6 @@
                                 <th width="100" class="text-center">Aksi</th>
                             </tr>
                         </thead>
-                        <!-- Di sini tempat data disisipkan oleh JavaScript -->
                         <tbody id="tabelGuruBody">
                         </tbody>
                     </table>
@@ -161,15 +160,16 @@
     </div>
 </div>
 
-<!-- POP-UP / MODAL FORM TAMBAH GURU -->
+<!-- POP-UP / MODAL FORM TAMBAH & EDIT GURU -->
 <div class="modal fade" id="modalTambahGuru" tabindex="-1" aria-hidden="true">
     <div class="modal-dialog modal-dialog-centered">
         <div class="modal-content rounded-4 border-0">
             <div class="modal-header bg-danger text-white rounded-top-4">
-                <h5 class="modal-title fw-bold"><i class="bi bi-person-plus-fill me-2"></i>Tambah Data Guru</h5>
+                <h5 class="modal-title fw-bold" id="modalJudul"><i class="bi bi-person-plus-fill me-2"></i>Tambah Data Guru</h5>
                 <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal"></button>
             </div>
             <form id="formGuru" onsubmit="simpanGuru(event)">
+                <input type="hidden" id="editIndex" value="-1">
                 <div class="modal-body p-4">
                     <div class="mb-3">
                         <label class="form-label fw-semibold">NIP / NUPTK</label>
@@ -201,9 +201,12 @@
 <script src="../js/db.js"></script>
 <script src="../js/auth.js"></script>
 
-<!-- SCRIPT LOGIKA SIMPAN & TAMPIL GURU -->
+<!-- SCRIPT LOGIKA SIMPAN, EDIT & HAPUS GURU -->
 <script>
+    let modalBs;
+
     document.addEventListener("DOMContentLoaded", function () {
+        modalBs = new bootstrap.Modal(document.getElementById('modalTambahGuru'));
         tampilDataGuru();
     });
 
@@ -234,9 +237,24 @@
                     <td><span class="badge bg-danger bg-opacity-10 text-danger border border-danger">${guru.mapel}</span></td>
                     <td><a href="https://wa.me/${guru.hp}" target="_blank" class="text-decoration-none text-success"><i class="bi bi-whatsapp me-1"></i>${guru.hp}</a></td>
                     <td class="text-center">
-                        <button class="btn btn-sm btn-outline-danger rounded-3" onclick="hapusGuru(${index})">
-                            <i class="bi bi-trash-fill"></i>
-                        </button>
+                        <!-- Dropdown Tombol Pensil -->
+                        <div class="dropdown">
+                            <button class="btn btn-sm btn-outline-warning rounded-3 dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false">
+                                <i class="bi bi-pencil-fill"></i>
+                            </button>
+                            <ul class="dropdown-menu dropdown-menu-end shadow-sm border-0 rounded-3">
+                                <li>
+                                    <button class="dropdown-menu-item dropdown-item text-primary" onclick="editGuru(${index})">
+                                        <i class="bi bi-pencil-square me-2"></i>Edit
+                                    </button>
+                                </li>
+                                <li>
+                                    <button class="dropdown-menu-item dropdown-item text-danger" onclick="hapusGuru(${index})">
+                                        <i class="bi bi-trash-fill me-2"></i>Delete
+                                    </button>
+                                </li>
+                            </ul>
+                        </div>
                     </td>
                 </tr>
             `;
@@ -245,31 +263,56 @@
         tabelBody.innerHTML = html;
     }
 
-    // 2. Simpan Data Guru Baru
+    // 2. Buka Modal Tambah Data Baru
+    function bukaModalTambah() {
+        document.getElementById("editIndex").value = "-1";
+        document.getElementById("formGuru").reset();
+        document.getElementById("modalJudul").innerHTML = `<i class="bi bi-person-plus-fill me-2"></i>Tambah Data Guru`;
+        modalBs.show();
+    }
+
+    // 3. Buka Modal Edit Data Guru
+    function editGuru(index) {
+        let dataGuru = JSON.parse(localStorage.getItem("dataGuru")) || [];
+        let guru = dataGuru[index];
+
+        document.getElementById("editIndex").value = index;
+        document.getElementById("inputNip").value = guru.nip;
+        document.getElementById("inputNama").value = guru.nama;
+        document.getElementById("inputMapel").value = guru.mapel;
+        document.getElementById("inputHp").value = guru.hp;
+
+        document.getElementById("modalJudul").innerHTML = `<i class="bi bi-pencil-square me-2"></i>Edit Data Guru`;
+        modalBs.show();
+    }
+
+    // 4. Simpan Data Guru (Tambah atau Edit)
     function simpanGuru(event) {
         event.preventDefault();
 
+        let index = parseInt(document.getElementById("editIndex").value);
         let nip = document.getElementById("inputNip").value;
         let nama = document.getElementById("inputNama").value;
         let mapel = document.getElementById("inputMapel").value;
         let hp = document.getElementById("inputHp").value;
 
         let dataGuru = JSON.parse(localStorage.getItem("dataGuru")) || [];
-        dataGuru.push({ nip, nama, mapel, hp });
+
+        if (index === -1) {
+            // Tambah baru
+            dataGuru.push({ nip, nama, mapel, hp });
+        } else {
+            // Update data yang ada
+            dataGuru[index] = { nip, nama, mapel, hp };
+        }
 
         localStorage.setItem("dataGuru", JSON.stringify(dataGuru));
 
-        // Reset Form & Tutup Modal Pop-up
-        document.getElementById("formGuru").reset();
-        let modalElement = document.getElementById("modalTambahGuru");
-        let modal = bootstrap.Modal.getInstance(modalElement);
-        if (modal) modal.hide();
-
-        // Refresh Tampilan Tabel
+        modalBs.hide();
         tampilDataGuru();
     }
 
-    // 3. Hapus Data Guru
+    // 5. Hapus Data Guru
     function hapusGuru(index) {
         if (confirm("Apakah Anda yakin ingin menghapus data guru ini?")) {
             let dataGuru = JSON.parse(localStorage.getItem("dataGuru")) || [];
