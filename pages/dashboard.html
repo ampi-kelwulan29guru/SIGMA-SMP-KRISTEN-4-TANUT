@@ -18,66 +18,87 @@
     <style>
         body {
             font-family: 'Poppins', sans-serif;
-            background-color: #f8f9fa;
-            padding-top: 20px;
+            background-color: #f4f6f9;
+            padding-top: 25px;
             padding-bottom: 40px;
             margin: 0;
         }
 
-        /* SIDEBAR BERMOTIF TANIMBAR RAPI */
+        /* SIDEBAR DENGAN POLA ETNIK TANIMBAR SINTETIS (CSS PATTERN) */
         .sidebar-tanimbar {
-            background: linear-gradient(180deg, rgba(20, 20, 20, 0.88) 0%, rgba(100, 0, 20, 0.92) 100%), 
-                        url('../motif-tanimbar.jpg');
-            background-size: cover;
-            background-position: center;
-            background-repeat: no-repeat;
-            border-radius: 16px;
-            padding: 20px 15px;
-            box-shadow: 0 4px 15px rgba(0,0,0,0.25);
+            background-color: #5a0016;
+            background-image: 
+                linear-gradient(135deg, rgba(0,0,0,0.4) 0%, rgba(128,0,32,0.6) 100%),
+                repeating-linear-gradient(45deg, #ffd700 0, #ffd700 2px, transparent 0, transparent 12px),
+                repeating-linear-gradient(-45deg, #b3002d 0, #b3002d 4px, transparent 0, transparent 12px);
+            background-blend-mode: overlay, normal, normal;
+            border-radius: 20px;
+            padding: 24px 16px;
+            box-shadow: 0 8px 20px rgba(90, 0, 22, 0.25);
             border: 2px solid #ffd700;
         }
 
-        /* BANNER UTAMA DENGAN AKSEN STRIP MOTIF TANIMBAR DI ATAS */
+        /* BANNER UTAMA */
         .banner-tanimbar {
             position: relative;
-            background: linear-gradient(135deg, #800020 0%, #b3002d 60%, #1a1a1a 100%);
+            background: linear-gradient(135deg, #800020 0%, #a8002a 60%, #3a000e 100%);
             border: none;
-            box-shadow: 0 6px 15px rgba(128, 0, 32, 0.2);
+            box-shadow: 0 8px 20px rgba(128, 0, 32, 0.2);
             overflow: hidden;
-            padding-top: 0 !important; /* Agar strip motif menempel sempurna di paling atas */
+            border-radius: 20px !important;
+            padding: 0 1.5rem 1.5rem 1.5rem !important;
         }
 
-        /* STRIP ACCENT MOTIF DI PADA BAGIAN ATAS KOTAK MERAH BANNER */
+        /* AKSEN PITA MOTIF ETNIK TANIMBAR DI ATAS BANNER */
         .banner-tanimbar-top-strip {
-            height: 18px;
-            width: calc(100% + 3rem); /* Menyesuaikan padding internal card */
+            height: 16px;
+            width: calc(100% + 3rem);
             margin-left: -1.5rem;
             margin-right: -1.5rem;
-            background-image: url('../motif-tanimbar.jpg');
-            background-size: contain;
-            background-repeat: repeat-x;
-            background-position: center;
+            background-color: #ffd700;
+            background-image: repeating-linear-gradient(
+                -45deg,
+                #800020,
+                #800020 8px,
+                #ffd700 8px,
+                #ffd700 16px,
+                #000000 16px,
+                #000000 20px
+            );
             border-bottom: 2px solid #ffd700;
             margin-bottom: 20px;
         }
 
         .card-motif {
-            border: 1px solid rgba(128, 0, 32, 0.1);
-            transition: transform 0.2s ease;
+            border: 1px solid rgba(128, 0, 32, 0.08);
+            border-radius: 16px;
+            transition: all 0.25s ease;
         }
 
         .card-motif:hover {
-            transform: translateY(-3px);
+            transform: translateY(-4px);
             border-color: #800020;
+            box-shadow: 0 8px 18px rgba(128, 0, 32, 0.12) !important;
         }
 
         .icon-box {
-            width: 50px;
-            height: 50px;
+            width: 52px;
+            height: 52px;
             display: flex;
             align-items: center;
             justify-content: center;
-            border-radius: 12px;
+            border-radius: 14px;
+        }
+
+        .logo-box {
+            width: 85px;
+            height: 85px;
+            object-fit: contain;
+            background: #ffffff;
+            border-radius: 50%;
+            padding: 4px;
+            border: 3px solid #ffd700;
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.3);
         }
     </style>
 </head>
@@ -86,23 +107,23 @@
 <div class="container-fluid px-4">
     <div class="row g-3">
 
-        <!-- KIRI: SIDEBAR NAVIGATION DENGAN MOTIF TANIMBAR -->
+        <!-- KIRI: SIDEBAR NAVIGATION -->
         <div class="col-lg-2 col-md-3">
             <div class="sidebar-tanimbar text-white text-center">
                 
                 <!-- Logo Sekolah -->
-                <div class="mb-3">
-                    <img src="../logo-sekolah.jpg" alt="Logo SMP Kristen 4 Tanut" class="img-fluid mb-2 rounded-circle shadow-sm" style="width: 80px; height: 80px; object-fit: cover; border: 2px solid #ffd700;">
-                    <h5 class="fw-bold mb-0">SIGMA EDU</h5>
-                    <span class="badge bg-warning text-dark fw-bold mb-1">PRO</span>
+                <div class="mb-3 d-flex flex-column align-items-center">
+                    <img src="../logo-sekolah.jpg" alt="Logo SMP Kristen 4 Tanut" class="img-fluid mb-2 logo-box">
+                    <h5 class="fw-bold mb-0 mt-1" style="letter-spacing: 0.5px;">SIGMA EDU</h5>
+                    <span class="badge bg-warning text-dark fw-bold my-1 px-3 py-1 rounded-pill" style="font-size: 10px; border: 1px solid #ffffff;">PRO</span>
                     <p class="small text-white-50 mb-0" style="font-size: 11px;">SMP Kristen 4 Tanut</p>
                 </div>
 
-                <hr class="border-warning opacity-50 my-2">
+                <hr class="border-warning opacity-50 my-3">
 
                 <!-- Menu Sidebar -->
-                <div class="nav flex-column gap-1 text-start">
-                    <a class="nav-link active bg-warning text-dark fw-bold rounded-3 py-2 px-3" href="dashboard.html">
+                <div class="nav flex-column gap-2 text-start">
+                    <a class="nav-link active bg-warning text-dark fw-bold rounded-3 py-2 px-3 shadow-sm" href="dashboard.html">
                         <i class="bi bi-speedometer2 me-2"></i>Dashboard
                     </a>
                     <a class="nav-link text-white opacity-90 rounded-3 py-2 px-3" href="guru.html">
@@ -126,7 +147,7 @@
                     <a class="nav-link text-white opacity-90 rounded-3 py-2 px-3" href="nilai.html">
                         <i class="bi bi-award me-2"></i>Nilai Siswa
                     </a>
-                    <button class="btn btn-danger w-100 fw-semibold rounded-3 mt-3 py-2 shadow-sm" onclick="logout()">
+                    <button class="btn btn-danger w-100 fw-semibold rounded-3 mt-3 py-2 shadow-sm border-0" style="background-color: #dc3545;" onclick="logout()">
                         <i class="bi bi-box-arrow-right me-2"></i>Logout
                     </button>
                 </div>
@@ -136,8 +157,8 @@
         <!-- KANAN: KONTEN DASHBOARD -->
         <div class="col-lg-10 col-md-9">
 
-            <!-- Banner Utama (Aksen motif Tanimbar rapi di bagian paling atas) -->
-            <div class="card banner-tanimbar rounded-4 text-white px-4 pb-4 mb-3">
+            <!-- Banner Utama -->
+            <div class="card banner-tanimbar text-white mb-3">
                 <div class="banner-tanimbar-top-strip"></div>
                 <span class="badge bg-warning text-dark fw-bold px-3 py-1.5 mb-2 rounded-pill d-inline-block" style="width: fit-content;">
                     <i class="bi bi-star-fill me-1"></i> SIGMA EDU PRO TANIMBAR
@@ -149,7 +170,7 @@
             <!-- Kartu Statistik -->
             <div class="row g-3 mb-3">
                 <div class="col-xl-3 col-sm-6">
-                    <div class="card card-motif rounded-4 p-3 bg-white shadow-sm">
+                    <div class="card card-motif p-3 bg-white shadow-sm">
                         <div class="d-flex align-items-center">
                             <div class="icon-box bg-danger bg-opacity-10 text-danger fs-3 me-3">
                                 <i class="bi bi-person-badge-fill"></i>
@@ -163,7 +184,7 @@
                 </div>
 
                 <div class="col-xl-3 col-sm-6">
-                    <div class="card card-motif rounded-4 p-3 bg-white shadow-sm">
+                    <div class="card card-motif p-3 bg-white shadow-sm">
                         <div class="d-flex align-items-center">
                             <div class="icon-box bg-success bg-opacity-10 text-success fs-3 me-3">
                                 <i class="bi bi-mortarboard-fill"></i>
@@ -177,7 +198,7 @@
                 </div>
 
                 <div class="col-xl-3 col-sm-6">
-                    <div class="card card-motif rounded-4 p-3 bg-white shadow-sm">
+                    <div class="card card-motif p-3 bg-white shadow-sm">
                         <div class="d-flex align-items-center">
                             <div class="icon-box bg-warning bg-opacity-10 text-warning fs-3 me-3">
                                 <i class="bi bi-building-fill"></i>
@@ -191,7 +212,7 @@
                 </div>
 
                 <div class="col-xl-3 col-sm-6">
-                    <div class="card card-motif rounded-4 p-3 bg-white shadow-sm">
+                    <div class="card card-motif p-3 bg-white shadow-sm">
                         <div class="d-flex align-items-center">
                             <div class="icon-box bg-primary bg-opacity-10 text-primary fs-3 me-3">
                                 <i class="bi bi-book-fill"></i>
@@ -206,7 +227,7 @@
             </div>
 
             <!-- Panel Akses Cepat Modul -->
-            <div class="card card-motif rounded-4 p-4 bg-white shadow-sm">
+            <div class="card card-motif p-4 bg-white shadow-sm">
                 <h6 class="fw-bold mb-3 text-dark"><i class="bi bi-grid-fill me-2 text-danger"></i>Akses Cepat Modul Administrasi</h6>
                 <div class="row g-3">
                     <div class="col-md-3 col-6">
