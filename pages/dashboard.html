@@ -5,48 +5,67 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Dashboard - SIGMA EDU PRO</title>
 
+    <!-- Framework Bootstrap & Icons -->
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
     <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.css" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
 
+    <!-- Stylesheet Lokal -->
     <link rel="stylesheet" href="../css/style.css">
     <link rel="stylesheet" href="../css/dashboard.css">
     <link rel="stylesheet" href="../css/responsive.css">
 </head>
-<body>
+<body class="bg-light">
 
 <div class="container-fluid">
     <div class="row">
 
         <!-- Sidebar Navigation -->
-        <div class="col-lg-2 sidebar p-3">
+        <div class="col-lg-2 sidebar p-3 min-vh-100" style="background-color: #0d6efd;">
             <h3 class="text-white text-center mb-4 fw-bold">SIGMA EDU<br>PRO</h3>
             <ul class="nav flex-column">
-                <li class="nav-item">
-                    <a class="nav-link active" href="dashboard.html"><i class="bi bi-speedometer2 me-2"></i>Dashboard</a>
+                <li class="nav-item mb-1">
+                    <a class="nav-link active text-white fw-semibold bg-white bg-opacity-25 rounded-3" href="dashboard.html">
+                        <i class="bi bi-speedometer2 me-2"></i>Dashboard
+                    </a>
                 </li>
-                <li class="nav-item">
-                    <a class="nav-link" href="guru.html"><i class="bi bi-person-badge me-2"></i>Guru</a>
+                <li class="nav-item mb-1">
+                    <a class="nav-link text-white opacity-75" href="guru.html">
+                        <i class="bi bi-person-badge me-2"></i>Guru
+                    </a>
                 </li>
-                <li class="nav-item">
-                    <a class="nav-link" href="siswa.html"><i class="bi bi-mortarboard me-2"></i>Siswa</a>
+                <li class="nav-item mb-1">
+                    <a class="nav-link text-white opacity-75" href="siswa.html">
+                        <i class="bi bi-mortarboard me-2"></i>Siswa
+                    </a>
                 </li>
-                <li class="nav-item">
-                    <a class="nav-link" href="kelas.html"><i class="bi bi-building me-2"></i>Kelas</a>
+                <li class="nav-item mb-1">
+                    <a class="nav-link text-white opacity-75" href="kelas.html">
+                        <i class="bi bi-building me-2"></i>Kelas
+                    </a>
                 </li>
-                <li class="nav-item">
-                    <a class="nav-link" href="mapel.html"><i class="bi bi-book me-2"></i>Mapel</a>
+                <li class="nav-item mb-1">
+                    <a class="nav-link text-white opacity-75" href="mapel.html">
+                        <i class="bi bi-book me-2"></i>Mapel
+                    </a>
                 </li>
-                <li class="nav-item">
-                    <a class="nav-link" href="absensi.html"><i class="bi bi-calendar-check me-2"></i>Absensi</a>
+                <li class="nav-item mb-1">
+                    <a class="nav-link text-white opacity-75" href="absensi.html">
+                        <i class="bi bi-calendar-check me-2"></i>Absensi
+                    </a>
                 </li>
-                <li class="nav-item">
-                    <a class="nav-link" href="jurnal.html"><i class="bi bi-journal-bookmark me-2"></i>Jurnal</a>
+                <li class="nav-item mb-1">
+                    <a class="nav-link text-white opacity-75" href="jurnal.html">
+                        <i class="bi bi-journal-bookmark me-2"></i>Jurnal
+                    </a>
                 </li>
-                <li class="nav-item">
-                    <a class="nav-link" href="nilai.html"><i class="bi bi-award me-2"></i>Nilai</a>
+                <li class="nav-item mb-1">
+                    <a class="nav-link text-white opacity-75" href="nilai.html">
+                        <i class="bi bi-award me-2"></i>Nilai
+                    </a>
                 </li>
                 <li class="nav-item mt-4">
-                    <button class="btn btn-danger w-100" onclick="logout()">
+                    <button class="btn btn-danger w-100 fw-semibold" onclick="logout()">
                         <i class="bi bi-box-arrow-right me-2"></i>Logout
                     </button>
                 </li>
@@ -56,85 +75,97 @@
         <!-- Main Content Area -->
         <div class="col-lg-10 p-4">
 
-            <!-- Welcome Banner -->
-            <div class="bg-primary text-white p-4 rounded-3 mb-4 shadow-sm">
-                <h2 class="fw-bold mb-1">Selamat Datang di SIGMA EDU PRO</h2>
-                <p class="mb-0">Sistem Informasi Guru dan Administrasi Sekolah - SMP Kristen 4 Tanut</p>
+            <!-- Banner Selamat Datang -->
+            <div class="card border-0 shadow-sm rounded-4 mb-4 bg-primary text-white p-4">
+                <div class="d-flex justify-content-between align-items-center">
+                    <div>
+                        <h2 class="fw-bold mb-1">Selamat Datang di SIGMA EDU PRO 👋</h2>
+                        <p class="mb-0 text-white-50">Sistem Informasi Guru & Administrasi Sekolah — SMP Kristen 4 Tanut</p>
+                    </div>
+                </div>
             </div>
 
-            <!-- Ringkasan Statistik Kartu (Cards) -->
+            <!-- Kartu Statistik (4 Kotak Data) -->
             <div class="row g-3 mb-4">
                 <div class="col-md-3">
-                    <div class="card border-0 shadow-sm rounded-3 bg-white p-3">
+                    <div class="card border-0 shadow-sm rounded-4 p-3 bg-white">
                         <div class="d-flex align-items-center">
-                            <div class="fs-1 text-primary me-3"><i class="bi bi-person-badge"></i></div>
+                            <div class="p-3 bg-primary bg-opacity-10 text-primary rounded-3 me-3 fs-3">
+                                <i class="bi bi-person-badge"></i>
+                            </div>
                             <div>
-                                <small class="text-muted fw-semibold">TOTAL GURU</small>
-                                <h3 class="fw-bold mb-0" id="totalGuru">0</h3>
+                                <small class="text-muted fw-bold d-block">TOTAL GURU</small>
+                                <h3 class="fw-bold mb-0 text-dark" id="totalGuru">0</h3>
                             </div>
                         </div>
                     </div>
                 </div>
 
                 <div class="col-md-3">
-                    <div class="card border-0 shadow-sm rounded-3 bg-white p-3">
+                    <div class="card border-0 shadow-sm rounded-4 p-3 bg-white">
                         <div class="d-flex align-items-center">
-                            <div class="fs-1 text-success me-3"><i class="bi bi-mortarboard"></i></div>
+                            <div class="p-3 bg-success bg-opacity-10 text-success rounded-3 me-3 fs-3">
+                                <i class="bi bi-mortarboard"></i>
+                            </div>
                             <div>
-                                <small class="text-muted fw-semibold">TOTAL SISWA</small>
-                                <h3 class="fw-bold mb-0" id="totalSiswa">0</h3>
+                                <small class="text-muted fw-bold d-block">TOTAL SISWA</small>
+                                <h3 class="fw-bold mb-0 text-dark" id="totalSiswa">0</h3>
                             </div>
                         </div>
                     </div>
                 </div>
 
                 <div class="col-md-3">
-                    <div class="card border-0 shadow-sm rounded-3 bg-white p-3">
+                    <div class="card border-0 shadow-sm rounded-4 p-3 bg-white">
                         <div class="d-flex align-items-center">
-                            <div class="fs-1 text-warning me-3"><i class="bi bi-building"></i></div>
+                            <div class="p-3 bg-warning bg-opacity-10 text-warning rounded-3 me-3 fs-3">
+                                <i class="bi bi-building"></i>
+                            </div>
                             <div>
-                                <small class="text-muted fw-semibold">TOTAL KELAS</small>
-                                <h3 class="fw-bold mb-0" id="totalKelas">0</h3>
+                                <small class="text-muted fw-bold d-block">TOTAL KELAS</small>
+                                <h3 class="fw-bold mb-0 text-dark" id="totalKelas">0</h3>
                             </div>
                         </div>
                     </div>
                 </div>
 
                 <div class="col-md-3">
-                    <div class="card border-0 shadow-sm rounded-3 bg-white p-3">
+                    <div class="card border-0 shadow-sm rounded-4 p-3 bg-white">
                         <div class="d-flex align-items-center">
-                            <div class="fs-1 text-info me-3"><i class="bi bi-book"></i></div>
+                            <div class="p-3 bg-info bg-opacity-10 text-info rounded-3 me-3 fs-3">
+                                <i class="bi bi-book"></i>
+                            </div>
                             <div>
-                                <small class="text-muted fw-semibold">MATA PELAJARAN</small>
-                                <h3 class="fw-bold mb-0" id="totalMapel">0</h3>
+                                <small class="text-muted fw-bold d-block">MATA PELAJARAN</small>
+                                <h3 class="fw-bold mb-0 text-dark" id="totalMapel">0</h3>
                             </div>
                         </div>
                     </div>
                 </div>
             </div>
 
-            <!-- Panel Menu Akses Cepat -->
-            <div class="card border-0 shadow-sm rounded-3 p-4 bg-white">
-                <h5 class="fw-bold mb-3 text-dark"><i class="bi bi-grid-fill me-2 text-primary"></i>Akses Cepat Administrasi</h5>
+            <!-- Panel Navigasi Cepat -->
+            <div class="card border-0 shadow-sm rounded-4 p-4 bg-white">
+                <h5 class="fw-bold mb-3 text-dark"><i class="bi bi-grid-fill me-2 text-primary"></i>Menu Akses Cepat</h5>
                 <div class="row g-3">
                     <div class="col-md-3">
-                        <a href="guru.html" class="btn btn-outline-primary w-100 p-3 text-start fw-semibold rounded-3">
-                            <i class="bi bi-person-badge fs-4 d-block mb-2"></i>Kelola Data Guru
+                        <a href="guru.html" class="btn btn-outline-primary w-100 p-3 text-start fw-semibold rounded-3 shadow-sm">
+                            <i class="bi bi-person-badge fs-3 d-block mb-2"></i>Kelola Data Guru
                         </a>
                     </div>
                     <div class="col-md-3">
-                        <a href="siswa.html" class="btn btn-outline-success w-100 p-3 text-start fw-semibold rounded-3">
-                            <i class="bi bi-mortarboard fs-4 d-block mb-2"></i>Kelola Data Siswa
+                        <a href="siswa.html" class="btn btn-outline-success w-100 p-3 text-start fw-semibold rounded-3 shadow-sm">
+                            <i class="bi bi-mortarboard fs-3 d-block mb-2"></i>Kelola Data Siswa
                         </a>
                     </div>
                     <div class="col-md-3">
-                        <a href="absensi.html" class="btn btn-outline-warning w-100 p-3 text-start fw-semibold rounded-3">
-                            <i class="bi bi-calendar-check fs-4 d-block mb-2"></i>Input Absensi
+                        <a href="absensi.html" class="btn btn-outline-warning w-100 p-3 text-start fw-semibold rounded-3 shadow-sm">
+                            <i class="bi bi-calendar-check fs-3 d-block mb-2"></i>Input Absensi
                         </a>
                     </div>
                     <div class="col-md-3">
-                        <a href="jurnal.html" class="btn btn-outline-info w-100 p-3 text-start fw-semibold rounded-3">
-                            <i class="bi bi-journal-bookmark fs-4 d-block mb-2"></i>Jurnal Mengajar
+                        <a href="jurnal.html" class="btn btn-outline-info w-100 p-3 text-start fw-semibold rounded-3 shadow-sm">
+                            <i class="bi bi-journal-bookmark fs-3 d-block mb-2"></i>Jurnal Mengajar
                         </a>
                     </div>
                 </div>
