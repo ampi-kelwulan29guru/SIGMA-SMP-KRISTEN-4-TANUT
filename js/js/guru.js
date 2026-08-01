@@ -1,73 +1,100 @@
+// Jalankan pembacaan data guru saat halaman selesai dimuat
 document.addEventListener('DOMContentLoaded', loadGuru);
 
-// Fungsi memuat data dari IndexedDB ke tabel
+// Fungsi untuk membaca data dari database (db.js) dan menampilkannya di tabel
 async function loadGuru() {
-    const list = await getAllData('guru');
     const tbody = document.getElementById('tabelGuru');
     if (!tbody) return;
-    
-    tbody.innerHTML = '';
 
-    if (list.length === 0) {
-        tbody.innerHTML = `
-            <tr>
-                <td colspan="7" class="text-center text-muted py-4">
-                    <i class="bi bi-inbox fs-2 d-block mb-2"></i>
-                    Belum ada data guru tersimpan.
-                </td>
-            </tr>`;
-        return;
+    try {
+        // Ambil data guru dari IndexedDB
+        const listGuru = await getAllData('guru') || [];
+        tbody.innerHTML = '';
+
+        // Tampilan jika data masih kosong
+        if (listGuru.length === 0) {
+            tbody.innerHTML = `
+                <tr>
+                    <td colspan="6" class="text-center text-muted py-4">
+                        <i class="bi bi-inbox fs-2 d-block mb-2"></i>
+                        Belum ada data guru tersimpan. Klik tombol <strong>Tambah Guru Baru</strong> di atas.
+                    </td>
+                </tr>`;
+            return;
+        }
+
+        // Tampilkan setiap item data guru ke dalam baris tabel
+        listGuru.forEach((item, index) => {
+            tbody.innerHTML += `
+                <tr>
+                    <td class="ps-3 fw-bold text-secondary">${index + 1}</td>
+                    <td><span class="badge bg-light text-dark border">${item.nip || '-'}</span></td>
+                    <td class="fw-bold text-dark">${item.nama || '-'}</td>
+                    <td><span class="badge bg-primary-subtle text-primary border border-primary-subtle">${item.jabatan || 'Guru'}</span></td>
+                    <td>${item.hp ? `<a href="https://wa.me/${formatWA(item.hp)}" target="_blank" class="text-decoration-none text-success fw-semibold"><i class="bi bi-whatsapp me-1"></i>${item.hp}</a>` : '-'}</td>
+                    <td class="text-center">
+                        <button class="btn btn-sm btn-outline-danger" onclick="hapusGuru(${item.id})">
+                            <i class="bi bi-trash me-1"></i>Hapus
+                        </button>
+                    </td>
+                </tr>
+            `;
+        });
+    } catch (error) {
+        console.error("Gagal memuat data guru:", error);
     }
-
-    list.forEach((item, index) => {
-        tbody.innerHTML += `
-            <tr>
-                <td class="ps-3 fw-bold">${index + 1}</td>
-                <td><span class="badge bg-light text-dark border">${item.nip}</span></td>
-                <td class="fw-bold text-dark">${item.nama}</td>
-                <td><span class="badge bg-secondary">${item.jabatan || 'Guru Mata Pelajaran'}</span></td>
-                <td><span class="badge bg-info text-dark">${item.mapel}</span></td>
-                <td>${item.hp ? `<i class="bi bi-whatsapp text-success me-1"></i>${item.hp}` : '-'}</td>
-                <td class="text-center">
-                    <button class="btn btn-sm btn-outline-danger" onclick="hapusGuru(${item.id})">
-                        <i class="bi bi-trash me-1"></i>Hapus
-                    </button>
-                </td>
-            </tr>
-        `;
-    });
 }
 
-// Event listener form tambah guru
+// Format nomor WhatsApp agar otomatis bisa diklik
+function formatWA(number) {
+    let cleaned = ('' + number).replace(/\D/g, '');
+    if (cleaned.startsWith('0')) {
+        cleaned = '62' + cleaned.substring(1);
+    }
+    return cleaned;
+}
+
+// Tangani Event Submit Form Modal Tambah Guru
 const formGuru = document.getElementById('formGuru');
 if (formGuru) {
     formGuru.addEventListener('submit', async (e) => {
         e.preventDefault();
-        
-        const data = {
-            nip: document.getElementById('nip').value,
-            nama: document.getElementById('nama').value,
+
+        // Ambil nilai input dari formulir modal
+        const dataBaru = {
+            nip: document.getElementById('nip').value.trim(),
+            nama: document.getElementById('nama').value.trim(),
             jabatan: document.getElementById('jabatan').value,
-            mapel: document.getElementById('mapel').value,
-            hp: document.getElementById('hp').value
+            hp: document.getElementById('hp').value.trim()
         };
 
-        await addData('guru', data);
-        
-        document.getElementById('formGuru').reset();
-        
-        const modalEl = document.getElementById('modalGuru');
-        const modal = bootstrap.Modal.getInstance(modalEl);
-        if (modal) modal.hide();
+        try {
+            // Simpan ke IndexedDB menggunakan fungsi addData() dari db.js
+            await addData('guru', dataBaru);
 
-        loadGuru();
+            // Bersihkan form input
+            formGuru.reset();
+
+            // Sembunyikan modal pop-up secara otomatis
+            const modalElement = document.getElementById('modalGuru');
+            const modalInstance = bootstrap.Modal.getInstance(modalElement);
+            if (modalInstance) {
+                modalInstance.hide();
+            }
+
+            // Muat ulang isi tabel secara instan
+            loadGuru();
+
+        } catch (err) {
+            alert("Gagal menyimpan data guru: " + err);
+        }
     });
 }
 
-// Fungsi Hapus Guru
+// Fungsi Hapus Data Guru berdasarkan ID
 async function hapusGuru(id) {
     if (confirm('Apakah Anda yakin ingin menghapus data guru ini?')) {
         await deleteData('guru', id);
-        loadGuru();
+        loadGuru(); // Refresh tabel setelah hapus
     }
 }
