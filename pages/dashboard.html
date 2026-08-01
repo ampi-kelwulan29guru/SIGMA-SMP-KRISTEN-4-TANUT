@@ -96,71 +96,69 @@
 </head>
 <body>
 
-<div class="container-fluid px-4">
-    <div class="row g-3">
-
-        <!-- Sidebar Navigation -->
-        <div class="col-lg-2">
-            <div class="sidebar-tanimbar p-3 text-white">
-                <div class="text-center my-3">
-                    <i class="bi bi-shield-lock-fill fs-1 text-warning"></i>
-                    <h4 class="fw-bold mt-2 mb-0">SIGMA EDU</h4>
-                    <span class="badge bg-warning text-dark fw-bold mb-2">PRO</span>
-                    <p class="small text-white-50 mb-0">SMP Kristen 4 Tanut</p>
-                </div>
-
-                <hr class="border-warning border-1 opacity-50">
-
-                <ul class="nav flex-column gap-1">
-                    <li class="nav-item">
-                        <a class="nav-link active bg-warning text-dark fw-bold rounded-3 p-2.5" href="dashboard.html">
-                            <i class="bi bi-speedometer2 me-2"></i>Dashboard
-                        </a>
-                    </li>
-                    <li class="nav-item">
-                        <a class="nav-link text-white opacity-75 rounded-3 p-2.5" href="guru.html">
-                            <i class="bi bi-person-badge me-2"></i>Data Guru
-                        </a>
-                    </li>
-                    <li class="nav-item">
-                        <a class="nav-link text-white opacity-75 rounded-3 p-2.5" href="siswa.html">
-                            <i class="bi bi-mortarboard me-2"></i>Data Siswa
-                        </a>
-                    </li>
-                    <li class="nav-item">
-                        <a class="nav-link text-white opacity-75 rounded-3 p-2.5" href="kelas.html">
-                            <i class="bi bi-building me-2"></i>Data Kelas
-                        </a>
-                    </li>
-                    <li class="nav-item">
-                        <a class="nav-link text-white opacity-75 rounded-3 p-2.5" href="mapel.html">
-                            <i class="bi bi-book me-2"></i>Mata Pelajaran
-                        </a>
-                    </li>
-                    <li class="nav-item">
-                        <a class="nav-link text-white opacity-75 rounded-3 p-2.5" href="absensi.html">
-                            <i class="bi bi-calendar-check me-2"></i>Absensi
-                        </a>
-                    </li>
-                    <li class="nav-item">
-                        <a class="nav-link text-white opacity-75 rounded-3 p-2.5" href="jurnal.html">
-                            <i class="bi bi-journal-bookmark me-2"></i>Jurnal Mengajar
-                        </a>
-                    </li>
-                    <li class="nav-item">
-                        <a class="nav-link text-white opacity-75 rounded-3 p-2.5" href="nilai.html">
-                            <i class="bi bi-award me-2"></i>Nilai Siswa
-                        </a>
-                    </li>
-                    <li class="nav-item mt-4">
-                        <button class="btn btn-danger w-100 fw-semibold rounded-3 shadow-sm" onclick="logout()">
-                            <i class="bi bi-box-arrow-right me-2"></i>Logout
-                        </button>
-                    </li>
-                </ul>
-            </div>
+<!-- Sidebar Navigation -->
+<div class="col-lg-2">
+    <div class="sidebar-tanimbar p-3 text-white text-center">
+        <!-- Logo Sekolah SMP Kristen 4 Tanut -->
+        <div class="my-3">
+            <img src="../assets/logoSMPK4.png" alt="Logo SMP Kristen 4 Tanut" class="img-fluid mb-2" style="max-width: 90px; filter: drop-shadow(0px 4px 6px rgba(0,0,0,0.3));">
+            <h4 class="fw-bold mt-2 mb-0">SIGMA EDU</h4>
+            <span class="badge bg-warning text-dark fw-bold mb-2">PRO</span>
+            <p class="small text-white-50 mb-0">SMP Kristen 4 Tanut</p>
         </div>
 
+        <hr class="border-warning border-1 opacity-50">
+
+        <!-- Menu Navigation -->
+        <ul class="nav flex-column gap-1 text-start">
+            <li class="nav-item">
+                <a class="nav-link active bg-warning text-dark fw-bold rounded-3 p-2.5" href="dashboard.html">
+                    <i class="bi bi-speedometer2 me-2"></i>Dashboard
+                </a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link text-white opacity-75 rounded-3 p-2.5" href="guru.html">
+                    <i class="bi bi-person-badge me-2"></i>Data Guru
+                </a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link text-white opacity-75 rounded-3 p-2.5" href="siswa.html">
+                    <i class="bi bi-mortarboard me-2"></i>Data Siswa
+                </a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link text-white opacity-75 rounded-3 p-2.5" href="kelas.html">
+                    <i class="bi bi-building me-2"></i>Data Kelas
+                </a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link text-white opacity-75 rounded-3 p-2.5" href="mapel.html">
+                    <i class="bi bi-book me-2"></i>Mata Pelajaran
+                </a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link text-white opacity-75 rounded-3 p-2.5" href="absensi.html">
+                    <i class="bi bi-calendar-check me-2"></i>Absensi
+                </a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link text-white opacity-75 rounded-3 p-2.5" href="jurnal.html">
+                    <i class="bi bi-journal-bookmark me-2"></i>Jurnal Mengajar
+                </a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link text-white opacity-75 rounded-3 p-2.5" href="nilai.html">
+                    <i class="bi bi-award me-2"></i>Nilai Siswa
+                </a>
+            </li>
+            <li class="nav-item mt-4">
+                <button class="btn btn-danger w-100 fw-semibold rounded-3 shadow-sm" onclick="logout()">
+                    <i class="bi bi-box-arrow-right me-2"></i>Logout
+                </button>
+            </li>
+        </ul>
+    </div>
+</div>
         <!-- Main Area Full Screen Layout -->
         <div class="col-lg-10">
 
