@@ -24,7 +24,7 @@
             margin: 0;
         }
 
-        /* BINGKAI MOTIF TANIMBAR ATAS & BAWAH */
+        /* BINGKAI MOTIF TANIMBAR */
         .frame-tanimbar-top {
             position: fixed;
             top: 0;
@@ -53,7 +53,7 @@
             box-shadow: 0 -2px 5px rgba(0,0,0,0.15);
         }
 
-        /* SIDEBAR KHAS TANIMBAR */
+        /* SIDEBAR TANIMBAR */
         .sidebar-tanimbar {
             background: linear-gradient(180deg, #1a1a1a 0%, #800020 100%);
             border-radius: 16px;
@@ -61,7 +61,6 @@
             box-shadow: 0 4px 15px rgba(0,0,0,0.15);
         }
 
-        /* CARD HEADER */
         .card-header-tanimbar {
             border-left: 5px solid #800020;
         }
@@ -69,18 +68,16 @@
 </head>
 <body>
 
-<!-- Bingkai Motif Tanimbar Top & Bottom -->
+<!-- Bingkai Motif Top & Bottom -->
 <div class="frame-tanimbar-top"></div>
 <div class="frame-tanimbar-bottom"></div>
 
 <div class="container-fluid px-4">
     <div class="row g-3">
 
-        <!-- KIRI: SIDEBAR NAVIGATION -->
+        <!-- KIRI: SIDEBAR -->
         <div class="col-lg-2 col-md-3">
             <div class="sidebar-tanimbar text-white text-center">
-                
-                <!-- Logo Sekolah -->
                 <div class="mb-3">
                     <img src="../assets/logoSMPK4.png" alt="Logo SMP Kristen 4 Tanut" class="img-fluid mb-2" style="max-width: 80px;" onerror="this.style.display='none'">
                     <h5 class="fw-bold mb-0">SIGMA EDU</h5>
@@ -90,7 +87,6 @@
 
                 <hr class="border-warning opacity-50 my-2">
 
-                <!-- Menu Sidebar -->
                 <div class="nav flex-column gap-1 text-start">
                     <a class="nav-link text-white opacity-75 rounded-3 py-2 px-3" href="dashboard.html">
                         <i class="bi bi-speedometer2 me-2"></i>Dashboard
@@ -123,17 +119,17 @@
             </div>
         </div>
 
-        <!-- KANAN: KONTEN KELOLA DATA GURU -->
+        <!-- KANAN: KONTEN UTAMA -->
         <div class="col-lg-10 col-md-9">
 
-            <!-- Banner Header -->
+            <!-- Header Card -->
             <div class="card rounded-4 p-3 bg-white shadow-sm mb-3 card-header-tanimbar">
                 <div class="d-flex justify-content-between align-items-center">
                     <div>
                         <h4 class="fw-bold mb-0 text-dark"><i class="bi bi-person-badge text-danger me-2"></i>Kelola Data Guru</h4>
                         <small class="text-muted">SMP Kristen 4 Tanut</small>
                     </div>
-                    <!-- Tombol Pemicu Modal Tambah Guru -->
+                    <!-- Tombol Membuka Pop-up Form Input Guru -->
                     <button class="btn btn-primary fw-semibold rounded-3 px-3 py-2" data-bs-toggle="modal" data-bs-target="#modalTambahGuru">
                         <i class="bi bi-plus-circle me-1"></i> Tambah Guru Baru
                     </button>
@@ -143,19 +139,19 @@
             <!-- Tabel Data Guru -->
             <div class="card rounded-4 p-4 bg-white shadow-sm">
                 <div class="table-responsive">
-                    <table class="table table-hover align-middle">
+                    <table class="table table-hover align-middle mb-0">
                         <thead class="table-light">
                             <tr>
-                                <th width="50">No</th>
+                                <th width="60">No</th>
                                 <th>NIP / NUPTK</th>
                                 <th>Nama Lengkap</th>
-                                <th>Jabatan / Mapel</th>
-                                <th>No. HP / WA</th>
+                                <th>Jabatan</th>
+                                <th>No. HP/WA</th>
                                 <th width="100" class="text-center">Aksi</th>
                             </tr>
                         </thead>
+                        <!-- Di sini tempat data disisipkan oleh JavaScript -->
                         <tbody id="tabelGuruBody">
-                            <!-- Data guru akan otomatis dirender di sini lewat JavaScript -->
                         </tbody>
                     </table>
                 </div>
@@ -165,13 +161,13 @@
     </div>
 </div>
 
-<!-- MODAL FORM TAMBAH GURU -->
-<div class="modal fade" id="modalTambahGuru" tabindex="-1" aria-labelledby="modalTambahGuruLabel" aria-hidden="true">
+<!-- POP-UP / MODAL FORM TAMBAH GURU -->
+<div class="modal fade" id="modalTambahGuru" tabindex="-1" aria-hidden="true">
     <div class="modal-dialog modal-dialog-centered">
         <div class="modal-content rounded-4 border-0">
             <div class="modal-header bg-danger text-white rounded-top-4">
-                <h5 class="modal-title fw-bold" id="modalTambahGuruLabel"><i class="bi bi-person-plus-fill me-2"></i>Tambah Data Guru Baru</h5>
-                <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal" aria-label="Close"></button>
+                <h5 class="modal-title fw-bold"><i class="bi bi-person-plus-fill me-2"></i>Tambah Data Guru</h5>
+                <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal"></button>
             </div>
             <form id="formGuru" onsubmit="simpanGuru(event)">
                 <div class="modal-body p-4">
@@ -184,17 +180,17 @@
                         <input type="text" class="form-control rounded-3" id="inputNama" placeholder="Contoh: Ruben Ambalao, S.Pd." required>
                     </div>
                     <div class="mb-3">
-                        <label class="form-label fw-semibold">Jabatan / Mata Pelajaran</label>
-                        <input type="text" class="form-control rounded-3" id="inputMapel" placeholder="Contoh: Guru IPA / Wali Kelas VII" required>
+                        <label class="form-label fw-semibold">Jabatan / Mapel</label>
+                        <input type="text" class="form-control rounded-3" id="inputMapel" placeholder="Contoh: Guru Matematika" required>
                     </div>
                     <div class="mb-3">
-                        <label class="form-label fw-semibold">No. WhatsApp / HP</label>
+                        <label class="form-label fw-semibold">No. HP / WA</label>
                         <input type="tel" class="form-control rounded-3" id="inputHp" placeholder="Contoh: 081234567890" required>
                     </div>
                 </div>
                 <div class="modal-footer bg-light rounded-bottom-4">
                     <button type="button" class="btn btn-secondary rounded-3" data-bs-dismiss="modal">Batal</button>
-                    <button type="submit" class="btn btn-danger rounded-3 fw-semibold"><i class="bi bi-save me-1"></i> Simpan Data</button>
+                    <button type="submit" class="btn btn-danger rounded-3 fw-semibold"><i class="bi bi-save me-1"></i>Simpan</button>
                 </div>
             </form>
         </div>
@@ -205,14 +201,13 @@
 <script src="../js/db.js"></script>
 <script src="../js/auth.js"></script>
 
-<!-- SCRIPT PENGELOLAAN DATA GURU -->
+<!-- SCRIPT LOGIKA SIMPAN & TAMPIL GURU -->
 <script>
-    // Jalankan fungsi saat halaman selesai dimuat
     document.addEventListener("DOMContentLoaded", function () {
         tampilDataGuru();
     });
 
-    // 1. Fungsi Menampilkan Data Guru di Tabel
+    // 1. Tampilkan Data dari LocalStorage ke Tabel
     function tampilDataGuru() {
         let dataGuru = JSON.parse(localStorage.getItem("dataGuru")) || [];
         let tabelBody = document.getElementById("tabelGuruBody");
@@ -221,8 +216,8 @@
             tabelBody.innerHTML = `
                 <tr>
                     <td colspan="6" class="text-center text-muted py-5">
-                        <i class="bi bi-person-x fs-1 d-block mb-2 opacity-50"></i>
-                        Belum ada data guru. Klik tombol <strong>+ Tambah Guru Baru</strong> di atas.
+                        <i class="bi bi-inbox fs-1 d-block mb-2 opacity-50"></i>
+                        Belum ada data guru. Klik tombol <strong>+ Tambah Guru Baru</strong>.
                     </td>
                 </tr>
             `;
@@ -250,7 +245,7 @@
         tabelBody.innerHTML = html;
     }
 
-    // 2. Fungsi Menyimpan Guru Baru
+    // 2. Simpan Data Guru Baru
     function simpanGuru(event) {
         event.preventDefault();
 
@@ -260,24 +255,21 @@
         let hp = document.getElementById("inputHp").value;
 
         let dataGuru = JSON.parse(localStorage.getItem("dataGuru")) || [];
-
         dataGuru.push({ nip, nama, mapel, hp });
 
         localStorage.setItem("dataGuru", JSON.stringify(dataGuru));
 
-        // Reset form input
+        // Reset Form & Tutup Modal Pop-up
         document.getElementById("formGuru").reset();
-
-        // Tutup Modal Bootstrap
         let modalElement = document.getElementById("modalTambahGuru");
         let modal = bootstrap.Modal.getInstance(modalElement);
         if (modal) modal.hide();
 
-        // Refresh tabel otomatis
+        // Refresh Tampilan Tabel
         tampilDataGuru();
     }
 
-    // 3. Fungsi Menghapus Data Guru
+    // 3. Hapus Data Guru
     function hapusGuru(index) {
         if (confirm("Apakah Anda yakin ingin menghapus data guru ini?")) {
             let dataGuru = JSON.parse(localStorage.getItem("dataGuru")) || [];
