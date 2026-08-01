@@ -19,55 +19,42 @@
         body {
             font-family: 'Poppins', sans-serif;
             background-color: #f8f9fa;
-            padding-top: 35px;
-            padding-bottom: 110px;
+            padding-top: 20px;
+            padding-bottom: 40px;
             margin: 0;
         }
 
-        /* BINGKAI MOTIF ATAS */
-        .frame-tanimbar-top {
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 30px;
-            background-image: url('../motif-tanimbar.jpg');
-            background-position: top center;
-            background-size: 100% auto;
-            background-repeat: no-repeat;
-            z-index: 9999;
-            box-shadow: 0 2px 5px rgba(0,0,0,0.2);
-        }
-
-        /* BINGKAI MOTIF BAWAH */
-        .frame-tanimbar-bottom {
-            position: fixed;
-            bottom: 0;
-            left: 0;
-            width: 100%;
-            height: 95px;
-            background-image: url('../motif-tanimbar.jpg');
-            background-position: bottom center;
-            background-size: 100% auto;
-            background-repeat: no-repeat;
-            z-index: 9999;
-            box-shadow: 0 -2px 5px rgba(0,0,0,0.15);
-        }
-
-        /* SIDEBAR TANIMBAR */
+        /* SIDEBAR DENGAN MOTIF TANIMBAR */
         .sidebar-tanimbar {
-            background: linear-gradient(180deg, #1a1a1a 0%, #800020 100%);
+            background-image: linear-gradient(rgba(0, 0, 0, 0.75), rgba(128, 0, 32, 0.85)), url('../motif-tanimbar.jpg');
+            background-size: cover;
+            background-position: center;
             border-radius: 16px;
             padding: 20px 15px;
-            box-shadow: 0 4px 15px rgba(0,0,0,0.15);
+            box-shadow: 0 4px 15px rgba(0,0,0,0.2);
+            border: 2px solid #ffd700;
         }
 
-        /* BANNER UTAMA */
+        /* BANNER UTAMA DENGAN ACCENT MOTIF TANIMBAR DI ATAS */
         .banner-tanimbar {
+            position: relative;
             background: linear-gradient(135deg, #800020 0%, #b3002d 60%, #1a1a1a 100%);
             border: none;
-            border-bottom: 4px solid #ffd700;
+            border-top: 12px solid transparent;
+            border-image: url('../motif-tanimbar.jpg') 30 round;
             box-shadow: 0 6px 15px rgba(128, 0, 32, 0.2);
+            overflow: hidden;
+        }
+
+        /* HEADER STRIP MOTIF DI ATAS BANNER */
+        .banner-tanimbar-top-strip {
+            height: 20px;
+            background-image: url('../motif-tanimbar.jpg');
+            background-size: cover;
+            background-position: center;
+            border-radius: 12px 12px 0 0;
+            margin: -24px -24px 15px -24px;
+            border-bottom: 2px solid #ffd700;
         }
 
         .card-motif {
@@ -92,20 +79,16 @@
 </head>
 <body>
 
-<!-- Bingkai Motif Tanimbar Top & Bottom -->
-<div class="frame-tanimbar-top"></div>
-<div class="frame-tanimbar-bottom"></div>
-
 <div class="container-fluid px-4">
     <div class="row g-3">
 
-        <!-- KIRI: SIDEBAR NAVIGATION -->
+        <!-- KIRI: SIDEBAR NAVIGATION DENGAN MOTIF TANIMBAR -->
         <div class="col-lg-2 col-md-3">
             <div class="sidebar-tanimbar text-white text-center">
                 
                 <!-- Logo Sekolah -->
                 <div class="mb-3">
-                    <img src="../logo-sekolah.jpg" alt="Logo SMP Kristen 4 Tanut" class="img-fluid mb-2" style="max-width: 80px;">
+                    <img src="../logo-sekolah.jpg" alt="Logo SMP Kristen 4 Tanut" class="img-fluid mb-2 rounded-circle shadow-sm" style="max-width: 80px; height: 80px; object-fit: cover;">
                     <h5 class="fw-bold mb-0">SIGMA EDU</h5>
                     <span class="badge bg-warning text-dark fw-bold mb-1">PRO</span>
                     <p class="small text-white-50 mb-0" style="font-size: 11px;">SMP Kristen 4 Tanut</p>
@@ -118,25 +101,25 @@
                     <a class="nav-link active bg-warning text-dark fw-bold rounded-3 py-2 px-3" href="dashboard.html">
                         <i class="bi bi-speedometer2 me-2"></i>Dashboard
                     </a>
-                    <a class="nav-link text-white opacity-75 rounded-3 py-2 px-3" href="guru.html">
+                    <a class="nav-link text-white opacity-90 rounded-3 py-2 px-3" href="guru.html">
                         <i class="bi bi-person-badge me-2"></i>Data Guru
                     </a>
-                    <a class="nav-link text-white opacity-75 rounded-3 py-2 px-3" href="siswa.html">
+                    <a class="nav-link text-white opacity-90 rounded-3 py-2 px-3" href="siswa.html">
                         <i class="bi bi-mortarboard me-2"></i>Data Siswa
                     </a>
-                    <a class="nav-link text-white opacity-75 rounded-3 py-2 px-3" href="kelas.html">
+                    <a class="nav-link text-white opacity-90 rounded-3 py-2 px-3" href="kelas.html">
                         <i class="bi bi-building me-2"></i>Data Kelas
                     </a>
-                    <a class="nav-link text-white opacity-75 rounded-3 py-2 px-3" href="mapel.html">
+                    <a class="nav-link text-white opacity-90 rounded-3 py-2 px-3" href="mapel.html">
                         <i class="bi bi-book me-2"></i>Mata Pelajaran
                     </a>
-                    <a class="nav-link text-white opacity-75 rounded-3 py-2 px-3" href="absensi.html">
+                    <a class="nav-link text-white opacity-90 rounded-3 py-2 px-3" href="absensi.html">
                         <i class="bi bi-calendar-check me-2"></i>Absensi
                     </a>
-                    <a class="nav-link text-white opacity-75 rounded-3 py-2 px-3" href="jurnal.html">
+                    <a class="nav-link text-white opacity-90 rounded-3 py-2 px-3" href="jurnal.html">
                         <i class="bi bi-journal-bookmark me-2"></i>Jurnal Mengajar
                     </a>
-                    <a class="nav-link text-white opacity-75 rounded-3 py-2 px-3" href="nilai.html">
+                    <a class="nav-link text-white opacity-90 rounded-3 py-2 px-3" href="nilai.html">
                         <i class="bi bi-award me-2"></i>Nilai Siswa
                     </a>
                     <button class="btn btn-danger w-100 fw-semibold rounded-3 mt-3 py-2 shadow-sm" onclick="logout()">
@@ -149,8 +132,9 @@
         <!-- KANAN: KONTEN DASHBOARD -->
         <div class="col-lg-10 col-md-9">
 
-            <!-- Banner Utama -->
+            <!-- Banner Utama (Atas dilapisi Motif Tanimbar) -->
             <div class="card banner-tanimbar rounded-4 text-white p-4 mb-3">
+                <div class="banner-tanimbar-top-strip"></div>
                 <span class="badge bg-warning text-dark fw-bold px-3 py-1.5 mb-2 rounded-pill d-inline-block" style="width: fit-content;">
                     <i class="bi bi-star-fill me-1"></i> SIGMA EDU PRO TANIMBAR
                 </span>
