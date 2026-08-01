@@ -265,8 +265,59 @@
 
 </body>
 </html>
-// Tambahkan di baris paling bawah file db.js:
-// Jalankan inisialisasi otomatis saat script ini dimuat
-openDB().then(() => {
-    initDefaultData();
+function openDB() {
+    return new Promise((resolve, reject) => {
+        const request = indexedDB.open(DB_NAME, DB_VERSION);
+
+        request.onupgradeneeded = (e) => {
+            const db = e.target.result;
+
+            if (!db.objectStoreNames.contains('guru')) {
+                db.createObjectStore('guru', { keyPath: 'id', autoIncrement: true });
+            }
+            if (!db.objectStoreNames.contains('siswa')) {
+                db.createObjectStore('siswa', { keyPath: 'id', autoIncrement: true });
+            }
+            if (!db.objectStoreNames.contains('kelas')) {
+                db.createObjectStore('kelas', { keyPath: 'id', autoIncrement: true });
+            }
+            if (!db.objectStoreNames.contains('mapel')) {
+                db.createObjectStore('mapel', { keyPath: 'id', autoIncrement: true });
+            }
+            if (!db.objectStoreNames.contains('absensi')) {
+                db.createObjectStore('absensi', { keyPath: 'id', autoIncrement: true });
+            }
+            if (!db.objectStoreNames.contains('jurnal')) {
+                db.createObjectStore('jurnal', { keyPath: 'id', autoIncrement: true });
+            }
+            if (!db.objectStoreNames.contains('nilai')) {
+                db.createObjectStore('nilai', { keyPath: 'id', autoIncrement: true });
+            }
+        };
+
+        request.onsuccess = async () => {
+            const db = request.result;
+            
+            // CEK & ISI DATA DEFAULT OTOMATIS
+            const tx = db.transaction('guru', 'readonly');
+            const store = tx.objectStore('guru');
+            const req = store.getAll();
+            req.onsuccess = () => {
+                if (req.result.length === 0) {
+                    const writeTx = db.transaction('guru', 'readwrite');
+                    writeTx.objectStore('guru').add({
+                        nip: "198203212008041002",
+                        nama: "Edy Wenan S. Slarmanat, S.Pd",
+                        mapel: "Kepala Sekolah",
+                        hp: "082397523433"
+                    });
+                }
+            };
+            
+            resolve(db);
+        };
+        
+        request.onerror = () => reject(request.error);
+    });
+}
 });
