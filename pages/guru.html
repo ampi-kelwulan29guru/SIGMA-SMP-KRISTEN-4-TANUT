@@ -181,11 +181,11 @@
                     </div>
                     <div class="mb-3">
                         <label class="form-label fw-semibold">Jabatan / Mapel</label>
-                        <input type="text" class="form-control rounded-3" id="inputMapel" placeholder="Contoh: Guru Matematika" required>
+                        <input type="text" class="form-control rounded-3" id="inputMapel" placeholder="Contoh: Kepala Sekolah" required>
                     </div>
                     <div class="mb-3">
                         <label class="form-label fw-semibold">No. HP / WA</label>
-                        <input type="tel" class="form-control rounded-3" id="inputHp" placeholder="Contoh: 081234567890" required>
+                        <input type="tel" class="form-control rounded-3" id="inputHp" placeholder="Contoh: 082397523433" required>
                     </div>
                 </div>
                 <div class="modal-footer bg-light rounded-bottom-4">
@@ -212,22 +212,24 @@
 
     // 1. Tampilkan Data dari LocalStorage ke Tabel
     function tampilDataGuru() {
-        let dataGuru = JSON.parse(localStorage.getItem("dataGuru")) || [];
-        let tabelBody = document.getElementById("tabelGuruBody");
+        let dataGuru = JSON.parse(localStorage.getItem("dataGuru"));
 
-        if (dataGuru.length === 0) {
-            tabelBody.innerHTML = `
-                <tr>
-                    <td colspan="6" class="text-center text-muted py-5">
-                        <i class="bi bi-inbox fs-1 d-block mb-2 opacity-50"></i>
-                        Belum ada data guru. Klik tombol <strong>+ Tambah Guru Baru</strong>.
-                    </td>
-                </tr>
-            `;
-            return;
+        // Jika localStorage masih kosong saat pertama kali aplikasi dijalankan, isi dengan data awal ini
+        if (!dataGuru || dataGuru.length === 0) {
+            dataGuru = [
+                {
+                    nip: "198203212008041002",
+                    nama: "Edy Wenan S. Slarmanat, S.Pd",
+                    mapel: "Kepala Sekolah",
+                    hp: "082397523433"
+                }
+            ];
+            localStorage.setItem("dataGuru", JSON.stringify(dataGuru));
         }
 
+        let tabelBody = document.getElementById("tabelGuruBody");
         let html = "";
+
         dataGuru.forEach((guru, index) => {
             html += `
                 <tr>
@@ -235,21 +237,21 @@
                     <td><span class="badge bg-secondary">${guru.nip}</span></td>
                     <td class="fw-bold text-dark">${guru.nama}</td>
                     <td><span class="badge bg-danger bg-opacity-10 text-danger border border-danger">${guru.mapel}</span></td>
-                    <td><a href="https://wa.me/${guru.hp}" target="_blank" class="text-decoration-none text-success"><i class="bi bi-whatsapp me-1"></i>${guru.hp}</a></td>
+                    <td><a href="https://wa.me/${guru.hp.replace(/^0/, '62')}" target="_blank" class="text-decoration-none text-success"><i class="bi bi-whatsapp me-1"></i>${guru.hp}</a></td>
                     <td class="text-center">
-                        <!-- Dropdown Tombol Pensil -->
+                        <!-- Dropdown Tombol Pensil Kuning -->
                         <div class="dropdown">
-                            <button class="btn btn-sm btn-outline-warning rounded-3 dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false">
+                            <button class="btn btn-sm btn-warning text-dark rounded-3 dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false">
                                 <i class="bi bi-pencil-fill"></i>
                             </button>
                             <ul class="dropdown-menu dropdown-menu-end shadow-sm border-0 rounded-3">
                                 <li>
-                                    <button class="dropdown-menu-item dropdown-item text-primary" onclick="editGuru(${index})">
+                                    <button class="dropdown-item text-primary fw-medium" type="button" onclick="editGuru(${index})">
                                         <i class="bi bi-pencil-square me-2"></i>Edit
                                     </button>
                                 </li>
                                 <li>
-                                    <button class="dropdown-menu-item dropdown-item text-danger" onclick="hapusGuru(${index})">
+                                    <button class="dropdown-item text-danger fw-medium" type="button" onclick="hapusGuru(${index})">
                                         <i class="bi bi-trash-fill me-2"></i>Delete
                                     </button>
                                 </li>
