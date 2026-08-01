@@ -15,58 +15,84 @@
     <link rel="stylesheet" href="../css/dashboard.css">
     <link rel="stylesheet" href="../css/responsive.css">
 
-    <style>
-        body {
-            font-family: 'Poppins', sans-serif;
-            background-color: #fdfaf7;
-            /* Memasang bingkai gambar motif-tanimbar.jpg secara Full Screen */
-            background-image: url('../assets/motif-tanimbar.jpg');
-            background-repeat: no-repeat;
-            background-position: center top;
-            background-size: 100% 100%;
-            background-attachment: fixed;
-            min-height: 100vh;
-            padding-top: 35px; /* Memberi jarak agar tidak menutupi motif atas */
-            padding-bottom: 75px; /* Memberi jarak agar tidak menutupi motif bawah */
-        }
+   <style>
+    body {
+        font-family: 'Poppins', sans-serif;
+        background-color: #f8f9fa;
+        position: relative;
+        min-height: 100vh;
+        margin: 0;
+        padding-top: 40px;    /* Memberi ruang agar konten tidak tertimpa pita atas */
+        padding-bottom: 120px; /* Memberi ruang agar konten tidak tertimpa pita bawah */
+    }
 
-        /* Sidebar Khas Tema Tanimbar */
-        .sidebar-tanimbar {
-            background: linear-gradient(180deg, #1a1a1a 0%, #800020 100%);
-            min-height: 88vh;
-            border-radius: 20px;
-            box-shadow: 0 10px 25px rgba(0,0,0,0.15);
-        }
+    /* PITA MOTIF ATAS (Presisi mengambil pita bagian atas gambar) */
+    body::before {
+        content: "";
+        position: fixed;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 30px; /* Tinggi pita atas */
+        background-image: url('../assets/motif-tanimbar.jpg');
+        background-position: top center;
+        background-size: 100% auto;
+        background-repeat: no-repeat;
+        z-index: 9999;
+        box-shadow: 0 2px 5px rgba(0,0,0,0.2);
+    }
 
-        /* Banner Utama */
-        .banner-tanimbar {
-            background: linear-gradient(135deg, #800020 0%, #b3002d 60%, #1a1a1a 100%);
-            border: none;
-            border-bottom: 4px solid #ffd700;
-            box-shadow: 0 8px 20px rgba(128, 0, 32, 0.25);
-        }
+    /* PITA MOTIF BAWAH (Presisi mengambil pita bagian bawah gambar) */
+    body::after {
+        content: "";
+        position: fixed;
+        bottom: 0;
+        left: 0;
+        width: 100%;
+        height: 95px; /* Tinggi disesuaikan dengan ketebalan pita bawah */
+        background-image: url('../assets/motif-tanimbar.jpg');
+        background-position: bottom center;
+        background-size: 100% auto;
+        background-repeat: no-repeat;
+        z-index: 9999;
+        box-shadow: 0 -2px 5px rgba(0,0,0,0.15);
+    }
 
-        /* Efek Hover Card */
-        .card-motif {
-            border: 1px solid rgba(128, 0, 32, 0.1);
-            transition: transform 0.25s ease, box-shadow 0.25s ease;
-        }
+    /* Sidebar Khas Tanimbar */
+    .sidebar-tanimbar {
+        background: linear-gradient(180deg, #1a1a1a 0%, #800020 100%);
+        min-height: calc(100vh - 150px);
+        border-radius: 16px;
+    }
 
-        .card-motif:hover {
-            transform: translateY(-4px);
-            box-shadow: 0 8px 20px rgba(128, 0, 32, 0.15);
-            border-color: #800020;
-        }
+    /* Banner Utama Gradient Maroon Tanimbar */
+    .banner-tanimbar {
+        background: linear-gradient(135deg, #800020 0%, #b3002d 60%, #1a1a1a 100%);
+        border: none;
+        border-bottom: 4px solid #ffd700;
+        box-shadow: 0 8px 20px rgba(128, 0, 32, 0.2);
+    }
 
-        .icon-box {
-            width: 55px;
-            height: 55px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            border-radius: 14px;
-        }
-    </style>
+    .card-motif {
+        border: 1px solid rgba(128, 0, 32, 0.1);
+        transition: transform 0.25s ease, box-shadow 0.25s ease;
+    }
+
+    .card-motif:hover {
+        transform: translateY(-4px);
+        box-shadow: 0 8px 20px rgba(128, 0, 32, 0.15);
+        border-color: #800020;
+    }
+
+    .icon-box {
+        width: 55px;
+        height: 55px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        border-radius: 14px;
+    }
+</style>
 </head>
 <body>
 
