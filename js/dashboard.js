@@ -1,21 +1,42 @@
-document.addEventListener('DOMContentLoaded', updateDashboardStats);
+document.addEventListener("DOMContentLoaded", async function () {
+    try {
+        // 1. Pastikan data default diisi jika database masih kosong
+        if (typeof initDefaultData === "function") {
+            await initDefaultData();
+        }
+        
+        // 2. Refresh angka di dashboard
+        await updateDashboardStats();
+    } catch (error) {
+        console.error("Gagal memuat statistik dashboard:", error);
+    }
+});
 
 async function updateDashboardStats() {
     try {
-        // Ambil data dari IndexedDB
-        const listGuru = (typeof getAllData === 'function') ? await getAllData('guru') : [];
-        const listSiswa = (typeof getAllData === 'function') ? await getAllData('siswa') : [];
-        const listKelas = (typeof getAllData === 'function') ? await getAllData('kelas') : [];
+        // Ambil data dari IndexedDB (menggunakan helper dari db.js)
+        const dataGuru = await getAllData('guru');
+        const dataSiswa = await getAllData('siswa');
+        const dataKelas = await getAllData('kelas');
+        const dataMapel = await getAllData('mapel');
 
-        // Update angka di kartu dashboard jika elemen ada
-        const elGuru = document.getElementById('totalGuru');
-        const elSiswa = document.getElementById('totalSiswa');
-        const elKelas = document.getElementById('totalKelas');
+        // Elemen Total Guru
+        const elGuru = document.getElementById("totalGuruCount");
+        if (elGuru) elGuru.innerText = dataGuru.length;
 
-        if (elGuru) elGuru.textContent = listGuru.length || 0;
-        if (elSiswa) elSiswa.textContent = listSiswa.length || 0;
-        if (elKelas) elKelas.textContent = listKelas.length || 0;
+        // Elemen Total Siswa
+        const elSiswa = document.getElementById("totalSiswaCount");
+        if (elSiswa) elSiswa.innerText = dataSiswa.length;
+
+        // Elemen Total Kelas
+        const elKelas = document.getElementById("totalKelasCount");
+        if (elKelas) elKelas.innerText = dataKelas.length;
+
+        // Elemen Total Mapel
+        const elMapel = document.getElementById("totalMapelCount");
+        if (elMapel) elMapel.innerText = dataMapel.length;
+
     } catch (err) {
-        console.error("Gagal memperbarui statistik dashboard:", err);
+        console.error("Gagal menghitung statistik:", err);
     }
 }
