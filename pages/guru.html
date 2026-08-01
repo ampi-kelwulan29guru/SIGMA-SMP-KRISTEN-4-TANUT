@@ -2,87 +2,162 @@
 <html lang="id">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Data Guru - SIGMA EDU PRO</title>
 
+    <!-- Bootstrap & Icons -->
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
     <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.css" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
 
+    <!-- CSS Lokal -->
     <link rel="stylesheet" href="../css/style.css">
     <link rel="stylesheet" href="../css/dashboard.css">
     <link rel="stylesheet" href="../css/responsive.css">
+
+    <style>
+        body {
+            font-family: 'Poppins', sans-serif;
+            background-color: #f8f9fa;
+            padding-top: 35px;
+            padding-bottom: 110px;
+            margin: 0;
+        }
+
+        /* BINGKAI MOTIF TANIMBAR ATAS & BAWAH */
+        .frame-tanimbar-top {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 30px;
+            background-image: url('../assets/motif-tanimbar.jpg');
+            background-position: top center;
+            background-size: 100% auto;
+            background-repeat: no-repeat;
+            z-index: 9999;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.2);
+        }
+
+        .frame-tanimbar-bottom {
+            position: fixed;
+            bottom: 0;
+            left: 0;
+            width: 100%;
+            height: 95px;
+            background-image: url('../assets/motif-tanimbar.jpg');
+            background-position: bottom center;
+            background-size: 100% auto;
+            background-repeat: no-repeat;
+            z-index: 9999;
+            box-shadow: 0 -2px 5px rgba(0,0,0,0.15);
+        }
+
+        /* SIDEBAR KHAS TANIMBAR */
+        .sidebar-tanimbar {
+            background: linear-gradient(180deg, #1a1a1a 0%, #800020 100%);
+            border-radius: 16px;
+            padding: 20px 15px;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.15);
+        }
+
+        /* CARD HEADER */
+        .card-header-tanimbar {
+            border-left: 5px solid #800020;
+        }
+    </style>
 </head>
 <body>
 
-<div class="container-fluid">
-    <div class="row">
+<!-- Bingkai Motif Tanimbar Top & Bottom -->
+<div class="frame-tanimbar-top"></div>
+<div class="frame-tanimbar-bottom"></div>
 
-     <!-- Tabel Data Guru -->
-<div class="card card-motif rounded-4 p-4 bg-white shadow-sm">
-    <div class="d-flex justify-content-between align-items-center mb-3">
-        <h5 class="fw-bold mb-0 text-dark">
-            <i class="bi bi-person-badge-fill me-2 text-danger"></i>Daftar Data Guru
-        </h5>
-        <!-- Tombol Modal Tambah Guru -->
-        <button class="btn btn-danger fw-semibold rounded-3" data-bs-toggle="modal" data-bs-target="#modalTambahGuru">
-            <i class="bi bi-plus-lg me-1"></i>Tambah Guru
-        </button>
-    </div>
+<div class="container-fluid px-4">
+    <div class="row g-3">
 
-    <div class="table-responsive">
-        <table class="table table-hover align-middle">
-            <thead class="table-dark">
-                <tr>
-                    <th>No</th>
-                    <th>NIP / NUPTK</th>
-                    <th>Nama Lengkap</th>
-                    <th>Mata Pelajaran</th>
-                    <th>No. HP / WA</th>
-                    <th>Aksi</th>
-                </tr>
-            </thead>
-            <!-- Tempat data guru dirender otomatis oleh JS -->
-            <tbody id="tabelGuruBody">
-                <!-- Data akan muncul di sini -->
-            </tbody>
-        </table>
-    </div>
-</div>
-
-        <!-- Content Area -->
-        <div class="col-lg-10 p-4">
-
-            <!-- Header Panel -->
-            <div class="d-flex justify-content-between align-items-center mb-4 bg-white p-3 rounded shadow-sm">
-                <div>
-                    <h4 class="fw-bold text-primary mb-0"><i class="bi bi-person-badge me-2"></i>Kelola Data Guru</h4>
-                    <small class="text-muted">SMP Kristen 4 Tanut</small>
+        <!-- KIRI: SIDEBAR NAVIGATION -->
+        <div class="col-lg-2 col-md-3">
+            <div class="sidebar-tanimbar text-white text-center">
+                
+                <!-- Logo Sekolah -->
+                <div class="mb-3">
+                    <img src="../assets/logoSMPK4.png" alt="Logo SMP Kristen 4 Tanut" class="img-fluid mb-2" style="max-width: 80px;" onerror="this.style.display='none'">
+                    <h5 class="fw-bold mb-0">SIGMA EDU</h5>
+                    <span class="badge bg-warning text-dark fw-bold mb-1">PRO</span>
+                    <p class="small text-white-50 mb-0" style="font-size: 11px;">SMP Kristen 4 Tanut</p>
                 </div>
-                <button class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#modalGuru">
-                    <i class="bi bi-plus-circle me-1"></i>Tambah Guru Baru
-                </button>
+
+                <hr class="border-warning opacity-50 my-2">
+
+                <!-- Menu Sidebar -->
+                <div class="nav flex-column gap-1 text-start">
+                    <a class="nav-link text-white opacity-75 rounded-3 py-2 px-3" href="dashboard.html">
+                        <i class="bi bi-speedometer2 me-2"></i>Dashboard
+                    </a>
+                    <a class="nav-link active bg-warning text-dark fw-bold rounded-3 py-2 px-3" href="guru.html">
+                        <i class="bi bi-person-badge me-2"></i>Data Guru
+                    </a>
+                    <a class="nav-link text-white opacity-75 rounded-3 py-2 px-3" href="siswa.html">
+                        <i class="bi bi-mortarboard me-2"></i>Data Siswa
+                    </a>
+                    <a class="nav-link text-white opacity-75 rounded-3 py-2 px-3" href="kelas.html">
+                        <i class="bi bi-building me-2"></i>Data Kelas
+                    </a>
+                    <a class="nav-link text-white opacity-75 rounded-3 py-2 px-3" href="mapel.html">
+                        <i class="bi bi-book me-2"></i>Mata Pelajaran
+                    </a>
+                    <a class="nav-link text-white opacity-75 rounded-3 py-2 px-3" href="absensi.html">
+                        <i class="bi bi-calendar-check me-2"></i>Absensi
+                    </a>
+                    <a class="nav-link text-white opacity-75 rounded-3 py-2 px-3" href="jurnal.html">
+                        <i class="bi bi-journal-bookmark me-2"></i>Jurnal Mengajar
+                    </a>
+                    <a class="nav-link text-white opacity-75 rounded-3 py-2 px-3" href="nilai.html">
+                        <i class="bi bi-award me-2"></i>Nilai Siswa
+                    </a>
+                    <button class="btn btn-danger w-100 fw-semibold rounded-3 mt-3 py-2 shadow-sm" onclick="logout()">
+                        <i class="bi bi-box-arrow-right me-2"></i>Logout
+                    </button>
+                </div>
+            </div>
+        </div>
+
+        <!-- KANAN: KONTEN KELOLA DATA GURU -->
+        <div class="col-lg-10 col-md-9">
+
+            <!-- Banner Header -->
+            <div class="card rounded-4 p-3 bg-white shadow-sm mb-3 card-header-tanimbar">
+                <div class="d-flex justify-content-between align-items-center">
+                    <div>
+                        <h4 class="fw-bold mb-0 text-dark"><i class="bi bi-person-badge text-danger me-2"></i>Kelola Data Guru</h4>
+                        <small class="text-muted">SMP Kristen 4 Tanut</small>
+                    </div>
+                    <!-- Tombol Pemicu Modal Tambah Guru -->
+                    <button class="btn btn-primary fw-semibold rounded-3 px-3 py-2" data-bs-toggle="modal" data-bs-target="#modalTambahGuru">
+                        <i class="bi bi-plus-circle me-1"></i> Tambah Guru Baru
+                    </button>
+                </div>
             </div>
 
             <!-- Tabel Data Guru -->
-            <div class="card shadow-sm border-0">
-                <div class="card-body p-0">
-                    <div class="table-responsive">
-                        <table class="table table-hover align-middle mb-0">
-                            <thead class="table-primary">
-                                <tr>
-                                    <th class="ps-3">No</th>
-                                    <th>NIP / NUPTK</th>
-                                    <th>Nama Lengkap</th>
-                                    <th>Jabatan</th>
-                                    <th>No. HP/WA</th>
-                                    <th class="text-center">Aksi</th>
-                                </tr>
-                            </thead>
-                            <tbody id="tabelGuru">
-                                <!-- Data guru dimuat otomatis dari IndexedDB oleh js/guru.js -->
-                            </tbody>
-                        </table>
-                    </div>
+            <div class="card rounded-4 p-4 bg-white shadow-sm">
+                <div class="table-responsive">
+                    <table class="table table-hover align-middle">
+                        <thead class="table-light">
+                            <tr>
+                                <th width="50">No</th>
+                                <th>NIP / NUPTK</th>
+                                <th>Nama Lengkap</th>
+                                <th>Jabatan / Mapel</th>
+                                <th>No. HP / WA</th>
+                                <th width="100" class="text-center">Aksi</th>
+                            </tr>
+                        </thead>
+                        <tbody id="tabelGuruBody">
+                            <!-- Data guru akan otomatis dirender di sini lewat JavaScript -->
+                        </tbody>
+                    </table>
                 </div>
             </div>
 
@@ -90,45 +165,36 @@
     </div>
 </div>
 
-<!-- Modal Form Tambah Guru -->
-<div class="modal fade" id="modalGuru" tabindex="-1">
-    <div class="modal-dialog">
-        <div class="modal-content">
-            <div class="modal-header bg-primary text-white">
-                <h5 class="modal-title fw-bold"><i class="bi bi-person-plus me-2"></i>Tambah Data Guru</h5>
-                <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal"></button>
+<!-- MODAL FORM TAMBAH GURU -->
+<div class="modal fade" id="modalTambahGuru" tabindex="-1" aria-labelledby="modalTambahGuruLabel" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered">
+        <div class="modal-content rounded-4 border-0">
+            <div class="modal-header bg-danger text-white rounded-top-4">
+                <h5 class="modal-title fw-bold" id="modalTambahGuruLabel"><i class="bi bi-person-plus-fill me-2"></i>Tambah Data Guru Baru</h5>
+                <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal" aria-label="Close"></button>
             </div>
-            <form id="formGuru">
-                <div class="modal-body">
+            <form id="formGuru" onsubmit="simpanGuru(event)">
+                <div class="modal-body p-4">
                     <div class="mb-3">
-                        <label class="form-label fw-bold">NIP / NUPTK</label>
-                        <input type="text" id="nip" class="form-control" placeholder="Contoh: 198501..." required>
+                        <label class="form-label fw-semibold">NIP / NUPTK</label>
+                        <input type="text" class="form-control rounded-3" id="inputNip" placeholder="Masukkan NIP atau NUPTK" required>
                     </div>
                     <div class="mb-3">
-                        <label class="form-label fw-bold">Nama Lengkap & Gelar</label>
-                        <input type="text" id="nama" class="form-control" placeholder="Contoh: Bpk. John Doe, S.Pd." required>
+                        <label class="form-label fw-semibold">Nama Lengkap & Gelar</label>
+                        <input type="text" class="form-control rounded-3" id="inputNama" placeholder="Contoh: Ruben Ambalao, S.Pd." required>
                     </div>
                     <div class="mb-3">
-                        <label class="form-label fw-bold">Jabatan</label>
-                        <select id="jabatan" class="form-select" required>
-                            <option value="" selected disabled>-- Pilih Jabatan --</option>
-                            <option value="Kepala Sekolah">Kepala Sekolah</option>
-                            <option value="Wakil Kepala Sekolah">Wakil Kepala Sekolah</option>
-                            <option value="Wali Kelas">Wali Kelas</option>
-                            <option value="Guru Mata Pelajaran">Guru Mata Pelajaran</option>
-                            <option value="Guru BK">Guru BK</option>
-                            <option value="Guru Piket">Guru Piket</option>
-                            <option value="Staf TU">Staf TU / Administrasi</option>
-                        </select>
+                        <label class="form-label fw-semibold">Jabatan / Mata Pelajaran</label>
+                        <input type="text" class="form-control rounded-3" id="inputMapel" placeholder="Contoh: Guru IPA / Wali Kelas VII" required>
                     </div>
                     <div class="mb-3">
-                        <label class="form-label fw-bold">Nomor WhatsApp/HP</label>
-                        <input type="tel" id="hp" class="form-control" placeholder="08xxxxxxxxxx">
+                        <label class="form-label fw-semibold">No. WhatsApp / HP</label>
+                        <input type="tel" class="form-control rounded-3" id="inputHp" placeholder="Contoh: 081234567890" required>
                     </div>
                 </div>
-                <div class="modal-footer">
-                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Batal</button>
-                    <button type="submit" class="btn btn-primary"><i class="bi bi-save me-1"></i>Simpan Data</button>
+                <div class="modal-footer bg-light rounded-bottom-4">
+                    <button type="button" class="btn btn-secondary rounded-3" data-bs-dismiss="modal">Batal</button>
+                    <button type="submit" class="btn btn-danger rounded-3 fw-semibold"><i class="bi bi-save me-1"></i> Simpan Data</button>
                 </div>
             </form>
         </div>
@@ -137,6 +203,90 @@
 
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
 <script src="../js/db.js"></script>
-<script src="../js/guru.js"></script>
+<script src="../js/auth.js"></script>
+
+<!-- SCRIPT PENGELOLAAN DATA GURU -->
+<script>
+    // Jalankan fungsi saat halaman selesai dimuat
+    document.addEventListener("DOMContentLoaded", function () {
+        tampilDataGuru();
+    });
+
+    // 1. Fungsi Menampilkan Data Guru di Tabel
+    function tampilDataGuru() {
+        let dataGuru = JSON.parse(localStorage.getItem("dataGuru")) || [];
+        let tabelBody = document.getElementById("tabelGuruBody");
+
+        if (dataGuru.length === 0) {
+            tabelBody.innerHTML = `
+                <tr>
+                    <td colspan="6" class="text-center text-muted py-5">
+                        <i class="bi bi-person-x fs-1 d-block mb-2 opacity-50"></i>
+                        Belum ada data guru. Klik tombol <strong>+ Tambah Guru Baru</strong> di atas.
+                    </td>
+                </tr>
+            `;
+            return;
+        }
+
+        let html = "";
+        dataGuru.forEach((guru, index) => {
+            html += `
+                <tr>
+                    <td class="fw-bold">${index + 1}</td>
+                    <td><span class="badge bg-secondary">${guru.nip}</span></td>
+                    <td class="fw-bold text-dark">${guru.nama}</td>
+                    <td><span class="badge bg-danger bg-opacity-10 text-danger border border-danger">${guru.mapel}</span></td>
+                    <td><a href="https://wa.me/${guru.hp}" target="_blank" class="text-decoration-none text-success"><i class="bi bi-whatsapp me-1"></i>${guru.hp}</a></td>
+                    <td class="text-center">
+                        <button class="btn btn-sm btn-outline-danger rounded-3" onclick="hapusGuru(${index})">
+                            <i class="bi bi-trash-fill"></i>
+                        </button>
+                    </td>
+                </tr>
+            `;
+        });
+
+        tabelBody.innerHTML = html;
+    }
+
+    // 2. Fungsi Menyimpan Guru Baru
+    function simpanGuru(event) {
+        event.preventDefault();
+
+        let nip = document.getElementById("inputNip").value;
+        let nama = document.getElementById("inputNama").value;
+        let mapel = document.getElementById("inputMapel").value;
+        let hp = document.getElementById("inputHp").value;
+
+        let dataGuru = JSON.parse(localStorage.getItem("dataGuru")) || [];
+
+        dataGuru.push({ nip, nama, mapel, hp });
+
+        localStorage.setItem("dataGuru", JSON.stringify(dataGuru));
+
+        // Reset form input
+        document.getElementById("formGuru").reset();
+
+        // Tutup Modal Bootstrap
+        let modalElement = document.getElementById("modalTambahGuru");
+        let modal = bootstrap.Modal.getInstance(modalElement);
+        if (modal) modal.hide();
+
+        // Refresh tabel otomatis
+        tampilDataGuru();
+    }
+
+    // 3. Fungsi Menghapus Data Guru
+    function hapusGuru(index) {
+        if (confirm("Apakah Anda yakin ingin menghapus data guru ini?")) {
+            let dataGuru = JSON.parse(localStorage.getItem("dataGuru")) || [];
+            dataGuru.splice(index, 1);
+            localStorage.setItem("dataGuru", JSON.stringify(dataGuru));
+            tampilDataGuru();
+        }
+    }
+</script>
+
 </body>
 </html>
