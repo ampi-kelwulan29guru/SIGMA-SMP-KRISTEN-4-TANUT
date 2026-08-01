@@ -57,6 +57,17 @@ async function addData(storeName, data) {
     });
 }
 
+// Tambahan: Update Data berdasarkan ID
+async function updateData(storeName, data) {
+    const db = await openDB();
+    return new Promise((resolve) => {
+        const tx = db.transaction(storeName, 'readwrite');
+        const store = tx.objectStore(storeName);
+        store.put(data);
+        tx.oncomplete = () => resolve(true);
+    });
+}
+
 async function deleteData(storeName, id) {
     const db = await openDB();
     return new Promise((resolve) => {
@@ -65,4 +76,17 @@ async function deleteData(storeName, id) {
         store.delete(id);
         tx.oncomplete = () => resolve(true);
     });
+}
+
+// Inisialisasi Data Default jika IndexedDB masih kosong
+async function initDefaultData() {
+    const dataGuru = await getAllData('guru');
+    if (dataGuru.length === 0) {
+        await addData('guru', {
+            nip: "198203212008041002",
+            nama: "Edy Wenan S. Slarmanat, S.Pd",
+            mapel: "Kepala Sekolah",
+            hp: "082397523433"
+        });
+    }
 }
