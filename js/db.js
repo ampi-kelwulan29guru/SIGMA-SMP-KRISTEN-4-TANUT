@@ -265,3 +265,8 @@
 
 </body>
 </html>
+// Tambahkan di baris paling bawah file db.js:
+// Jalankan inisialisasi otomatis saat script ini dimuat
+openDB().then(() => {
+    initDefaultData();
+});
