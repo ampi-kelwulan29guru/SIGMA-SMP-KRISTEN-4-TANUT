@@ -1,48 +1,39 @@
-// Jalankan penghitungan data setelah halaman & database siap
 document.addEventListener('DOMContentLoaded', () => {
-    // Memberikan jeda singkat agar db.js selesai inisialisasi IndexedDB
-    setTimeout(hitungStatistikDashboard, 300);
+    // Memberikan jeda agar IndexedDB selesai diproses
+    setTimeout(updateDashboardStats, 400);
 });
 
-async function hitungStatistikDashboard() {
-    try {
-        // 1. HITUNG GURU
-        let guru = await getAllData('guru').catch(() => []);
-        if (!guru || guru.length === 0) {
-            guru = await getAllData('data_guru').catch(() => []);
-        }
-        setJumlah('totalGuru', guru ? guru.length : 0);
+async function updateDashboardStats() {
+    // 1. HITUNG DATA GURU
+    await hitungTotal(['guru', 'data_guru', 'gurus', 'tb_guru'], 'totalGuru');
 
-        // 2. HITUNG SISWA
-        let siswa = await getAllData('siswa').catch(() => []);
-        if (!siswa || siswa.length === 0) {
-            siswa = await getAllData('data_siswa').catch(() => []);
-        }
-        setJumlah('totalSiswa', siswa ? siswa.length : 0);
+    // 2. HITUNG DATA SISWA
+    await hitungTotal(['siswa', 'data_siswa', 'siswas', 'tb_siswa'], 'totalSiswa');
 
-        // 3. HITUNG KELAS
-        let kelas = await getAllData('kelas').catch(() => []);
-        if (!kelas || kelas.length === 0) {
-            kelas = await getAllData('data_kelas').catch(() => []);
-        }
-        setJumlah('totalKelas', kelas ? kelas.length : 0);
+    // 3. HITUNG DATA KELAS
+    await hitungTotal(['kelas', 'data_kelas', 'kelass', 'tb_kelas'], 'totalKelas');
 
-        // 4. HITUNG MAPEL
-        let mapel = await getAllData('mapel').catch(() => []);
-        if (!mapel || mapel.length === 0) {
-            mapel = await getAllData('data_mapel').catch(() => []);
-        }
-        setJumlah('totalMapel', mapel ? mapel.length : 0);
-
-    } catch (err) {
-        console.error("Gagal memuat statistik dashboard:", err);
-    }
+    // 4. HITUNG DATA MAPEL
+    await hitungTotal(['mapel', 'data_mapel', 'mapels', 'tb_mapel'], 'totalMapel');
 }
 
-// Fungsi pembantu memperbarui elemen HTML
-function setJumlah(elementId, jumlah) {
+async function hitungTotal(kumpulanNamaStore, elementId) {
+    let totalData = 0;
+
+    for (const storeName of kumpulanNamaStore) {
+        try {
+            const data = await getAllData(storeName);
+            if (data && Array.isArray(data) && data.length > 0) {
+                totalData = data.length;
+                break; // Hentikan pencarian jika data ditemukan pada salah satu store
+            }
+        } catch (err) {
+            // Lanjut mencoba nama store berikutnya jika store ini belum ada
+        }
+    }
+
     const el = document.getElementById(elementId);
     if (el) {
-        el.textContent = jumlah;
+        el.textContent = totalData;
     }
 }
