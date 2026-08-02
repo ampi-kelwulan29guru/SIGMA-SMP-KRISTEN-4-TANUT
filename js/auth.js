@@ -1,14 +1,18 @@
-// Memeriksa Sesi Login & Pembatasan Menu
 document.addEventListener('DOMContentLoaded', () => {
     checkAuthStatus();
 });
 
 function checkAuthStatus() {
     const session = JSON.parse(localStorage.getItem('sigma_session'));
-    const isLoginPage = window.location.pathname.includes('login.html');
+    const isLoginPage = window.location.pathname.includes('login.html') || window.location.pathname.endsWith('index.html');
 
     if (!session && !isLoginPage) {
         window.location.href = 'login.html';
+        return;
+    }
+
+    if (session && isLoginPage) {
+        window.location.href = 'dashboard.html';
         return;
     }
 
@@ -17,38 +21,86 @@ function checkAuthStatus() {
     }
 }
 
-// Logika Pembatasan Fitur Per Role (Guru Mapel, Wali Kelas, Admin)
+// Logika Login Otomatis berdasarkan Identitas
+const formLogin = document.getElementById('formLogin');
+if (formLogin) {
+    formLogin.addEventListener('submit', async (e) => {
+        e.preventDefault();
+
+        const inputIdentity = document.getElementById('loginUser').value.trim();
+        const inputPass = document.getElementById('loginPass').value.trim();
+
+        // 1. Cek jika Akun Administrator
+        if (inputIdentity.toLowerCase() === 'admin' && inputPass === 'admin123') {
+            saveSessionAndRedirect({
+                role: 'admin',
+                username: 'admin',
+                namaGuru: 'Administrator',
+                kelasBimbingan: ''
+            });
+            return;
+        }
+
+        // 2. Ambil Daftar Guru dari Database
+        let listGuru = await getAllData('guru').catch(() => []);
+        if (!listGuru || listGuru.length === 0) {
+            listGuru = await getAllData('data_guru').catch(() => []);
+        }
+
+        // 3. Cari Guru Berdasarkan NIP, NIK, atau Username
+        const foundGuru = listGuru.find(g => {
+            const nip = (g.nip || g.nipGuru || '').toString().trim();
+            const nik = (g.nik || g.nikGuru || '').toString().trim();
+            const uname = (g.username || '').toString().trim();
+
+            return (nip && nip === inputIdentity) || 
+                   (nik && nik === inputIdentity) || 
+                   (uname && uname.toLowerCase() === inputIdentity.toLowerCase());
+        });
+
+        if (foundGuru) {
+            // Tentukan Peran Otomatis (Wali Kelas atau Guru Mapel)
+            const isWaliKelas = foundGuru.isWaliKelas || foundGuru.jabatan?.toLowerCase().includes('wali') || Boolean(foundGuru.kelasBimbingan);
+            const userRole = isWaliKelas ? 'wali_kelas' : 'guru_mapel';
+
+            saveSessionAndRedirect({
+                role: userRole,
+                username: inputIdentity,
+                namaGuru: foundGuru.nama || foundGuru.namaGuru,
+                kelasBimbingan: foundGuru.kelasBimbingan || foundGuru.kelas || '',
+                nipNik: inputIdentity
+            });
+        } else {
+            alert('Akses Ditolak: NIP, NIK, atau Username tidak terdaftar dalam database guru!');
+        }
+    });
+}
+
+function saveSessionAndRedirect(sessionData) {
+    sessionData.loginTime = new Date().toISOString();
+    localStorage.setItem('sigma_session', JSON.stringify(sessionData));
+    window.location.href = 'dashboard.html';
+}
+
+// Pembatasan Akses Menu Sesuai Peran Otomatis
 function applyRolePermissions(session) {
     const currentPage = window.location.pathname.split('/').pop();
 
     if (session.role === 'guru_mapel') {
-        // Guru Mapel: Sembunyikan Data Guru, Siswa, Kelas, Mapel
         hideSidebarLinks(['guru.html', 'siswa.html', 'kelas.html', 'mapel.html']);
-
-        // Proteksi URL Langsung
-        const restrictedPages = ['guru.html', 'siswa.html', 'kelas.html', 'mapel.html'];
-        if (restrictedPages.includes(currentPage)) {
-            alert('Akses Ditolak: Fitur Master Data tidak tersedia untuk Guru Mapel.');
+        if (['guru.html', 'siswa.html', 'kelas.html', 'mapel.html'].includes(currentPage)) {
+            alert('Akses Ditolak: Halaman Master Data khusus Administrator.');
             window.location.href = 'dashboard.html';
         }
-
     } else if (session.role === 'wali_kelas') {
-        // Wali Kelas: Sembunyikan Data Guru dan Mapel
         hideSidebarLinks(['guru.html', 'mapel.html']);
-
-        // Proteksi URL Langsung
-        const restrictedPages = ['guru.html', 'mapel.html'];
-        if (restrictedPages.includes(currentPage)) {
-            alert('Akses Ditolak: Fitur ini tidak tersedia untuk Wali Kelas.');
+        if (['guru.html', 'mapel.html'].includes(currentPage)) {
+            alert('Akses Ditolak: Fitur ini khusus Administrator.');
             window.location.href = 'dashboard.html';
         }
-
-    } else if (session.role === 'admin') {
-        // Admin: Akses penuh ke seluruh halaman (tidak ada pembatasan/penyembunyian menu)
     }
 }
 
-// Helper Menyembunyikan Menu Sidebar
 function hideSidebarLinks(pageList) {
     pageList.forEach(page => {
         const links = document.querySelectorAll(`a[href="${page}"]`);
@@ -62,30 +114,6 @@ function hideSidebarLinks(pageList) {
     });
 }
 
-// Handler Form Login
-const formLogin = document.getElementById('formLogin');
-if (formLogin) {
-    formLogin.addEventListener('submit', (e) => {
-        e.preventDefault();
-
-        const role = document.getElementById('loginRole').value;
-        const selectGuru = document.getElementById('selectGuruLogin');
-        const selectKelas = document.getElementById('selectKelasWali');
-
-        const sessionData = {
-            role: role,
-            username: document.getElementById('loginUser').value.trim(),
-            namaGuru: role === 'admin' ? 'Administrator' : (selectGuru ? selectGuru.value : ''),
-            kelasBimbingan: role === 'wali_kelas' ? (selectKelas ? selectKelas.value : '') : '',
-            loginTime: new Date().toISOString()
-        };
-
-        localStorage.setItem('sigma_session', JSON.stringify(sessionData));
-        window.location.href = 'dashboard.html';
-    });
-}
-
-// Fungsi Logout
 function logout() {
     if (confirm('Apakah Anda yakin ingin keluar?')) {
         localStorage.removeItem('sigma_session');
