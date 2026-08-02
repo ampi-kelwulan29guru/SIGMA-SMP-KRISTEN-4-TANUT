@@ -45,10 +45,11 @@
             transform: translateX(3px);
         }
 
-        /* STYLING PROFIL GURU DI ATAS TOMBOL HOME */
+        /* STYLING PROFIL GURU BAR ATAS */
         #userProfileBadge {
             font-weight: 600;
             color: #212529 !important;
+            margin-bottom: 0 !important;
         }
 
         #userProfileBadge * {
@@ -108,13 +109,13 @@
                     <a class="nav-link text-white opacity-90 rounded-3 py-2 px-3" href="dashboard.html">
                         <i class="bi bi-speedometer2 me-2"></i>Dashboard
                     </a>
-                    <a class="nav-link text-white opacity-90 rounded-3 py-2 px-3 admin-only" href="guru.html">
+                    <a class="nav-link text-white opacity-90 rounded-3 py-2 px-3" href="guru.html">
                         <i class="bi bi-person-badge me-2"></i>Data Guru
                     </a>
                     <a class="nav-link text-white opacity-90 rounded-3 py-2 px-3" href="siswa.html">
                         <i class="bi bi-mortarboard me-2"></i>Data Siswa
                     </a>
-                    <a class="nav-link text-white opacity-90 rounded-3 py-2 px-3 admin-only" href="kelas.html">
+                    <a class="nav-link text-white opacity-90 rounded-3 py-2 px-3" href="kelas.html">
                         <i class="bi bi-building me-2"></i>Data Kelas
                     </a>
                     <a class="nav-link text-white opacity-90 rounded-3 py-2 px-3" href="mapel.html">
@@ -139,21 +140,15 @@
         <!-- KANAN: KONTEN UTAMA JURNAL -->
         <div class="col-lg-10 col-md-9">
 
-            <!-- BAR NAVIGASI ATAS -->
-            <div class="bg-white p-3 rounded-4 shadow-sm mb-3 border">
-                <!-- Profil Nama Guru (Posisi di atas tombol home) -->
-                <div id="userProfileBadge" class="mb-2 pb-2 border-bottom d-flex align-items-center gap-2"></div>
+            <!-- BAR NAVIGASI ATAS: NAMA GURU & IKON HOME (SEJAJAR) -->
+            <div class="bg-white p-3 rounded-4 shadow-sm mb-3 border d-flex justify-content-between align-items-center">
+                <!-- Sisi Kiri: Profil Nama Guru -->
+                <div id="userProfileBadge" class="d-flex align-items-center gap-2"></div>
 
-                <div class="d-flex justify-content-between align-items-center">
-                    <!-- Tombol Home / Kembali ke Dashboard -->
-                    <a href="dashboard.html" class="btn btn-outline-danger fw-bold rounded-3 px-3 py-2 d-inline-flex align-items-center gap-2">
-                        <i class="bi bi-house-door-fill fs-5"></i>
-                        <span>Kembali ke Dashboard</span>
-                    </a>
-                    <span class="text-muted small d-none d-md-inline-block fw-semibold">
-                        <i class="bi bi-info-circle me-1 text-primary"></i> Modul Jurnal Pembelajaran
-                    </span>
-                </div>
+                <!-- Sisi Kanan: Tombol Home (Hanya Ikon) -->
+                <a href="dashboard.html" class="btn btn-danger rounded-circle p-0 d-inline-flex align-items-center justify-content-center shadow-sm" style="width: 40px; height: 40px;" title="Kembali ke Dashboard">
+                    <i class="bi bi-house-door-fill fs-5"></i>
+                </a>
             </div>
 
             <!-- Banner Header Modul -->
