@@ -4,49 +4,122 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Input Absensi - SIGMA EDU PRO</title>
+
+    <!-- Bootstrap & Icons -->
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
     <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.css" rel="stylesheet">
     <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+
+    <!-- CSS Lokal -->
     <link rel="stylesheet" href="../css/style.css">
     <link rel="stylesheet" href="../css/dashboard.css">
+    <link rel="stylesheet" href="../css/responsive.css">
+
     <style>
-        body { font-family: 'Poppins', sans-serif; background-color: #f4f6f9; padding: 20px 0 40px; }
-        .sidebar-menu { background: linear-gradient(180deg, #800020 0%, #4a0013 100%); border-radius: 16px; padding: 24px 16px; }
-        #userProfileBadge, #userProfileBadge * { color: #ffffff !important; }
-        .banner-modul { background: linear-gradient(135deg, #ffc107 0%, #d39e00 100%); border: none; border-radius: 16px; }
+        body {
+            font-family: 'Poppins', sans-serif;
+            background-color: #f4f6f9;
+            padding-top: 20px;
+            padding-bottom: 40px;
+            margin: 0;
+        }
+
+        /* SIDEBAR STYLING */
+        .sidebar-menu {
+            background: linear-gradient(180deg, #800020 0%, #4a0013 100%);
+            border-radius: 16px;
+            padding: 24px 16px;
+            box-shadow: 0 4px 15px rgba(128, 0, 32, 0.15);
+        }
+
+        #userProfileBadge, #userProfileBadge * {
+            color: #ffffff !important;
+        }
+
+        /* BANNER MODUL ABSENSI */
+        .banner-modul {
+            background: linear-gradient(135deg, #ffc107 0%, #d39e00 100%);
+            border: none;
+            box-shadow: 0 4px 15px rgba(255, 193, 7, 0.15);
+            border-radius: 16px;
+        }
+
+        .card-custom {
+            border: 1px solid rgba(0, 0, 0, 0.05);
+            border-radius: 16px;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.03);
+        }
+
+        .table thead th {
+            background-color: #f8f9fa;
+            color: #495057;
+            font-weight: 600;
+            text-transform: uppercase;
+            font-size: 12px;
+            letter-spacing: 0.5px;
+            border-bottom: 2px solid #dee2e6;
+        }
     </style>
 </head>
 <body>
+
 <div class="container-fluid px-4">
     <div class="row g-3">
-        <!-- SIDEBAR -->
+
+        <!-- KIRI: SIDEBAR NAVIGATION -->
         <div class="col-lg-2 col-md-3">
             <div class="sidebar-menu text-white text-center">
-                <div class="mb-3">
-                    <img src="../logo-sekolah.jpg" alt="Logo" class="img-fluid mb-2" style="max-height: 70px;">
-                    <h5 class="fw-bold mb-0">SIGMA EDU</h5>
+                
+                <!-- Logo & Judul -->
+                <div class="mb-3 text-center">
+                    <img src="../logo-sekolah.jpg" alt="Logo SMP Kristen 4 Tanut" class="img-fluid mb-2" style="max-height: 70px; filter: drop-shadow(0px 2px 4px rgba(0,0,0,0.3));">
+                    <h5 class="fw-bold mb-0" style="letter-spacing: 0.5px;">SIGMA EDU</h5>
                     <span class="badge bg-warning text-dark fw-bold my-1 px-3 py-1 rounded-pill" style="font-size: 10px;">PRO</span>
                     <p class="small text-white-50 mb-0" style="font-size: 11px;">SMP Kristen 4 Tanut</p>
                 </div>
+
+                <!-- Profile Info Header Badge -->
                 <div id="userProfileBadge" class="my-2 text-center"></div>
+
                 <hr class="border-light opacity-25 my-3">
+
+                <!-- Menu Sidebar -->
                 <div class="nav flex-column gap-2 text-start">
-                    <a class="nav-link text-white rounded-3 py-2 px-3" href="dashboard.html"><i class="bi bi-speedometer2 me-2"></i>Dashboard</a>
-                    <a class="nav-link text-white rounded-3 py-2 px-3 admin-only" href="guru.html"><i class="bi bi-person-badge me-2"></i>Data Guru</a>
-                    <a class="nav-link text-white rounded-3 py-2 px-3" href="siswa.html"><i class="bi bi-mortarboard me-2"></i>Data Siswa</a>
-                    <a class="nav-link text-white rounded-3 py-2 px-3 admin-only" href="kelas.html"><i class="bi bi-building me-2"></i>Data Kelas</a>
-                    <a class="nav-link text-white rounded-3 py-2 px-3" href="mapel.html"><i class="bi bi-book me-2"></i>Mata Pelajaran</a>
-                    <a class="nav-link active bg-warning text-dark fw-bold rounded-3 py-2 px-3" href="absensi.html"><i class="bi bi-calendar-check me-2"></i>Absensi</a>
-                    <a class="nav-link text-white rounded-3 py-2 px-3" href="jurnal.html"><i class="bi bi-journal-bookmark me-2"></i>Jurnal Mengajar</a>
-                    <a class="nav-link text-white rounded-3 py-2 px-3" href="nilai.html"><i class="bi bi-award me-2"></i>Nilai Siswa</a>
-                    <button class="btn btn-danger w-100 fw-semibold rounded-3 mt-3 py-2 border-0" onclick="logout()"><i class="bi bi-box-arrow-right me-2"></i>Logout</button>
+                    <a class="nav-link text-white opacity-90 rounded-3 py-2 px-3" href="dashboard.html">
+                        <i class="bi bi-speedometer2 me-2"></i>Dashboard
+                    </a>
+                    <a class="nav-link text-white opacity-90 rounded-3 py-2 px-3 admin-only" href="guru.html">
+                        <i class="bi bi-person-badge me-2"></i>Data Guru
+                    </a>
+                    <a class="nav-link text-white opacity-90 rounded-3 py-2 px-3" href="siswa.html">
+                        <i class="bi bi-mortarboard me-2"></i>Data Siswa
+                    </a>
+                    <a class="nav-link text-white opacity-90 rounded-3 py-2 px-3 admin-only" href="kelas.html">
+                        <i class="bi bi-building me-2"></i>Data Kelas
+                    </a>
+                    <a class="nav-link text-white opacity-90 rounded-3 py-2 px-3" href="mapel.html">
+                        <i class="bi bi-book me-2"></i>Mata Pelajaran
+                    </a>
+                    <a class="nav-link active bg-warning text-dark fw-bold rounded-3 py-2 px-3 shadow-sm" href="absensi.html">
+                        <i class="bi bi-calendar-check me-2"></i>Absensi
+                    </a>
+                    <a class="nav-link text-white opacity-90 rounded-3 py-2 px-3" href="jurnal.html">
+                        <i class="bi bi-journal-bookmark me-2"></i>Jurnal Mengajar
+                    </a>
+                    <a class="nav-link text-white opacity-90 rounded-3 py-2 px-3" href="nilai.html">
+                        <i class="bi bi-award me-2"></i>Nilai Siswa
+                    </a>
+                    <button class="btn btn-danger w-100 fw-semibold rounded-3 mt-3 py-2 shadow-sm border-0" onclick="logout()">
+                        <i class="bi bi-box-arrow-right me-2"></i>Logout
+                    </button>
                 </div>
             </div>
         </div>
 
-        <!-- KONTEN UTAMA -->
+        <!-- KANAN: KONTEN UTAMA ABSENSI -->
         <div class="col-lg-10 col-md-9">
-            <!-- BAR TOMBOL HOME -->
+
+            <!-- BAR NAVIGASI ATAS: TOMBOL HOME -->
             <div class="d-flex justify-content-between align-items-center bg-white p-3 rounded-4 shadow-sm mb-3 border">
                 <a href="dashboard.html" class="btn btn-outline-danger fw-bold rounded-3 px-3 py-2 d-inline-flex align-items-center gap-2">
                     <i class="bi bi-house-door-fill fs-5"></i>
@@ -57,23 +130,66 @@
                 </span>
             </div>
 
-            <!-- Banner Header -->
+            <!-- Banner Header Modul -->
             <div class="card banner-modul text-dark p-4 mb-3">
-                <span class="badge bg-dark text-white fw-bold px-3 py-1 mb-2 rounded-pill style="width: fit-content;"><i class="bi bi-calendar-check-fill me-1"></i> MODUL ABSENSI</span>
-                <h3 class="fw-bold mb-1">Input Absensi Harian 📝</h3>
-                <p class="mb-0 text-dark-50 small">Pencatatan kehadiran siswa untuk Guru Mata Pelajaran dan Wali Kelas</p>
+                <div class="d-flex justify-content-between align-items-center flex-wrap gap-2">
+                    <div>
+                        <span class="badge bg-dark text-white fw-bold px-3 py-1 mb-2 rounded-pill">
+                            <i class="bi bi-calendar-check-fill me-1"></i> MODUL ABSENSI
+                        </span>
+                        <h3 class="fw-bold mb-1">Input Absensi Harian 📝</h3>
+                        <p class="mb-0 text-dark-50 small">Pencatatan kehadiran siswa untuk Guru Mata Pelajaran dan Wali Kelas</p>
+                    </div>
+                </div>
             </div>
-            
-            <!-- Konten Absensi Lainnya -->
-            <div class="card bg-white p-4 rounded-4 shadow-sm">
-                <!-- Form & Tabel Absensi disisipkan oleh absensi.js -->
+
+            <!-- Card Control & Tabel Absensi -->
+            <div class="card card-custom bg-white p-4">
+                <div class="row g-3 mb-4">
+                    <div class="col-md-4">
+                        <label class="form-label fw-semibold text-dark">Pilih Kelas</label>
+                        <select id="selectKelasAbsensi" class="form-select rounded-3">
+                            <option value="Kelas 7">Kelas 7</option>
+                            <option value="Kelas 8">Kelas 8</option>
+                            <option value="Kelas 9">Kelas 9</option>
+                        </select>
+                    </div>
+                    <div class="col-md-4">
+                        <label class="form-label fw-semibold text-dark">Tanggal Absensi</label>
+                        <input type="date" id="tanggalAbsensi" class="form-control rounded-3">
+                    </div>
+                    <div class="col-md-4 d-flex align-items-end">
+                        <button class="btn btn-success fw-bold rounded-3 w-100 py-2" onclick="simpanAbsensi()">
+                            <i class="bi bi-save me-1"></i> Simpan Absensi
+                        </button>
+                    </div>
+                </div>
+
+                <div class="table-responsive">
+                    <table class="table table-hover align-middle mb-0">
+                        <thead>
+                            <tr>
+                                <th class="text-center" style="width: 50px;">No</th>
+                                <th>NISN</th>
+                                <th>Nama Siswa</th>
+                                <th class="text-center" style="width: 250px;">Status Kehadiran</th>
+                            </tr>
+                        </thead>
+                        <tbody id="tabelAbsensi">
+                            <!-- Dimuat dinamis oleh absensi.js -->
+                        </tbody>
+                    </table>
+                </div>
             </div>
+
         </div>
     </div>
 </div>
+
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
 <script src="../js/db.js"></script>
 <script src="../js/auth.js"></script>
 <script src="../js/absensi.js"></script>
+
 </body>
 </html>
