@@ -1,50 +1,219 @@
-<!-- Form Input Siswa -->
-<form id="formSiswa" onsubmit="tambahSiswa(event)">
-    <div class="mb-3">
-        <label class="form-label">NISN</label>
-        <input type="number" id="inputNisn" class="form-control" placeholder="Masukkan NISN" required>
-    </div>
-    <div class="mb-3">
-        <label class="form-label">Nama Lengkap</label>
-        <input type="text" id="inputNama" class="form-control" placeholder="Masukkan Nama Siswa" required>
-    </div>
-    <div class="mb-3">
-        <label class="form-label">Kelas</label>
-        <select id="inputKelas" class="form-select">
-            <option value="Kelas 7">Kelas 7</option>
-            <option value="Kelas 8">Kelas 8</option>
-            <option value="Kelas 9">Kelas 9</option>
-        </select>
-    </div>
-    <div class="mb-3">
-        <label class="form-label">Jenis Kelamin</label>
-        <select id="inputGender" class="form-select">
-            <option value="Laki-laki">Laki-laki</option>
-            <option value="Perempuan">Perempuan</option>
-        </select>
-    </div>
-    <button type="submit" class="btn btn-primary w-100"><i class="bi bi-save me-1"></i> Simpan Data Siswa</button>
-</form>
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Data Siswa - SIGMA EDU PRO</title>
 
-<!-- Tabel Menampilkan Siswa -->
-<div class="table-responsive mt-4">
-    <table class="table table-striped align-middle">
-        <thead>
-            <tr>
-                <th>No</th>
-                <th>NISN</th>
-                <th>Nama Siswa</th>
-                <th>Kelas</th>
-                <th>L/P</th>
-                <th>Aksi</th>
-            </tr>
-        </thead>
-        <tbody id="tabelSiswa">
-            <!-- Data akan otomatis dirender di sini via JS -->
-        </tbody>
-    </table>
+    <!-- Bootstrap & Icons -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.css" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+
+    <!-- CSS Lokal -->
+    <link rel="stylesheet" href="../css/style.css">
+    <link rel="stylesheet" href="../css/dashboard.css">
+    <link rel="stylesheet" href="../css/responsive.css">
+
+    <style>
+        body {
+            font-family: 'Poppins', sans-serif;
+            background-color: #f4f6f9;
+            padding-top: 20px;
+            padding-bottom: 40px;
+            margin: 0;
+        }
+
+        /* SIDEBAR STYLING */
+        .sidebar-menu {
+            background: linear-gradient(180deg, #800020 0%, #4a0013 100%);
+            border-radius: 16px;
+            padding: 24px 16px;
+            box-shadow: 0 4px 15px rgba(128, 0, 32, 0.15);
+        }
+
+        /* BANNER MODUL SISWA */
+        .banner-modul {
+            background: linear-gradient(135deg, #198754 0%, #11653e 100%);
+            border: none;
+            box-shadow: 0 4px 15px rgba(25, 135, 84, 0.15);
+            border-radius: 16px;
+        }
+
+        .card-custom {
+            border: 1px solid rgba(0, 0, 0, 0.05);
+            border-radius: 16px;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.03);
+        }
+
+        .table thead th {
+            background-color: #f8f9fa;
+            color: #495057;
+            font-weight: 600;
+            text-transform: uppercase;
+            font-size: 12px;
+            letter-spacing: 0.5px;
+            border-bottom: 2px solid #dee2e6;
+        }
+    </style>
+</head>
+<body>
+
+<div class="container-fluid px-4">
+    <div class="row g-3">
+
+        <!-- KIRI: SIDEBAR NAVIGATION -->
+        <div class="col-lg-2 col-md-3">
+            <div class="sidebar-menu text-white text-center">
+                
+                <!-- Judul Aplikasi -->
+                <div class="mb-3 text-center">
+                    <h5 class="fw-bold mb-0" style="letter-spacing: 0.5px;">SIGMA EDU</h5>
+                    <span class="badge bg-warning text-dark fw-bold my-1 px-3 py-1 rounded-pill" style="font-size: 10px;">PRO</span>
+                    <p class="small text-white-50 mb-0" style="font-size: 11px;">SMP Kristen 4 Tanut</p>
+                </div>
+
+                <hr class="border-light opacity-25 my-3">
+
+                <!-- Menu Sidebar -->
+                <div class="nav flex-column gap-2 text-start">
+                    <a class="nav-link text-white opacity-90 rounded-3 py-2 px-3" href="dashboard.html">
+                        <i class="bi bi-speedometer2 me-2"></i>Dashboard
+                    </a>
+                    <a class="nav-link text-white opacity-90 rounded-3 py-2 px-3" href="guru.html">
+                        <i class="bi bi-person-badge me-2"></i>Data Guru
+                    </a>
+                    <a class="nav-link active bg-warning text-dark fw-bold rounded-3 py-2 px-3 shadow-sm" href="siswa.html">
+                        <i class="bi bi-mortarboard me-2"></i>Data Siswa
+                    </a>
+                    <a class="nav-link text-white opacity-90 rounded-3 py-2 px-3" href="kelas.html">
+                        <i class="bi bi-building me-2"></i>Data Kelas
+                    </a>
+                    <a class="nav-link text-white opacity-90 rounded-3 py-2 px-3" href="mapel.html">
+                        <i class="bi bi-book me-2"></i>Mata Pelajaran
+                    </a>
+                    <a class="nav-link text-white opacity-90 rounded-3 py-2 px-3" href="absensi.html">
+                        <i class="bi bi-calendar-check me-2"></i>Absensi
+                    </a>
+                    <a class="nav-link text-white opacity-90 rounded-3 py-2 px-3" href="jurnal.html">
+                        <i class="bi bi-journal-bookmark me-2"></i>Jurnal Mengajar
+                    </a>
+                    <a class="nav-link text-white opacity-90 rounded-3 py-2 px-3" href="nilai.html">
+                        <i class="bi bi-award me-2"></i>Nilai Siswa
+                    </a>
+                    <button class="btn btn-danger w-100 fw-semibold rounded-3 mt-3 py-2 shadow-sm border-0" onclick="logout()">
+                        <i class="bi bi-box-arrow-right me-2"></i>Logout
+                    </button>
+                </div>
+            </div>
+        </div>
+
+        <!-- KANAN: KONTEN UTAMA SISWA -->
+        <div class="col-lg-10 col-md-9">
+
+            <!-- Banner Header Modul -->
+            <div class="card banner-modul text-white p-4 mb-3">
+                <div class="d-flex justify-content-between align-items-center flex-wrap gap-2">
+                    <div>
+                        <span class="badge bg-light text-success fw-bold px-3 py-1 mb-2 rounded-pill">
+                            <i class="bi bi-mortarboard-fill me-1"></i> MODUL SISWA
+                        </span>
+                        <h3 class="fw-bold mb-1">Kelola Data Siswa 🎓</h3>
+                        <p class="mb-0 text-white-50 small">Manajemen biodata seluruh siswa-siswi SMP Kristen 4 Tanut</p>
+                    </div>
+                    <!-- Tombol Tambah yang Membuka Modal Pop-up -->
+                    <button class="btn btn-warning text-dark fw-bold rounded-3 px-4 py-2 shadow-sm" data-bs-toggle="modal" data-bs-target="#modalTambahSiswa">
+                        <i class="bi bi-plus-lg me-1"></i> Tambah Siswa Baru
+                    </button>
+                </div>
+            </div>
+
+            <!-- Card Tabel Data Siswa -->
+            <div class="card card-custom bg-white p-4">
+                <div class="d-flex justify-content-between align-items-center mb-3">
+                    <h6 class="fw-bold text-dark mb-0"><i class="bi bi-list-ul me-2 text-success"></i>Daftar Siswa Terdaftar</h6>
+                </div>
+
+                <div class="table-responsive">
+                    <table class="table table-hover align-middle mb-0">
+                        <thead>
+                            <tr>
+                                <th class="text-center" style="width: 50px;">No</th>
+                                <th>NISN</th>
+                                <th>Nama Lengkap</th>
+                                <th>Kelas</th>
+                                <th>Jenis Kelamin</th>
+                                <th class="text-center" style="width: 120px;">Aksi</th>
+                            </tr>
+                        </thead>
+                        <tbody id="tabelSiswa">
+                            <!-- Data akan otomatis dimasukkan via siswa.js -->
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+
+        </div>
+    </div>
 </div>
 
-<!-- Pemanggilan File JS di Bagian Bawah -->
+<!-- MODAL POP-UP FORM TAMBAH SISWA -->
+<div class="modal fade" id="modalTambahSiswa" tabindex="-1" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered">
+        <div class="modal-content border-0 shadow-lg" style="border-radius: 16px;">
+            <div class="modal-header bg-success text-white" style="border-top-left-radius: 16px; border-top-right-radius: 16px;">
+                <h5 class="modal-title fw-bold"><i class="bi bi-person-plus-fill me-2"></i>Tambah Data Siswa</h5>
+                <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <form id="formSiswa">
+                <div class="modal-body p-4">
+                    <div class="mb-3">
+                        <label class="form-label fw-semibold">NISN</label>
+                        <input type="number" id="inputNisn" class="form-control rounded-3" placeholder="Contoh: 0081234567" required>
+                    </div>
+                    <div class="mb-3">
+                        <label class="form-label fw-semibold">Nama Lengkap Siswa</label>
+                        <input type="text" id="inputNama" class="form-control rounded-3" placeholder="Masukkan nama lengkap" required>
+                    </div>
+                    <div class="mb-3">
+                        <label class="form-label fw-semibold">Kelas</label>
+                        <select id="inputKelas" class="form-select rounded-3" required>
+                            <option value="Kelas 7">Kelas 7</option>
+                            <option value="Kelas 8">Kelas 8</option>
+                            <option value="Kelas 9">Kelas 9</option>
+                        </select>
+                    </div>
+                    <div class="mb-3">
+                        <label class="form-label fw-semibold">Jenis Kelamin</label>
+                        <select id="inputGender" class="form-select rounded-3" required>
+                            <option value="Laki-laki">Laki-laki</option>
+                            <option value="Perempuan">Perempuan</option>
+                        </select>
+                    </div>
+                </div>
+                <div class="modal-footer bg-light border-0" style="border-bottom-left-radius: 16px; border-bottom-right-radius: 16px;">
+                    <button type="button" class="btn btn-secondary rounded-3 fw-semibold" data-bs-dismiss="modal">Batal</button>
+                    <button type="submit" class="btn btn-success rounded-3 fw-semibold"><i class="bi bi-save me-1"></i> Simpan Data</button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+
+<!-- SCRIPT LOKAL -->
 <script src="../js/db.js"></script>
+<script src="../js/auth.js"></script>
 <script src="../js/siswa.js"></script>
+
+<!-- SERVICE WORKER UNTUK OFFLINE -->
+<script>
+    if ('serviceWorker' in navigator) {
+        navigator.serviceWorker.register('../sw.js', { scope: '../' })
+            .then(() => console.log('Halaman ini Siap Offline!'))
+            .catch((err) => console.log('Gagal Offline:', err));
+    }
+</script>
+</body>
+</html>
