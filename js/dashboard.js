@@ -1,51 +1,48 @@
-document.addEventListener('DOMContentLoaded', updateDashboardStats);
+// Jalankan penghitungan data setelah halaman & database siap
+document.addEventListener('DOMContentLoaded', () => {
+    // Memberikan jeda singkat agar db.js selesai inisialisasi IndexedDB
+    setTimeout(hitungStatistikDashboard, 300);
+});
 
-async function updateDashboardStats() {
+async function hitungStatistikDashboard() {
     try {
-        // 1. HITUNG DATA GURU (Cek store 'guru', 'data_guru', atau 'gurus')
-        let totalGuruCount = 0;
-        try {
-            let dataGuru = await getAllData('guru');
-            if (!dataGuru || dataGuru.length === 0) {
-                dataGuru = await getAllData('data_guru');
-            }
-            if (!dataGuru || dataGuru.length === 0) {
-                dataGuru = await getAllData('gurus');
-            }
-            totalGuruCount = dataGuru ? dataGuru.length : 0;
-        } catch (e) {
-            console.log("Mencoba membaca store guru...", e);
+        // 1. HITUNG GURU
+        let guru = await getAllData('guru').catch(() => []);
+        if (!guru || guru.length === 0) {
+            guru = await getAllData('data_guru').catch(() => []);
         }
+        setJumlah('totalGuru', guru ? guru.length : 0);
 
-        // Tampilkan angka Guru
-        const elGuru = document.getElementById('totalGuru');
-        if (elGuru) elGuru.textContent = totalGuruCount;
+        // 2. HITUNG SISWA
+        let siswa = await getAllData('siswa').catch(() => []);
+        if (!siswa || siswa.length === 0) {
+            siswa = await getAllData('data_siswa').catch(() => []);
+        }
+        setJumlah('totalSiswa', siswa ? siswa.length : 0);
 
-        // 2. HITUNG DATA SISWA
-        try {
-            let dataSiswa = await getAllData('siswa');
-            if (!dataSiswa || dataSiswa.length === 0) dataSiswa = await getAllData('data_siswa');
-            const elSiswa = document.getElementById('totalSiswa');
-            if (elSiswa) elSiswa.textContent = dataSiswa ? dataSiswa.length : 0;
-        } catch (e) {}
+        // 3. HITUNG KELAS
+        let kelas = await getAllData('kelas').catch(() => []);
+        if (!kelas || kelas.length === 0) {
+            kelas = await getAllData('data_kelas').catch(() => []);
+        }
+        setJumlah('totalKelas', kelas ? kelas.length : 0);
 
-        // 3. HITUNG DATA KELAS
-        try {
-            let dataKelas = await getAllData('kelas');
-            if (!dataKelas || dataKelas.length === 0) dataKelas = await getAllData('data_kelas');
-            const elKelas = document.getElementById('totalKelas');
-            if (elKelas) elKelas.textContent = dataKelas ? dataKelas.length : 0;
-        } catch (e) {}
-
-        // 4. HITUNG DATA MAPEL
-        try {
-            let dataMapel = await getAllData('mapel');
-            if (!dataMapel || dataMapel.length === 0) dataMapel = await getAllData('data_mapel');
-            const elMapel = document.getElementById('totalMapel');
-            if (elMapel) elMapel.textContent = dataMapel ? dataMapel.length : 0;
-        } catch (e) {}
+        // 4. HITUNG MAPEL
+        let mapel = await getAllData('mapel').catch(() => []);
+        if (!mapel || mapel.length === 0) {
+            mapel = await getAllData('data_mapel').catch(() => []);
+        }
+        setJumlah('totalMapel', mapel ? mapel.length : 0);
 
     } catch (err) {
-        console.error("Gagal memperbarui statistik dashboard:", err);
+        console.error("Gagal memuat statistik dashboard:", err);
+    }
+}
+
+// Fungsi pembantu memperbarui elemen HTML
+function setJumlah(elementId, jumlah) {
+    const el = document.getElementById(elementId);
+    if (el) {
+        el.textContent = jumlah;
     }
 }
