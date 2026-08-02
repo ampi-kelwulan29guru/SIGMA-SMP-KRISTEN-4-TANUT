@@ -1,7 +1,7 @@
-const CACHE_NAME = 'sigma-edu-v1';
+const CACHE_NAME = 'sigma-edu-v2';
 
-// Daftar asset menggunakan path relatif agar cocok untuk GitHub Pages
-const ASSETS = [
+// Asset utama yang wajib ada saat pertama kali dibuka
+const INITIAL_ASSETS = [
   './',
   './index.html',
   './pages/dashboard.html',
@@ -21,20 +21,39 @@ const ASSETS = [
   'https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap'
 ];
 
-// Simpan file ke memori (Cache Storage) saat install
-self.addEventListener('install', (e) => {
-  e.waitUntil(
+// 1. Install & simpan asset dasar
+self.addEventListener('install', (event) => {
+  event.waitUntil(
     caches.open(CACHE_NAME).then((cache) => {
-      return cache.addAll(ASSETS);
+      return cache.addAll(INITIAL_ASSETS);
     })
   );
+  self.skipWaiting();
 });
 
-// Jalankan secara offline dengan mengambil data dari cache
-self.addEventListener('fetch', (e) => {
-  e.respondWith(
-    caches.match(e.request).then((response) => {
-      return response || fetch(e.request);
-    })
+// 2. Aktifkan Service Worker langsung
+self.addEventListener('activate', (event) => {
+  event.waitUntil(clients.claim());
+});
+
+// 3. Strategi Network First dengan Cache Fallback
+// Ambil data terbaru dari jaringan, jika offline langsung ambil dari memori (cache)
+self.addEventListener('fetch', (event) => {
+  event.respondWith(
+    fetch(event.request)
+      .then((response) => {
+        // Jika berhasil konek, simpan update-an halaman ke cache
+        if (response.status === 200) {
+          const responseClone = response.clone();
+          caches.open(CACHE_NAME).then((cache) => {
+            cache.put(event.request, responseClone);
+          });
+        }
+        return response;
+      })
+      .catch(() => {
+        // Jika offline, ambil dari memori cache
+        return caches.match(event.request);
+      })
   );
 });
