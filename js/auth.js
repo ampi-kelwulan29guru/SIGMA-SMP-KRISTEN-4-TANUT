@@ -77,6 +77,7 @@ if (formLogin) {
                     username: inputIdentity,
                     namaGuru: foundGuru.nama || foundGuru.namaGuru,
                     kelasBimbingan: foundGuru.kelasBimbingan || foundGuru.kelas || '',
+                    mapel: foundGuru.mapel || foundGuru.mataPelajaran || '',
                     nipNik: inputIdentity
                 });
             } else {
@@ -94,7 +95,74 @@ function saveSessionAndRedirect(sessionData) {
     window.location.href = 'dashboard.html';
 }
 
-// Fungsi Modal Ganti Password
+// ==========================================
+// KONTROL HAK AKSES PERAN (RBAC INTEGRATION)
+// ==========================================
+
+function applyRolePermissions(session) {
+    const role = session.role; // 'admin', 'wali_kelas', atau 'guru_mapel'
+
+    // 1. Sembunyikan elemen khusus admin
+    if (role !== 'admin') {
+        document.querySelectorAll('.admin-only').forEach(el => el.style.display = 'none');
+    }
+
+    // 2. Pembatasan Sidebar Navigation
+    if (role === 'guru_mapel') {
+        // Guru Mapel tidak diizinkan mengelola Master Data Guru & Kelas
+        const navGuru = document.querySelector('a[href="guru.html"]');
+        const navKelas = document.querySelector('a[href="kelas.html"]');
+        if (navGuru) navGuru.parentElement.style.display = 'none';
+        if (navKelas) navKelas.parentElement.style.display = 'none';
+    }
+
+    // 3. Batasi Fitur Operasi (Tambah, Edit, Hapus Master Data)
+    if (role !== 'admin') {
+        document.querySelectorAll('.btn-tambah-master, .btn-hapus-master, .btn-edit-master').forEach(btn => {
+            btn.style.display = 'none';
+        });
+    }
+
+    // 4. Kunci Filter Dropdown (Konteks Wali Kelas & Guru Mapel)
+    filterFormOptionsByRole(session);
+}
+
+function filterFormOptionsByRole(session) {
+    const selectKelas = document.getElementById('selectKelas');
+    const selectMapel = document.getElementById('selectMapel');
+
+    // Kunci Pilihan Kelas untuk Wali Kelas
+    if (session.role === 'wali_kelas' && selectKelas && session.kelasBimbingan) {
+        selectKelas.value = session.kelasBimbingan;
+        selectKelas.setAttribute('disabled', 'disabled');
+    }
+
+    // Kunci Pilihan Mapel untuk Guru Mapel
+    if (session.role === 'guru_mapel' && selectMapel && session.mapel) {
+        selectMapel.value = session.mapel;
+        selectMapel.setAttribute('disabled', 'disabled');
+    }
+}
+
+function renderUserProfileHeader(session) {
+    const userBadgeContainer = document.getElementById('userProfileBadge');
+    if (!userBadgeContainer) return;
+
+    const badgeColor = session.role === 'admin' ? 'bg-danger' : (session.role === 'wali_kelas' ? 'bg-warning text-dark' : 'bg-info text-dark');
+    const labelRole = session.role === 'admin' ? 'ADMINISTRATOR' : (session.role === 'wali_kelas' ? `WALI KELAS (${session.kelasBimbingan})` : 'GURU MAPEL');
+
+    userBadgeContainer.innerHTML = `
+        <div class="d-flex align-items-center gap-2">
+            <span class="badge ${badgeColor} px-3 py-2 rounded-pill fw-bold">${labelRole}</span>
+            <span class="fw-semibold text-dark">${session.namaGuru}</span>
+            <button class="btn btn-sm btn-outline-secondary rounded-circle ms-1" onclick="openChangePasswordModal()" title="Ganti Password">
+                <i class="bi bi-key-fill"></i>
+            </button>
+        </div>
+    `;
+}
+
+// Modal Ganti Password
 function openChangePasswordModal() {
     let modalElement = document.getElementById('modalChangePassword');
     if (!modalElement) {
