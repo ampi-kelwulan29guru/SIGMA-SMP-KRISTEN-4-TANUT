@@ -133,22 +133,23 @@
         <!-- KANAN: KONTEN DASHBOARD -->
         <div class="col-lg-9 col-xl-10">
 
-            <!-- Banner Selamat Datang -->
-            <div class="card banner-welcome text-white p-4 mb-4">
-                <div class="d-flex justify-content-between align-items-center flex-wrap gap-3">
-                    <div>
-                        <span class="badge bg-warning text-dark fw-bold px-3 py-1 mb-2 rounded-pill">
-                            <i class="bi bi-star-fill me-1"></i> SIGMA EDU PRO
-                        </span>
-                        <h3 class="fw-bold mb-1">Selamat Datang di SIGMA EDU PRO 👋</h3>
-                        <p class="mb-0 text-white-50">Sistem Informasi Administrasi Guru & Sekolah — SMP Kristen 4 Tanut</p>
-                    </div>
-                    <!-- Tombol Sinkron Data Guru/Wali Kelas -->
-                    <button id="btnSync" class="btn btn-warning text-dark fw-bold px-3 py-2 rounded-3 shadow-sm" onclick="prosesSinkronisasiData()">
-                        <i class="bi bi-arrow-repeat me-1" id="iconSync"></i> Sinkron Data
-                    </button>
-                </div>
-            </div>
+<!-- Banner Selamat Datang (Fixed Padding & Alignment) -->
+<div class="card banner-welcome text-white p-4 mb-4" style="min-height: 120px;">
+    <div class="d-flex justify-content-between align-items-center flex-wrap gap-3 pt-2">
+        <div>
+            <span class="badge bg-warning text-dark fw-bold px-3 py-1 mb-2 rounded-pill">
+                <i class="bi bi-star-fill me-1"></i> SIGMA EDU PRO
+            </span>
+            <h3 class="fw-bold mb-1 fs-4">Selamat Datang di SIGMA 👋</h3>
+            <p class="mb-0 text-white-50 small">Sistem Informasi Administrasi Guru & Sekolah — SMP Kristen 4 Tanut</p>
+        </div>
+        <div>
+            <button id="btnSync" class="btn btn-warning text-dark fw-bold px-3 py-2 rounded-3 shadow-sm" onclick="prosesSinkronisasiData()">
+                <i class="bi bi-arrow-repeat me-1" id="iconSync"></i> Sinkron Data
+            </button>
+        </div>
+    </div>
+</div>
 
             <!-- CARD STATISTIK STATS -->
             <div class="row g-3 mb-4">
