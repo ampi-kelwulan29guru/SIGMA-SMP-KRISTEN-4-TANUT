@@ -1,107 +1,74 @@
-// Database Helper untuk SIGMA EDU PRO (IndexedDB)
-const DB_NAME = 'SigmaEduDB';
-const DB_VERSION = 1;
+// ==========================================
+// 1. FUNGSI DATABASE LOKAL (LOCALSTORAGE)
+// ==========================================
 
-function openDB() {
-    return new Promise((resolve, reject) => {
-        const request = indexedDB.open(DB_NAME, DB_VERSION);
-
-        request.onupgradeneeded = (e) => {
-            const db = e.target.result;
-
-            if (!db.objectStoreNames.contains('guru')) {
-                db.createObjectStore('guru', { keyPath: 'id', autoIncrement: true });
-            }
-            if (!db.objectStoreNames.contains('siswa')) {
-                db.createObjectStore('siswa', { keyPath: 'id', autoIncrement: true });
-            }
-            if (!db.objectStoreNames.contains('kelas')) {
-                db.createObjectStore('kelas', { keyPath: 'id', autoIncrement: true });
-            }
-            if (!db.objectStoreNames.contains('mapel')) {
-                db.createObjectStore('mapel', { keyPath: 'id', autoIncrement: true });
-            }
-            if (!db.objectStoreNames.contains('absensi')) {
-                db.createObjectStore('absensi', { keyPath: 'id', autoIncrement: true });
-            }
-            if (!db.objectStoreNames.contains('jurnal')) {
-                db.createObjectStore('jurnal', { keyPath: 'id', autoIncrement: true });
-            }
-            if (!db.objectStoreNames.contains('nilai')) {
-                db.createObjectStore('nilai', { keyPath: 'id', autoIncrement: true });
-            }
-        };
-
-        request.onsuccess = async () => {
-            const db = request.result;
-
-            // AUTO-SEED DATA DEFAULT
-            try {
-                const tx = db.transaction('guru', 'readonly');
-                const store = tx.objectStore('guru');
-                const req = store.getAll();
-                req.onsuccess = () => {
-                    if (req.result.length === 0) {
-                        const writeTx = db.transaction('guru', 'readwrite');
-                        writeTx.objectStore('guru').add({
-                            nip: "198203212008041002",
-                            nama: "Edy Wenan S. Slarmanat, S.Pd",
-                            mapel: "Kepala Sekolah",
-                            hp: "082397523433"
-                        });
-                    }
-                };
-            } catch (err) {
-                console.error("Gagal melakukan auto-seed:", err);
-            }
-
-            resolve(db);
-        };
-
-        request.onerror = () => reject(request.error);
-    });
+// Fungsi membaca data dari LocalStorage
+function getData(key) {
+    const data = localStorage.getItem(key);
+    return data ? JSON.parse(data) : [];
 }
 
-async function getAllData(storeName) {
-    const db = await openDB();
-    return new Promise((resolve, reject) => {
-        const tx = db.transaction(storeName, 'readonly');
-        const store = tx.objectStore(storeName);
-        const req = store.getAll();
-        req.onsuccess = () => resolve(req.result);
-        req.onerror = () => reject(req.error);
-    });
+// Fungsi menyimpan data ke LocalStorage
+function saveData(key, data) {
+    localStorage.setItem(key, JSON.stringify(data));
 }
 
-async function addData(storeName, data) {
-    const db = await openDB();
-    return new Promise((resolve, reject) => {
-        const tx = db.transaction(storeName, 'readwrite');
-        const store = tx.objectStore(storeName);
-        store.add(data);
-        tx.oncomplete = () => resolve(true);
-        tx.onerror = () => reject(tx.error);
-    });
+// ==========================================
+// 2. FUNGSI BACKUP & RESTORE DATA (OFFLINE)
+// ==========================================
+
+// FUNGSI EKSPOR DATA KE JSON (BACKUP)
+function backupDataAplikasi() {
+    const dataBackup = {
+        guru: getData('data_guru'),
+        siswa: getData('data_siswa'),
+        kelas: getData('data_kelas'),
+        mapel: getData('data_mapel'),
+        absensi: getData('data_absensi'),
+        jurnal: getData('data_jurnal'),
+        nilai: getData('data_nilai'),
+        tanggalBackup: new Date().toISOString()
+    };
+
+    // Ubah data jadi file JSON
+    const dataStr = "data:text/json;charset=utf-8," + encodeURIComponent(JSON.stringify(dataBackup, null, 2));
+    const downloadAnchor = document.createElement('a');
+    
+    // Format nama file otomatis beserta tanggal
+    const tgl = new Date().toISOString().split('T')[0];
+    downloadAnchor.setAttribute("href", dataStr);
+    downloadAnchor.setAttribute("download", `BACKUP_SIGMA_EDU_${tgl}.json`);
+    document.body.appendChild(downloadAnchor);
+    
+    // Jalankan download
+    downloadAnchor.click();
+    downloadAnchor.remove();
 }
 
-async function updateData(storeName, data) {
-    const db = await openDB();
-    return new Promise((resolve, reject) => {
-        const tx = db.transaction(storeName, 'readwrite');
-        const store = tx.objectStore(storeName);
-        store.put(data);
-        tx.oncomplete = () => resolve(true);
-        tx.onerror = () => reject(tx.error);
-    });
-}
+// FUNGSI IMPOR DATA DARI JSON (RESTORE)
+function restoreDataAplikasi(event) {
+    const file = event.target.files[0];
+    if (!file) return;
 
-async function deleteData(storeName, id) {
-    const db = await openDB();
-    return new Promise((resolve, reject) => {
-        const tx = db.transaction(storeName, 'readwrite');
-        const store = tx.objectStore(storeName);
-        store.delete(id);
-        tx.oncomplete = () => resolve(true);
-        tx.onerror = () => reject(tx.error);
-    });
+    const reader = new FileReader();
+    reader.onload = function(e) {
+        try {
+            const dataRestored = JSON.parse(e.target.result);
+            
+            // Simpan kembali data ke LocalStorage
+            if(dataRestored.guru) saveData('data_guru', dataRestored.guru);
+            if(dataRestored.siswa) saveData('data_siswa', dataRestored.siswa);
+            if(dataRestored.kelas) saveData('data_kelas', dataRestored.kelas);
+            if(dataRestored.mapel) saveData('data_mapel', dataRestored.mapel);
+            if(dataRestored.absensi) saveData('data_absensi', dataRestored.absensi);
+            if(dataRestored.jurnal) saveData('data_jurnal', dataRestored.jurnal);
+            if(dataRestored.nilai) saveData('data_nilai', dataRestored.nilai);
+
+            alert("✅ Data berhasil dipulihkan (Restore)! Halaman akan dimuat ulang.");
+            window.location.reload();
+        } catch (error) {
+            alert("❌ Format file backup tidak valid!");
+        }
+    };
+    reader.readAsText(file);
 }
