@@ -24,16 +24,40 @@
             margin: 0;
         }
 
-        /* SIDEBAR STYLING */
+        /* SIDEBAR STYLING - DIPERBAIKI */
         .sidebar-menu {
             background: linear-gradient(180deg, #800020 0%, #4a0013 100%);
-            border-radius: 16px;
-            padding: 24px 16px;
-            box-shadow: 0 4px 15px rgba(128, 0, 32, 0.15);
+            border-radius: 20px;
+            padding: 20px 14px;
+            box-shadow: 0 4px 20px rgba(128, 0, 32, 0.2);
+            min-height: 100%;
+        }
+
+        /* PERBAIKAN CARD PROFIL AGAR TIDAK MELUAP */
+        #userProfileBadge {
+            background: rgba(255, 255, 255, 0.08);
+            border: 1px solid rgba(255, 255, 255, 0.15);
+            border-radius: 12px;
+            padding: 12px 8px;
+            word-break: break-word;
         }
 
         #userProfileBadge, #userProfileBadge * {
             color: #ffffff !important;
+        }
+
+        /* Styling Nav Link */
+        .sidebar-menu .nav-link {
+            font-size: 13.5px;
+            font-weight: 500;
+            transition: all 0.2s ease-in-out;
+            display: flex;
+            align-items: center;
+        }
+
+        .sidebar-menu .nav-link:hover {
+            background: rgba(255, 255, 255, 0.15) !important;
+            transform: translateX(3px);
         }
 
         /* BANNER MODUL JURNAL */
@@ -66,25 +90,25 @@
 <div class="container-fluid px-4">
     <div class="row g-3">
 
-        <!-- KIRI: SIDEBAR NAVIGATION -->
+        <!-- KIRI: SIDEBAR NAVIGATION (DI-RAPIKAN) -->
         <div class="col-lg-2 col-md-3">
-            <div class="sidebar-menu text-white text-center">
+            <div class="sidebar-menu text-white">
                 
                 <!-- Logo & Judul -->
-                <div class="mb-3 text-center">
-                    <img src="../logo-sekolah.jpg" alt="Logo SMP Kristen 4 Tanut" class="img-fluid mb-2" style="max-height: 70px; filter: drop-shadow(0px 2px 4px rgba(0,0,0,0.3));">
-                    <h5 class="fw-bold mb-0" style="letter-spacing: 0.5px;">SIGMA EDU</h5>
-                    <span class="badge bg-warning text-dark fw-bold my-1 px-3 py-1 rounded-pill" style="font-size: 10px;">PRO</span>
-                    <p class="small text-white-50 mb-0" style="font-size: 11px;">SMP Kristen 4 Tanut</p>
+                <div class="text-center mb-3">
+                    <img src="../logo-sekolah.jpg" alt="Logo SMP Kristen 4 Tanut" class="img-fluid mb-2" style="max-height: 65px; filter: drop-shadow(0px 2px 4px rgba(0,0,0,0.3));">
+                    <h6 class="fw-bold mb-0" style="letter-spacing: 0.5px;">SIGMA EDU</h6>
+                    <span class="badge bg-warning text-dark fw-bold my-1 px-2 py-1 rounded-pill" style="font-size: 9px;">PRO</span>
+                    <p class="text-white-50 mb-0" style="font-size: 10.5px;">SMP Kristen 4 Tanut</p>
                 </div>
 
-                <!-- Profile Info Header Badge -->
-                <div id="userProfileBadge" class="my-2 text-center"></div>
+                <!-- Profile Info Header Badge (Tampilan Otomatis Diatur Rapi) -->
+                <div id="userProfileBadge" class="my-3 text-center"></div>
 
                 <hr class="border-light opacity-25 my-3">
 
                 <!-- Menu Sidebar -->
-                <div class="nav flex-column gap-2 text-start">
+                <div class="nav flex-column gap-1">
                     <a class="nav-link text-white opacity-90 rounded-3 py-2 px-3" href="dashboard.html">
                         <i class="bi bi-speedometer2 me-2"></i>Dashboard
                     </a>
