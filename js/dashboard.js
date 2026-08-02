@@ -1,30 +1,23 @@
-document.addEventListener("DOMContentLoaded", async function () {
-    // Jalankan pembaruan data setelah halaman siap
-    setTimeout(async () => {
-        await updateDashboardStats();
-    }, 100);
+// Jalankan fungsi penghitung data saat halaman dashboard dimuat
+document.addEventListener('DOMContentLoaded', () => {
+    updateJumlahDashboard();
 });
 
-async function updateDashboardStats() {
-    try {
-        // Ambil data dari IndexedDB via db.js
-        const dataGuru = typeof getAllData === "function" ? await getAllData('guru') : [];
-        const dataSiswa = typeof getAllData === "function" ? await getAllData('siswa') : [];
-        const dataKelas = typeof getAllData === "function" ? await getAllData('kelas') : [];
-        const dataMapel = typeof getAllData === "function" ? await getAllData('mapel') : [];
+function updateJumlahDashboard() {
+    // Ambil data dari localStorage menggunakan fungsi di db.js (atau fallback array kosong)
+    const dataGuru = getData('data_guru') || [];
+    const dataSiswa = getData('data_siswa') || [];
+    const dataKelas = getData('data_kelas') || [];
+    const dataMapel = getData('data_mapel') || [];
 
-        // Update ke HTML (sesuai ID: totalGuru, totalSiswa, totalKelas, totalMapel)
-        const elGuru = document.getElementById("totalGuru");
-        const elSiswa = document.getElementById("totalSiswa");
-        const elKelas = document.getElementById("totalKelas");
-        const elMapel = document.getElementById("totalMapel");
+    // Tampilkan total ke elemen HTML angka statistik di dashboard
+    const elGuru = document.getElementById('totalGuru');
+    const elSiswa = document.getElementById('totalSiswa');
+    const elKelas = document.getElementById('totalKelas');
+    const elMapel = document.getElementById('totalMapel');
 
-        if (elGuru) elGuru.innerText = dataGuru ? dataGuru.length : 0;
-        if (elSiswa) elSiswa.innerText = dataSiswa ? dataSiswa.length : 0;
-        if (elKelas) elKelas.innerText = dataKelas ? dataKelas.length : 0;
-        if (elMapel) elMapel.innerText = dataMapel ? dataMapel.length : 0;
-
-    } catch (err) {
-        console.error("Gagal menghitung statistik dashboard:", err);
-    }
+    if (elGuru) elGuru.innerText = dataGuru.length;
+    if (elSiswa) elSiswa.innerText = dataSiswa.length;
+    if (elKelas) elKelas.innerText = dataKelas.length;
+    if (elMapel) elMapel.innerText = dataMapel.length;
 }
