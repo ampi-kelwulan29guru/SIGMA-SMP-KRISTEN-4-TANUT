@@ -49,9 +49,9 @@
         }
 
         .banner-modul {
-            background: linear-gradient(135deg, #dc3545 0%, #a71d2a 100%);
+            background: linear-gradient(135deg, #800020 0%, #a00028 100%);
             border: none;
-            box-shadow: 0 4px 15px rgba(220, 53, 69, 0.2);
+            box-shadow: 0 4px 15px rgba(128, 0, 32, 0.15);
             border-radius: 16px;
         }
 
@@ -135,10 +135,10 @@
                             <i class="bi bi-person-badge-fill me-1"></i> MODUL GURU
                         </span>
                         <h3 class="fw-bold mb-1">Kelola Data Guru 👨‍🏫</h3>
-                        <p class="mb-0 text-white-50 small">Manajemen daftar guru & pendidik SMP Kristen 4 Tanut</p>
+                        <p class="mb-0 text-white-50 small">SMP Kristen 4 Tanut</p>
                     </div>
-                    <button class="btn btn-light text-danger fw-bold rounded-3 px-4 py-2 shadow-sm" data-bs-toggle="modal" data-bs-target="#modalTambahGuru">
-                        <i class="bi bi-plus-lg me-1"></i> Tambah Guru Baru
+                    <button class="btn btn-primary fw-bold rounded-3 px-4 py-2 shadow-sm" data-bs-toggle="modal" data-bs-target="#modalTambahGuru">
+                        <i class="bi bi-plus-circle me-1"></i> Tambah Guru Baru
                     </button>
                 </div>
             </div>
@@ -154,14 +154,15 @@
                         <thead>
                             <tr>
                                 <th class="text-center" style="width: 50px;">No</th>
-                                <th>NIP / NPT</th>
+                                <th>NIP / NUPTK</th>
                                 <th>Nama Lengkap</th>
-                                <th>Mata Pelajaran / Tugas</th>
+                                <th>Jabatan</th>
+                                <th>No. HP/WA</th>
                                 <th class="text-center" style="width: 120px;">Aksi</th>
                             </tr>
                         </thead>
                         <tbody id="tabelGuru">
-                            <!-- Data dirender oleh js/guru.js -->
+                            <!-- Data dirender oleh JS -->
                         </tbody>
                     </table>
                 </div>
@@ -183,16 +184,20 @@
             <form id="formGuru">
                 <div class="modal-body p-4">
                     <div class="mb-3">
-                        <label class="form-label fw-semibold">NIP / NPT</label>
-                        <input type="text" id="inputNip" class="form-control rounded-3" placeholder="Contoh: 198501..." required>
+                        <label class="form-label fw-semibold">NIP / NUPTK</label>
+                        <input type="text" id="inputNip" class="form-control rounded-3" placeholder="Contoh: 19820321..." required>
                     </div>
                     <div class="mb-3">
                         <label class="form-label fw-semibold">Nama Lengkap & Gelar</label>
                         <input type="text" id="inputNamaGuru" class="form-control rounded-3" placeholder="Contoh: Bpk. John Doe, S.Pd." required>
                     </div>
                     <div class="mb-3">
-                        <label class="form-label fw-semibold">Mata Pelajaran / Mengajar</label>
-                        <input type="text" id="inputMapelGuru" class="form-control rounded-3" placeholder="Contoh: Matematika / IPA" required>
+                        <label class="form-label fw-semibold">Jabatan / Tugas</label>
+                        <input type="text" id="inputJabatan" class="form-control rounded-3" placeholder="Contoh: Kepala Sekolah / Guru Kelas" required>
+                    </div>
+                    <div class="mb-3">
+                        <label class="form-label fw-semibold">No. HP / WA</label>
+                        <input type="text" id="inputHp" class="form-control rounded-3" placeholder="Contoh: 08123456789">
                     </div>
                 </div>
                 <div class="modal-footer bg-light border-0" style="border-bottom-left-radius: 16px; border-bottom-right-radius: 16px;">
@@ -211,13 +216,5 @@
 <script src="../js/auth.js"></script>
 <script src="../js/guru.js"></script>
 
-<!-- SERVICE WORKER -->
-<script>
-    if ('serviceWorker' in navigator) {
-        navigator.serviceWorker.register('../sw.js', { scope: '../' })
-            .then(() => console.log('Halaman ini Siap Offline!'))
-            .catch((err) => console.log('Gagal Offline:', err));
-    }
-</script>
 </body>
 </html>
