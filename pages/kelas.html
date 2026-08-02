@@ -19,18 +19,38 @@
         body {
             font-family: 'Poppins', sans-serif;
             background-color: #f4f6f9;
-            padding-top: 20px;
-            padding-bottom: 40px;
+            padding: 20px 0;
             margin: 0;
         }
 
+        /* SIDEBAR STYLING */
         .sidebar-menu {
             background: linear-gradient(180deg, #800020 0%, #4a0013 100%);
             border-radius: 16px;
-            padding: 24px 16px;
+            padding: 20px 15px;
             box-shadow: 0 4px 15px rgba(128, 0, 32, 0.15);
         }
 
+        /* MENU SIDEBAR KONTRAS & JELAS */
+        .sidebar-menu .nav-link {
+            color: #ffffff !important;
+            font-weight: 500;
+            opacity: 0.9;
+            transition: all 0.2s ease;
+        }
+
+        .sidebar-menu .nav-link:hover {
+            opacity: 1;
+            background-color: rgba(255, 255, 255, 0.15);
+        }
+
+        .sidebar-menu .nav-link.active {
+            background-color: #ffc107 !important;
+            color: #000000 !important;
+            opacity: 1;
+        }
+
+        /* BANNER MODUL KELAS */
         .banner-modul {
             background: linear-gradient(135deg, #ffc107 0%, #d39e00 100%);
             border: none;
@@ -58,46 +78,46 @@
 <body>
 
 <div class="container-fluid px-4">
-    <div class="row g-3">
+    <div class="row g-4">
 
-        <!-- KIRI: SIDEBAR NAVIGATION -->
-        <div class="col-lg-2 col-md-3">
+        <!-- KIRI: SIDEBAR NAVIGATION (Col 3 / Col 2) -->
+        <div class="col-lg-3 col-xl-2">
             <div class="sidebar-menu text-white text-center">
                 
+                <!-- Logo & Judul Aplikasi -->
                 <div class="mb-3 text-center">
-    <!-- Logo Sekolah -->
-    <img src="../logo-sekolah.jpg" alt="Logo SMP Kristen 4 Tanut" class="img-fluid mb-2" style="max-height: 75px; filter: drop-shadow(0px 2px 4px rgba(0,0,0,0.3));">
-    
-    <h5 class="fw-bold mb-0" style="letter-spacing: 0.5px;">SIGMA</h5>
-    <p class="small text-white-50 mb-0" style="font-size: 11px;">SMP Kristen 4 Tanut</p>
-</div>
+                    <img src="../logo-sekolah.jpg" alt="Logo SMP Kristen 4 Tanut" class="img-fluid mb-2" style="max-height: 75px; filter: drop-shadow(0px 2px 4px rgba(0,0,0,0.3));">
+                    <h5 class="fw-bold mb-0" style="letter-spacing: 0.5px;">SIGMA EDU</h5>
+                    <span class="badge bg-warning text-dark fw-bold my-1 px-3 py-1 rounded-pill" style="font-size: 10px;">PRO</span>
+                    <p class="small text-white-50 mb-0" style="font-size: 11px;">SMP Kristen 4 Tanut</p>
                 </div>
 
                 <hr class="border-light opacity-25 my-3">
 
+                <!-- Menu Navigation -->
                 <div class="nav flex-column gap-2 text-start">
-                    <a class="nav-link text-white opacity-90 rounded-3 py-2 px-3" href="dashboard.html">
+                    <a class="nav-link rounded-3 py-2 px-3" href="dashboard.html">
                         <i class="bi bi-speedometer2 me-2"></i>Dashboard
                     </a>
-                    <a class="nav-link text-white opacity-90 rounded-3 py-2 px-3" href="guru.html">
+                    <a class="nav-link rounded-3 py-2 px-3" href="guru.html">
                         <i class="bi bi-person-badge me-2"></i>Data Guru
                     </a>
-                    <a class="nav-link text-white opacity-90 rounded-3 py-2 px-3" href="siswa.html">
+                    <a class="nav-link rounded-3 py-2 px-3" href="siswa.html">
                         <i class="bi bi-mortarboard me-2"></i>Data Siswa
                     </a>
-                    <a class="nav-link active bg-warning text-dark fw-bold rounded-3 py-2 px-3 shadow-sm" href="kelas.html">
+                    <a class="nav-link active fw-bold rounded-3 py-2 px-3 shadow-sm" href="kelas.html">
                         <i class="bi bi-building me-2"></i>Data Kelas
                     </a>
-                    <a class="nav-link text-white opacity-90 rounded-3 py-2 px-3" href="mapel.html">
+                    <a class="nav-link rounded-3 py-2 px-3" href="mapel.html">
                         <i class="bi bi-book me-2"></i>Mata Pelajaran
                     </a>
-                    <a class="nav-link text-white opacity-90 rounded-3 py-2 px-3" href="absensi.html">
+                    <a class="nav-link rounded-3 py-2 px-3" href="absensi.html">
                         <i class="bi bi-calendar-check me-2"></i>Absensi
                     </a>
-                    <a class="nav-link text-white opacity-90 rounded-3 py-2 px-3" href="jurnal.html">
+                    <a class="nav-link rounded-3 py-2 px-3" href="jurnal.html">
                         <i class="bi bi-journal-bookmark me-2"></i>Jurnal Mengajar
                     </a>
-                    <a class="nav-link text-white opacity-90 rounded-3 py-2 px-3" href="nilai.html">
+                    <a class="nav-link rounded-3 py-2 px-3" href="nilai.html">
                         <i class="bi bi-award me-2"></i>Nilai Siswa
                     </a>
                     <button class="btn btn-danger w-100 fw-semibold rounded-3 mt-3 py-2 shadow-sm border-0" onclick="logout()">
@@ -107,11 +127,11 @@
             </div>
         </div>
 
-        <!-- KANAN: KONTEN KELAS -->
-        <div class="col-lg-10 col-md-9">
+        <!-- KANAN: KONTEN UTAMA DATA KELAS (Col 9 / Col 10) -->
+        <div class="col-lg-9 col-xl-10">
 
             <!-- Banner Header Modul -->
-            <div class="card banner-modul text-dark p-4 mb-3">
+            <div class="card banner-modul text-dark p-4 mb-4">
                 <div class="d-flex justify-content-between align-items-center flex-wrap gap-2">
                     <div>
                         <span class="badge bg-dark text-white fw-bold px-3 py-1 mb-2 rounded-pill">
@@ -144,13 +164,14 @@
                             </tr>
                         </thead>
                         <tbody id="tabelKelas">
-                            <!-- Data otomatis dirender via JS -->
+                            <!-- Data otomatis dirender via js/kelas.js -->
                         </tbody>
                     </table>
                 </div>
             </div>
 
         </div>
+
     </div>
 </div>
 
