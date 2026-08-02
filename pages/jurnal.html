@@ -1,1 +1,283 @@
-<h1>jurnal</h1>
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Jurnal Mengajar - SIGMA EDU PRO</title>
+
+    <!-- Bootstrap & Icons -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.css" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+
+    <!-- CSS Lokal -->
+    <link rel="stylesheet" href="../css/style.css">
+    <link rel="stylesheet" href="../css/dashboard.css">
+    <link rel="stylesheet" href="../css/responsive.css">
+
+    <style>
+        body {
+            font-family: 'Poppins', sans-serif;
+            background-color: #f4f6f9;
+            padding: 20px 0;
+            margin: 0;
+        }
+
+        .sidebar-menu {
+            background: linear-gradient(180deg, #800020 0%, #4a0013 100%);
+            border-radius: 16px;
+            padding: 20px 15px;
+            box-shadow: 0 4px 15px rgba(128, 0, 32, 0.15);
+        }
+
+        .sidebar-menu .nav-link {
+            color: #ffffff !important;
+            font-weight: 500;
+            opacity: 0.9;
+            transition: all 0.2s ease;
+        }
+
+        .sidebar-menu .nav-link:hover {
+            opacity: 1;
+            background-color: rgba(255, 255, 255, 0.15);
+        }
+
+        .sidebar-menu .nav-link.active {
+            background-color: #ffc107 !important;
+            color: #000000 !important;
+            opacity: 1;
+        }
+
+        .banner-modul {
+            background: linear-gradient(135deg, #800020 0%, #a00028 100%);
+            border: none;
+            box-shadow: 0 4px 15px rgba(128, 0, 32, 0.15);
+            border-radius: 16px;
+        }
+
+        .card-custom {
+            border: 1px solid rgba(0, 0, 0, 0.05);
+            border-radius: 16px;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.03);
+        }
+
+        .table thead th {
+            background-color: #f8f9fa;
+            color: #495057;
+            font-weight: 600;
+            text-transform: uppercase;
+            font-size: 11px;
+            letter-spacing: 0.5px;
+            border-bottom: 2px solid #dee2e6;
+        }
+    </style>
+</head>
+<body>
+
+<div class="container-fluid px-4">
+    <div class="row g-4">
+
+        <!-- KIRI: SIDEBAR NAVIGATION -->
+        <div class="col-lg-3 col-xl-2">
+            <div class="sidebar-menu text-white text-center">
+                
+                <!-- Logo Sekolah -->
+                <div class="mb-3 text-center">
+                    <img src="../logo-sekolah.jpg" alt="Logo SMP Kristen 4 Tanut" class="img-fluid mb-2" style="max-height: 75px; filter: drop-shadow(0px 2px 4px rgba(0,0,0,0.3));">
+                    <h5 class="fw-bold mb-0" style="letter-spacing: 0.5px;">SIGMA EDU</h5>
+                    <span class="badge bg-warning text-dark fw-bold my-1 px-3 py-1 rounded-pill" style="font-size: 10px;">PRO</span>
+                    <p class="small text-white-50 mb-0" style="font-size: 11px;">SMP Kristen 4 Tanut</p>
+                </div>
+
+                <hr class="border-light opacity-25 my-3">
+
+                <!-- Navigation Menu -->
+                <div class="nav flex-column gap-2 text-start">
+                    <a class="nav-link rounded-3 py-2 px-3" href="dashboard.html">
+                        <i class="bi bi-speedometer2 me-2"></i>Dashboard
+                    </a>
+                    <a class="nav-link rounded-3 py-2 px-3" href="guru.html">
+                        <i class="bi bi-person-badge me-2"></i>Data Guru
+                    </a>
+                    <a class="nav-link rounded-3 py-2 px-3" href="siswa.html">
+                        <i class="bi bi-mortarboard me-2"></i>Data Siswa
+                    </a>
+                    <a class="nav-link rounded-3 py-2 px-3" href="kelas.html">
+                        <i class="bi bi-building me-2"></i>Data Kelas
+                    </a>
+                    <a class="nav-link rounded-3 py-2 px-3" href="mapel.html">
+                        <i class="bi bi-book me-2"></i>Mata Pelajaran
+                    </a>
+                    <a class="nav-link rounded-3 py-2 px-3" href="absensi.html">
+                        <i class="bi bi-calendar-check me-2"></i>Absensi
+                    </a>
+                    <a class="nav-link active fw-bold rounded-3 py-2 px-3 shadow-sm" href="jurnal.html">
+                        <i class="bi bi-journal-bookmark me-2"></i>Jurnal Mengajar
+                    </a>
+                    <a class="nav-link rounded-3 py-2 px-3" href="nilai.html">
+                        <i class="bi bi-award me-2"></i>Nilai Siswa
+                    </a>
+                    <button class="btn btn-danger w-100 fw-semibold rounded-3 mt-3 py-2 shadow-sm border-0" onclick="logout()">
+                        <i class="bi bi-box-arrow-right me-2"></i>Logout
+                    </button>
+                </div>
+            </div>
+        </div>
+
+        <!-- KANAN: KONTEN JURNAL MENGAJAR -->
+        <div class="col-lg-9 col-xl-10">
+
+            <!-- Banner Header Modul -->
+            <div class="card banner-modul text-white p-4 mb-4">
+                <div class="d-flex justify-content-between align-items-center flex-wrap gap-2">
+                    <div>
+                        <span class="badge bg-warning text-dark fw-bold px-3 py-1 mb-2 rounded-pill">
+                            <i class="bi bi-journal-check me-1"></i> MODUL JURNAL HARIAN
+                        </span>
+                        <h3 class="fw-bold mb-1">Jurnal Mengajar Guru 📖</h3>
+                        <p class="mb-0 text-white-50 small">Catatan Agendat & Pelaksanaan Pembelajaran SMP Kristen 4 Tanut</p>
+                    </div>
+                    <button class="btn btn-primary fw-bold rounded-3 px-4 py-2 shadow-sm" data-bs-toggle="modal" data-bs-target="#modalTambahJurnal">
+                        <i class="bi bi-plus-circle me-1"></i> Isi Jurnal Harian
+                    </button>
+                </div>
+            </div>
+
+            <!-- Card Tabel Data Jurnal -->
+            <div class="card card-custom bg-white p-4">
+                <div class="d-flex justify-content-between align-items-center mb-3">
+                    <h6 class="fw-bold text-dark mb-0"><i class="bi bi-journal-text me-2 text-primary"></i>Riwayat Jurnal Pelaksanaan Pembelajaran</h6>
+                </div>
+
+                <div class="table-responsive">
+                    <table class="table table-hover align-middle mb-0" style="font-size: 13px;">
+                        <thead>
+                            <tr>
+                                <th class="text-center" style="width: 40px;">No</th>
+                                <th style="width: 100px;">Hari / Tgl</th>
+                                <th>Identitas & Mapel</th>
+                                <th style="width: 90px;">Jam / Waktu</th>
+                                <th>Tujuan Pembelajaran (TP)</th>
+                                <th>Pokok Materi</th>
+                                <th>Catatan / Hambatan</th>
+                                <th class="text-center" style="width: 80px;">Paraf</th>
+                                <th class="text-center" style="width: 70px;">Aksi</th>
+                            </tr>
+                        </thead>
+                        <tbody id="tabelJurnal">
+                            <!-- Data dirender oleh js/jurnal.js -->
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+
+        </div>
+
+    </div>
+</div>
+
+<!-- MODAL POP-UP TAMBAH JURNAL -->
+<div class="modal fade" id="modalTambahJurnal" tabindex="-1">
+    <div class="modal-dialog modal-dialog-centered modal-lg">
+        <div class="modal-content border-0 shadow-lg" style="border-radius: 16px;">
+            <div class="modal-header bg-primary text-white" style="border-top-left-radius: 16px; border-top-right-radius: 16px;">
+                <h5 class="modal-title fw-bold"><i class="bi bi-journal-plus me-2"></i>Form Input Jurnal Harian</h5>
+                <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <form id="formJurnal">
+                <div class="modal-body p-4">
+                    
+                    <h6 class="fw-bold text-primary mb-3"><i class="bi bi-person-vcard me-2"></i>1. Identitas & Data Umum</h6>
+                    <div class="row g-3 mb-4">
+                        <div class="col-md-6">
+                            <label class="form-label fw-semibold small">Nama Guru & NIP</label>
+                            <select id="selectGuruJurnal" class="form-select rounded-3" required>
+                                <option value="">-- Pilih Guru --</option>
+                            </select>
+                        </div>
+                        <div class="col-md-6">
+                            <label class="form-label fw-semibold small">Satuan Pendidikan</label>
+                            <input type="text" id="inputSekolah" class="form-control rounded-3" value="SMP Kristen 4 Tanut" readonly>
+                        </div>
+                        <div class="col-md-4">
+                            <label class="form-label fw-semibold small">Fase Kurikulum</label>
+                            <select id="selectFase" class="form-select rounded-3" required>
+                                <option value="Fase D (SMP)">Fase D (SMP Kelas 7-9)</option>
+                                <option value="Fase A (SD 1-2)">Fase A (SD Kelas 1-2)</option>
+                                <option value="Fase B (SD 3-4)">Fase B (SD Kelas 3-4)</option>
+                                <option value="Fase C (SD 5-6)">Fase C (SD Kelas 5-6)</option>
+                                <option value="Fase E (SMA 10)">Fase E (SMA Kelas 10)</option>
+                                <option value="Fase F (SMA 11-12)">Fase F (SMA Kelas 11-12)</option>
+                            </select>
+                        </div>
+                        <div class="col-md-4">
+                            <label class="form-label fw-semibold small">Kelas</label>
+                            <select id="selectKelasJurnal" class="form-select rounded-3" required>
+                                <option value="">-- Pilih Kelas --</option>
+                            </select>
+                        </div>
+                        <div class="col-md-4">
+                            <label class="form-label fw-semibold small">Semester</label>
+                            <select id="selectSemester" class="form-select rounded-3" required>
+                                <option value="Ganjil">Semester Ganjil</option>
+                                <option value="Genap">Semester Genap</option>
+                            </select>
+                        </div>
+                        <div class="col-md-12">
+                            <label class="form-label fw-semibold small">Mata Pelajaran</label>
+                            <select id="selectMapelJurnal" class="form-select rounded-3" required>
+                                <option value="">-- Pilih Mapel --</option>
+                            </select>
+                        </div>
+                    </div>
+
+                    <h6 class="fw-bold text-primary mb-3"><i class="bi bi-calendar-event me-2"></i>2. Format Jurnal Harian</h6>
+                    <div class="row g-3">
+                        <div class="col-md-6">
+                            <label class="form-label fw-semibold small">Hari / Tanggal</label>
+                            <input type="date" id="inputTanggalJurnal" class="form-control rounded-3" required>
+                        </div>
+                        <div class="col-md-6">
+                            <label class="form-label fw-semibold small">Jam ke- / Alokasi Waktu</label>
+                            <input type="text" id="inputJamKe" class="form-control rounded-3" placeholder="Contoh: Jam 1-2 (2x40 Menit)" required>
+                        </div>
+                        <div class="col-md-12">
+                            <label class="form-label fw-semibold small">Tujuan Pembelajaran (TP)</label>
+                            <textarea id="inputTP" class="form-control rounded-3" rows="2" placeholder="Tuliskan target / kompetensi TP yang ingin dicapai..." required></textarea>
+                        </div>
+                        <div class="col-md-12">
+                            <label class="form-label fw-semibold small">Pokok Materi</label>
+                            <textarea id="inputMateri" class="form-control rounded-3" rows="2" placeholder="Rincian topik utama atau pokok pembahasan..." required></textarea>
+                        </div>
+                        <div class="col-md-12">
+                            <label class="form-label fw-semibold small">Catatan / Hambatan</label>
+                            <input type="text" id="inputCatatan" class="form-control rounded-3" placeholder="Catatan siswa belum paham, kendala media, atau penyesuaian waktu">
+                        </div>
+                        <div class="col-md-12">
+                            <label class="form-label fw-semibold small">Keterangan / Status Paraf Guru</label>
+                            <select id="selectParaf" class="form-select rounded-3">
+                                <option value="Telah Diverifikasi (Valid)">Telah Diverifikasi (Valid)</option>
+                                <option value="Pending">Pending</option>
+                            </select>
+                        </div>
+                    </div>
+
+                </div>
+                <div class="modal-footer bg-light border-0" style="border-bottom-left-radius: 16px; border-bottom-right-radius: 16px;">
+                    <button type="button" class="btn btn-secondary rounded-3 fw-semibold" data-bs-dismiss="modal">Batal</button>
+                    <button type="submit" class="btn btn-primary fw-bold rounded-3"><i class="bi bi-save me-1"></i> Simpan Jurnal</button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+
+<!-- SCRIPT LOKAL -->
+<script src="../js/db.js"></script>
+<script src="../js/auth.js"></script>
+<script src="../js/jurnal.js"></script>
+
+</body>
+</html>
