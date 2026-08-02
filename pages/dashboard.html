@@ -95,6 +95,9 @@
                     <p class="small text-white-50 mb-0" style="font-size: 11px;">SMP Kristen 4 Tanut</p>
                 </div>
 
+                <!-- Profile Info Header Badge -->
+                <div id="userProfileBadge" class="my-2 text-center"></div>
+
                 <hr class="border-light opacity-25 my-3">
 
                 <!-- Navigation Menu -->
@@ -102,13 +105,13 @@
                     <a class="nav-link active fw-bold rounded-3 py-2 px-3 shadow-sm" href="dashboard.html">
                         <i class="bi bi-speedometer2 me-2"></i>Dashboard
                     </a>
-                    <a class="nav-link rounded-3 py-2 px-3" href="guru.html">
+                    <a class="nav-link rounded-3 py-2 px-3 admin-only" href="guru.html">
                         <i class="bi bi-person-badge me-2"></i>Data Guru
                     </a>
                     <a class="nav-link rounded-3 py-2 px-3" href="siswa.html">
                         <i class="bi bi-mortarboard me-2"></i>Data Siswa
                     </a>
-                    <a class="nav-link rounded-3 py-2 px-3" href="kelas.html">
+                    <a class="nav-link rounded-3 py-2 px-3 admin-only" href="kelas.html">
                         <i class="bi bi-building me-2"></i>Data Kelas
                     </a>
                     <a class="nav-link rounded-3 py-2 px-3" href="mapel.html">
@@ -133,28 +136,28 @@
         <!-- KANAN: KONTEN DASHBOARD -->
         <div class="col-lg-9 col-xl-10">
 
-<!-- Banner Selamat Datang (Fixed Padding & Alignment) -->
-<div class="card banner-welcome text-white p-4 mb-4" style="min-height: 120px;">
-    <div class="d-flex justify-content-between align-items-center flex-wrap gap-3 pt-2">
-        <div>
-            <span class="badge bg-warning text-dark fw-bold px-3 py-1 mb-2 rounded-pill">
-                <i class="bi bi-star-fill me-1"></i> SIGMA EDU PRO
-            </span>
-            <h3 class="fw-bold mb-1 fs-4">Selamat Datang di SIGMA 👋</h3>
-            <p class="mb-0 text-white-50 small">Sistem Informasi Administrasi Guru & Sekolah — SMP Kristen 4 Tanut</p>
-        </div>
-        <div>
-            <button id="btnSync" class="btn btn-warning text-dark fw-bold px-3 py-2 rounded-3 shadow-sm" onclick="prosesSinkronisasiData()">
-                <i class="bi bi-arrow-repeat me-1" id="iconSync"></i> Sinkron Data
-            </button>
-        </div>
-    </div>
-</div>
+            <!-- Banner Selamat Datang -->
+            <div class="card banner-welcome text-white p-4 mb-4" style="min-height: 120px;">
+                <div class="d-flex justify-between align-items-center flex-wrap gap-3 pt-2">
+                    <div>
+                        <span class="badge bg-warning text-dark fw-bold px-3 py-1 mb-2 rounded-pill">
+                            <i class="bi bi-star-fill me-1"></i> SIGMA EDU PRO
+                        </span>
+                        <h3 class="fw-bold mb-1 fs-4">Selamat Datang di SIGMA 👋</h3>
+                        <p class="mb-0 text-white-50 small">Sistem Informasi Administrasi Guru & Sekolah — SMP Kristen 4 Tanut</p>
+                    </div>
+                    <div>
+                        <button id="btnSync" class="btn btn-warning text-dark fw-bold px-3 py-2 rounded-3 shadow-sm" onclick="prosesSinkronisasiData()">
+                            <i class="bi bi-arrow-repeat me-1" id="iconSync"></i> Sinkron Data
+                        </button>
+                    </div>
+                </div>
+            </div>
 
             <!-- CARD STATISTIK STATS -->
             <div class="row g-3 mb-4">
-                <!-- Card Guru -->
-                <div class="col-md-3">
+                <!-- Card Guru (Ditandai admin-only) -->
+                <div class="col-md-3 admin-only">
                     <div class="card card-stat bg-white p-3">
                         <div class="d-flex align-items-center justify-content-between">
                             <div>
@@ -217,7 +220,8 @@
             <!-- Akses Cepat Modul -->
             <h6 class="fw-bold text-dark mb-3"><i class="bi bi-grid-fill text-danger me-2"></i>Akses Cepat Modul Administrasi</h6>
             <div class="row g-3 mb-4">
-                <div class="col-md-3">
+                <!-- Modul Kelola Data Guru (Ditandai admin-only) -->
+                <div class="col-md-3 admin-only">
                     <a href="guru.html" class="text-decoration-none">
                         <div class="card card-stat bg-white p-3 border-danger h-100">
                             <i class="bi bi-person-badge fs-3 text-danger mb-2"></i>
@@ -271,8 +275,8 @@
                 </div>
             </div>
 
-            <!-- Backup & Pemulihan -->
-            <div class="card card-stat bg-white p-4">
+            <!-- Backup & Pemulihan (Ditandai admin-only) -->
+            <div class="card card-stat bg-white p-4 admin-only">
                 <h6 class="fw-bold text-dark mb-2"><i class="bi bi-shield-check text-primary me-2"></i>Pengaturan Backup & Pemulihan Data</h6>
                 <p class="text-muted small mb-3">Unduh cadangan seluruh data aplikasi secara berkala untuk menghindari kehilangan data saat offline.</p>
                 
@@ -310,7 +314,7 @@ async function prosesSinkronisasiData() {
 
     try {
         const session = JSON.parse(localStorage.getItem('sigma_session')) || {};
-        const userRole = session.role || 'Guru Mapel / Wali Kelas';
+        const userRole = session.role || 'guru_mapel';
         const userName = session.namaGuru || session.username || 'Edy Wenan S. Slarmanat, S.Pd';
 
         const dataLokal = {
@@ -358,14 +362,21 @@ function renderSyncLog() {
         return;
     }
 
-    tbody.innerHTML = syncLogs.map(log => `
-        <tr>
-            <td><small class="fw-semibold text-dark">${log.waktu}</small></td>
-            <td class="fw-bold text-dark">${log.pengirim}</td>
-            <td><span class="badge bg-danger">${log.role}</span></td>
-            <td class="small text-secondary">${log.detail}</td>
-        </tr>
-    `).join('');
+    tbody.innerHTML = syncLogs.map(log => {
+        let badgeColor = 'bg-secondary';
+        if (log.role === 'admin') badgeColor = 'bg-danger';
+        else if (log.role === 'wali_kelas') badgeColor = 'bg-warning text-dark';
+        else if (log.role === 'guru_mapel') badgeColor = 'bg-info text-dark';
+
+        return `
+            <tr>
+                <td><small class="fw-semibold text-dark">${log.waktu}</small></td>
+                <td class="fw-bold text-dark">${log.pengirim}</td>
+                <td><span class="badge ${badgeColor}">${log.role}</span></td>
+                <td class="small text-secondary">${log.detail}</td>
+            </tr>
+        `;
+    }).join('');
 }
 
 document.addEventListener('DOMContentLoaded', () => {
