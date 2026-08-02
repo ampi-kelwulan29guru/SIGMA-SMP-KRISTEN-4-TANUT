@@ -55,3 +55,58 @@ async function renderTabelGuru() {
         `;
     }).join('');
 }
+<!-- Letakkan di bagian paling bawah halaman guru.html -->
+<script>
+document.addEventListener('DOMContentLoaded', async () => {
+    await renderTabelGuru();
+});
+
+async function renderTabelGuru() {
+    const tbody = document.querySelector('table tbody') || document.getElementById('tabelGuruBody');
+    if (!tbody) return;
+
+    let listGuru = await getAllData('guru').catch(() => []);
+    if (!listGuru || listGuru.length === 0) {
+        listGuru = await getAllData('data_guru').catch(() => []);
+    }
+    if (!listGuru || listGuru.length === 0) {
+        listGuru = JSON.parse(localStorage.getItem('sigma_guru')) || [];
+    }
+
+    if (listGuru.length === 0) {
+        tbody.innerHTML = `
+            <tr>
+                <td colspan="6" class="text-center py-4 text-muted">
+                    Belum ada data guru yang terdaftar.
+                </td>
+            </tr>`;
+        return;
+    }
+
+    tbody.innerHTML = listGuru.map((g, index) => {
+        const nipNik = g.nip || g.nipGuru || g.nik || '-';
+        const nama = g.nama || g.namaGuru || '-';
+        const jabatan = g.jabatan || (g.isWaliKelas ? `Wali Kelas ${g.kelasBimbingan || ''}` : 'Guru Mata Pelajaran');
+        const noHp = g.noHp || g.telepon || '-';
+        const idGuru = g.id || index;
+
+        return `
+            <tr>
+                <td class="text-center">${index + 1}</td>
+                <td>${nipNik}</td>
+                <td class="fw-bold">${nama}</td>
+                <td><span class="badge bg-info text-dark">${jabatan}</span></td>
+                <td>${noHp}</td>
+                <td class="text-center">
+                    <button class="btn btn-sm btn-warning me-1" onclick="editGuru('${idGuru}')">
+                        <i class="bi bi-pencil-fill"></i>
+                    </button>
+                    <button class="btn btn-sm btn-danger" onclick="hapusGuru('${idGuru}')">
+                        <i class="bi bi-trash-fill"></i>
+                    </button>
+                </td>
+            </tr>
+        `;
+    }).join('');
+}
+</script>
