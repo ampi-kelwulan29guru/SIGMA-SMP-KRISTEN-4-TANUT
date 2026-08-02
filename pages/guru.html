@@ -81,7 +81,7 @@
                         </tr>
                     </thead>
                     <tbody id="tabelGuruBody">
-                        <!-- Data guru akan otomatis dirender di sini via JS -->
+                        <!-- Data guru di-render via JS -->
                     </tbody>
                 </table>
             </div>
@@ -89,22 +89,61 @@
     </div>
 </div>
 
-<!-- Library JavaScript -->
+<!-- Modal Tambah/Edit Guru -->
+<div class="modal fade" id="modalGuru" tabindex="-1" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered">
+        <div class="modal-content border-0 shadow rounded-4">
+            <div class="modal-header bg-primary text-white rounded-top-4">
+                <h5 class="modal-title fw-bold" id="modalGuruTitle"><i class="bi bi-person-plus-fill me-2"></i>Tambah Guru</h5>
+                <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body p-4">
+                <form id="formGuru">
+                    <input type="hidden" id="guruIndex">
+                    <div class="mb-3">
+                        <label class="form-label small fw-semibold">NIP / NUPTK / NIK</label>
+                        <input type="text" id="guruNip" class="form-control rounded-3" required placeholder="Masukkan NIP atau NIK">
+                    </div>
+                    <div class="mb-3">
+                        <label class="form-label small fw-semibold">Nama Lengkap & Gelar</label>
+                        <input type="text" id="guruNama" class="form-control rounded-3" required placeholder="Contoh: Nama, S.Pd">
+                    </div>
+                    <div class="mb-3">
+                        <label class="form-label small fw-semibold">Jabatan / Peran</label>
+                        <select id="guruJabatan" class="form-select rounded-3" required>
+                            <option value="Guru Mata Pelajaran">Guru Mata Pelajaran</option>
+                            <option value="Wali Kelas">Wali Kelas</option>
+                            <option value="Kepala Sekolah">Kepala Sekolah</option>
+                        </select>
+                    </div>
+                    <div class="mb-3">
+                        <label class="form-label small fw-semibold">No. HP / WhatsApp</label>
+                        <input type="text" id="guruHp" class="form-control rounded-3" placeholder="08xxxxxxxxxx">
+                    </div>
+                    <button type="submit" class="btn btn-primary w-100 fw-bold py-2 rounded-3 mt-2">
+                        <i class="bi bi-save me-1"></i> Simpan Data
+                    </button>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
 <script src="../js/db.js"></script>
 <script src="../js/auth.js"></script>
 
-<!-- Skrip Render Tabel Data Guru -->
 <script>
+let globalListGuru = [];
+
 document.addEventListener('DOMContentLoaded', async () => {
     await renderTabelGuru();
 });
 
 async function renderTabelGuru() {
-    const tbody = document.getElementById('tabelGuruBody') || document.querySelector('table tbody');
+    const tbody = document.getElementById('tabelGuruBody');
     if (!tbody) return;
 
-    // 1. Ambil data dengan memeriksa beberapa kemungkinan penyimpanan
     let listGuru = await getAllData('guru').catch(() => []);
     if (!listGuru || listGuru.length === 0) {
         listGuru = await getAllData('data_guru').catch(() => []);
@@ -113,7 +152,8 @@ async function renderTabelGuru() {
         listGuru = JSON.parse(localStorage.getItem('sigma_guru')) || [];
     }
 
-    // 2. Tampilkan pesan jika data kosong
+    globalListGuru = listGuru;
+
     if (listGuru.length === 0) {
         tbody.innerHTML = `
             <tr>
@@ -124,13 +164,11 @@ async function renderTabelGuru() {
         return;
     }
 
-    // 3. Render baris data ke dalam tabel
     tbody.innerHTML = listGuru.map((g, index) => {
         const nipNik = g.nip || g.nipGuru || g.nik || '-';
         const nama = g.nama || g.namaGuru || '-';
         const jabatan = g.jabatan || (g.isWaliKelas ? `Wali Kelas ${g.kelasBimbingan || ''}` : 'Guru Mata Pelajaran');
         const noHp = g.noHp || g.telepon || '-';
-        const idGuru = g.id || index;
 
         return `
             <tr>
@@ -140,10 +178,10 @@ async function renderTabelGuru() {
                 <td><span class="badge bg-info text-dark">${jabatan}</span></td>
                 <td>${noHp}</td>
                 <td class="text-center">
-                    <button class="btn btn-sm btn-warning me-1" onclick="editGuru('${idGuru}')">
+                    <button class="btn btn-sm btn-warning me-1 text-white" onclick="editGuru(${index})">
                         <i class="bi bi-pencil-fill"></i>
                     </button>
-                    <button class="btn btn-sm btn-danger" onclick="hapusGuru('${idGuru}')">
+                    <button class="btn btn-sm btn-danger" onclick="hapusGuru(${index})">
                         <i class="bi bi-trash-fill"></i>
                     </button>
                 </td>
@@ -151,7 +189,79 @@ async function renderTabelGuru() {
         `;
     }).join('');
 }
-</script>
 
+function tambahGuruModal() {
+    document.getElementById('guruIndex').value = '';
+    document.getElementById('formGuru').reset();
+    document.getElementById('modalGuruTitle').innerHTML = '<i class="bi bi-person-plus-fill me-2"></i>Tambah Guru Baru';
+    const modal = new bootstrap.Modal(document.getElementById('modalGuru'));
+    modal.show();
+}
+
+function editGuru(index) {
+    const data = globalListGuru[index];
+    if (!data) return;
+
+    document.getElementById('guruIndex').value = index;
+    document.getElementById('guruNip').value = data.nip || data.nipGuru || data.nik || '';
+    document.getElementById('guruNama').value = data.nama || data.namaGuru || '';
+    document.getElementById('guruJabatan').value = data.jabatan || 'Guru Mata Pelajaran';
+    document.getElementById('guruHp').value = data.noHp || data.telepon || '';
+
+    document.getElementById('modalGuruTitle').innerHTML = '<i class="bi bi-pencil-square me-2"></i>Edit Data Guru';
+    const modal = new bootstrap.Modal(document.getElementById('modalGuru'));
+    modal.show();
+}
+
+async function hapusGuru(index) {
+    const data = globalListGuru[index];
+    const nama = data ? (data.nama || data.namaGuru) : 'guru ini';
+
+    if (confirm(`Apakah Anda yakin ingin menghapus data ${nama}?`)) {
+        globalListGuru.splice(index, 1);
+        await saveAllGuru(globalListGuru);
+        await renderTabelGuru();
+    }
+}
+
+document.getElementById('formGuru').addEventListener('submit', async (e) => {
+    e.preventDefault();
+    const idx = document.getElementById('guruIndex').value;
+    
+    const objGuru = {
+        nip: document.getElementById('guruNip').value.trim(),
+        nama: document.getElementById('guruNama').value.trim(),
+        jabatan: document.getElementById('guruJabatan').value,
+        noHp: document.getElementById('guruHp').value.trim()
+    };
+
+    if (idx === '') {
+        globalListGuru.push(objGuru);
+    } else {
+        globalListGuru[idx] = { ...globalListGuru[idx], ...objGuru };
+    }
+
+    await saveAllGuru(globalListGuru);
+    
+    const modalEl = document.getElementById('modalGuru');
+    const modal = bootstrap.Modal.getInstance(modalEl);
+    if (modal) modal.hide();
+
+    await renderTabelGuru();
+});
+
+async function saveAllGuru(dataArray) {
+    localStorage.setItem('sigma_guru', JSON.stringify(dataArray));
+    if (typeof saveData === 'function') {
+        try {
+            for (const item of dataArray) {
+                await saveData('guru', item);
+            }
+        } catch (err) {
+            console.log('IndexedDB fallback to LocalStorage');
+        }
+    }
+}
+</script>
 </body>
 </html>
