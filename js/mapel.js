@@ -24,12 +24,16 @@ async function loadMapel() {
         }
 
         listMapel.forEach((item, index) => {
+            const kode = item.kode || item.kodeMapel || '-';
+            const nama = item.nama || item.namaMapel || '-';
+            const kategori = item.kategori || item.kelompok || 'Wajib';
+
             tbody.innerHTML += `
                 <tr>
                     <td class="text-center fw-bold text-secondary">${index + 1}</td>
-                    <td><span class="badge bg-light text-dark border font-monospace">${item.kode || item.kodeMapel || '-'}</span></td>
-                    <td class="fw-bold text-dark">${item.nama || item.namaMapel || '-'}</td>
-                    <td><span class="badge bg-primary bg-opacity-10 text-primary fw-bold px-3 py-1 rounded-pill">${item.kategori || item.kelompok || 'Wajib'}</span></td>
+                    <td><span class="badge bg-light text-dark border font-monospace">${kode}</span></td>
+                    <td class="fw-bold text-dark">${nama}</td>
+                    <td><span class="badge bg-primary bg-opacity-10 text-primary fw-bold px-3 py-1 rounded-pill">${kategori}</span></td>
                     <td class="text-center">
                         <button class="btn btn-sm btn-outline-danger border-0 rounded-2 px-2" onclick="hapusMapel(${item.id})" title="Hapus">
                             <i class="bi bi-trash-fill fs-6"></i> Hapus
@@ -43,6 +47,7 @@ async function loadMapel() {
     }
 }
 
+// Event listener form tambah mapel
 const formMapel = document.getElementById('formMapel');
 if (formMapel) {
     formMapel.addEventListener('submit', async (e) => {
@@ -55,16 +60,23 @@ if (formMapel) {
         };
 
         try {
-            await addData('mapel', dataBaru);
+            try {
+                await addData('mapel', dataBaru);
+            } catch (err) {
+                await addData('data_mapel', dataBaru);
+            }
+
             formMapel.reset();
 
+            // Tutup modal bootstrap
             const modalElement = document.getElementById('modalTambahMapel');
-            const modalInstance = bootstrap.Modal.getInstance(modalElement);
-            if (modalInstance) {
+            if (modalElement && typeof bootstrap !== 'undefined') {
+                const modalInstance = bootstrap.Modal.getInstance(modalElement) || new bootstrap.Modal(modalElement);
                 modalInstance.hide();
             }
 
             loadMapel();
+            alert("Data Mata Pelajaran Berhasil Disimpan!");
         } catch (err) {
             alert("Gagal menyimpan data mata pelajaran: " + err);
         }
@@ -73,7 +85,11 @@ if (formMapel) {
 
 async function hapusMapel(id) {
     if (confirm('Apakah Anda yakin ingin menghapus mata pelajaran ini?')) {
-        await deleteData('mapel', id);
+        try {
+            await deleteData('mapel', id);
+        } catch (e) {
+            await deleteData('data_mapel', id);
+        }
         loadMapel();
     }
 }
