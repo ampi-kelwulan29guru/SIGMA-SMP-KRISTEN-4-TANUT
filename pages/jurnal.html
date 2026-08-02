@@ -24,29 +24,14 @@
             margin: 0;
         }
 
-        /* SIDEBAR STYLING - DIPERBAIKI */
+        /* SIDEBAR STYLING */
         .sidebar-menu {
             background: linear-gradient(180deg, #800020 0%, #4a0013 100%);
             border-radius: 20px;
             padding: 20px 14px;
             box-shadow: 0 4px 20px rgba(128, 0, 32, 0.2);
-            min-height: 100%;
         }
 
-        /* PERBAIKAN CARD PROFIL AGAR TIDAK MELUAP */
-        #userProfileBadge {
-            background: rgba(255, 255, 255, 0.08);
-            border: 1px solid rgba(255, 255, 255, 0.15);
-            border-radius: 12px;
-            padding: 12px 8px;
-            word-break: break-word;
-        }
-
-        #userProfileBadge, #userProfileBadge * {
-            color: #ffffff !important;
-        }
-
-        /* Styling Nav Link */
         .sidebar-menu .nav-link {
             font-size: 13.5px;
             font-weight: 500;
@@ -58,6 +43,20 @@
         .sidebar-menu .nav-link:hover {
             background: rgba(255, 255, 255, 0.15) !important;
             transform: translateX(3px);
+        }
+
+        /* STYLING PROFIL GURU DI ATAS TOMBOL HOME */
+        #userProfileBadge {
+            font-weight: 600;
+            color: #212529 !important;
+        }
+
+        #userProfileBadge * {
+            color: #212529 !important;
+        }
+
+        #userProfileBadge .badge {
+            color: #ffffff !important;
         }
 
         /* BANNER MODUL JURNAL */
@@ -90,7 +89,7 @@
 <div class="container-fluid px-4">
     <div class="row g-3">
 
-        <!-- KIRI: SIDEBAR NAVIGATION (DI-RAPIKAN) -->
+        <!-- KIRI: SIDEBAR NAVIGATION -->
         <div class="col-lg-2 col-md-3">
             <div class="sidebar-menu text-white">
                 
@@ -101,9 +100,6 @@
                     <span class="badge bg-warning text-dark fw-bold my-1 px-2 py-1 rounded-pill" style="font-size: 9px;">PRO</span>
                     <p class="text-white-50 mb-0" style="font-size: 10.5px;">SMP Kristen 4 Tanut</p>
                 </div>
-
-                <!-- Profile Info Header Badge (Tampilan Otomatis Diatur Rapi) -->
-                <div id="userProfileBadge" class="my-3 text-center"></div>
 
                 <hr class="border-light opacity-25 my-3">
 
@@ -143,15 +139,21 @@
         <!-- KANAN: KONTEN UTAMA JURNAL -->
         <div class="col-lg-10 col-md-9">
 
-            <!-- BAR NAVIGASI ATAS: TOMBOL HOME -->
-            <div class="d-flex justify-content-between align-items-center bg-white p-3 rounded-4 shadow-sm mb-3 border">
-                <a href="dashboard.html" class="btn btn-outline-danger fw-bold rounded-3 px-3 py-2 d-inline-flex align-items-center gap-2">
-                    <i class="bi bi-house-door-fill fs-5"></i>
-                    <span>Kembali ke Dashboard</span>
-                </a>
-                <span class="text-muted small d-none d-md-inline-block fw-semibold">
-                    <i class="bi bi-info-circle me-1 text-primary"></i> Modul Jurnal Pembelajaran
-                </span>
+            <!-- BAR NAVIGASI ATAS -->
+            <div class="bg-white p-3 rounded-4 shadow-sm mb-3 border">
+                <!-- Profil Nama Guru (Posisi di atas tombol home) -->
+                <div id="userProfileBadge" class="mb-2 pb-2 border-bottom d-flex align-items-center gap-2"></div>
+
+                <div class="d-flex justify-content-between align-items-center">
+                    <!-- Tombol Home / Kembali ke Dashboard -->
+                    <a href="dashboard.html" class="btn btn-outline-danger fw-bold rounded-3 px-3 py-2 d-inline-flex align-items-center gap-2">
+                        <i class="bi bi-house-door-fill fs-5"></i>
+                        <span>Kembali ke Dashboard</span>
+                    </a>
+                    <span class="text-muted small d-none d-md-inline-block fw-semibold">
+                        <i class="bi bi-info-circle me-1 text-primary"></i> Modul Jurnal Pembelajaran
+                    </span>
+                </div>
             </div>
 
             <!-- Banner Header Modul -->
