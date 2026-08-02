@@ -1,27 +1,75 @@
-// Jalankan penghitung data saat dashboard dibuka
-document.addEventListener('DOMContentLoaded', updateJumlahDashboard);
+document.addEventListener('DOMContentLoaded', loadGuru);
 
-async function updateJumlahDashboard() {
+async function loadGuru() {
+    const tbody = document.getElementById('tabelGuru');
+    if (!tbody) return;
+
     try {
-        // Ambil data dari IndexedDB (fungsi dari db.js)
-        const listGuru = await getAllData('guru') || [];
-        const listSiswa = await getAllData('siswa') || [];
-        const listKelas = await getAllData('kelas') || [];
-        const listMapel = await getAllData('mapel') || [];
+        let listGuru = await getAllData('guru').catch(() => []);
+        tbody.innerHTML = '';
 
-        // Element angka statistik di dashboard
-        const elGuru = document.getElementById('totalGuru');
-        const elSiswa = document.getElementById('totalSiswa');
-        const elKelas = document.getElementById('totalKelas');
-        const elMapel = document.getElementById('totalMapel');
+        if (!listGuru || listGuru.length === 0) {
+            tbody.innerHTML = `
+                <tr>
+                    <td colspan="5" class="text-center text-muted py-4">
+                        <i class="bi bi-inbox fs-2 d-block mb-2"></i>
+                        Belum ada data guru tersimpan. Klik tombol <strong>+ Tambah Guru Baru</strong> di atas.
+                    </td>
+                </tr>`;
+            return;
+        }
 
-        // Tampilkan jumlah data
-        if (elGuru) elGuru.innerText = listGuru.length;
-        if (elSiswa) elSiswa.innerText = listSiswa.length;
-        if (elKelas) elKelas.innerText = listKelas.length;
-        if (elMapel) elMapel.innerText = listMapel.length;
-
+        listGuru.forEach((item, index) => {
+            tbody.innerHTML += `
+                <tr>
+                    <td class="text-center fw-bold text-secondary">${index + 1}</td>
+                    <td><span class="badge bg-light text-dark border font-monospace">${item.nip || '-'}</span></td>
+                    <td class="fw-bold text-dark">${item.nama || item.namaGuru || '-'}</td>
+                    <td><span class="badge bg-danger bg-opacity-10 text-danger fw-bold px-3 py-1 rounded-pill">${item.mapel || '-'}</span></td>
+                    <td class="text-center">
+                        <button class="btn btn-sm btn-outline-danger border-0 rounded-2 px-2" onclick="hapusGuru(${item.id})" title="Hapus">
+                            <i class="bi bi-trash-fill fs-6"></i> Hapus
+                        </button>
+                    </td>
+                </tr>
+            `;
+        });
     } catch (error) {
-        console.error("Gagal menghitung statistik dashboard:", error);
+        console.error("Gagal memuat data guru:", error);
+    }
+}
+
+const formGuru = document.getElementById('formGuru');
+if (formGuru) {
+    formGuru.addEventListener('submit', async (e) => {
+        e.preventDefault();
+
+        const dataBaru = {
+            nip: document.getElementById('inputNip').value.trim(),
+            nama: document.getElementById('inputNamaGuru').value.trim(),
+            mapel: document.getElementById('inputMapelGuru').value.trim()
+        };
+
+        try {
+            await addData('guru', dataBaru);
+            formGuru.reset();
+
+            const modalElement = document.getElementById('modalTambahGuru');
+            const modalInstance = bootstrap.Modal.getInstance(modalElement);
+            if (modalInstance) {
+                modalInstance.hide();
+            }
+
+            loadGuru();
+        } catch (err) {
+            alert("Gagal menyimpan data guru: " + err);
+        }
+    });
+}
+
+async function hapusGuru(id) {
+    if (confirm('Apakah Anda yakin ingin menghapus data guru ini?')) {
+        await deleteData('guru', id);
+        loadGuru();
     }
 }
