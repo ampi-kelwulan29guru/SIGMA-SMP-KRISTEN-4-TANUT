@@ -21,7 +21,7 @@
             border-radius: 20px;
             box-shadow: 0 10px 30px rgba(0,0,0,0.3);
             width: 100%;
-            max-width: 420px;
+            max-width: 400px;
         }
     </style>
 </head>
@@ -29,40 +29,18 @@
 
 <div class="card card-login bg-white p-4">
     <div class="text-center mb-4">
-        <img src="../logo-sekolah.jpg" alt="Logo SMP Kristen 4 Tanut" style="max-height: 80px;" class="mb-2">
+        <img src="../logo-sekolah.jpg" alt="Logo SMP Kristen 4 Tanut" style="max-height: 85px;" class="mb-3">
         <h4 class="fw-bold text-dark mb-0">SIGMA EDU PRO</h4>
         <p class="text-muted small">SMP Kristen 4 Tanut</p>
     </div>
 
     <form id="formLogin">
         <div class="mb-3">
-            <label class="form-label fw-semibold small">Login Sebagai</label>
-            <select id="loginRole" class="form-select rounded-3" onchange="handleRoleChange()" required>
-                <option value="guru_mapel">1. Guru Mata Pelajaran</option>
-                <option value="wali_kelas">2. Wali Kelas</option>
-                <option value="admin">3. Admin / Kurikulum</option>
-            </select>
-        </div>
-
-        <!-- Pilih Nama Guru (Sembunyi jika Admin) -->
-        <div class="mb-3" id="groupSelectGuru">
-            <label class="form-label fw-semibold small">Pilih Akun Guru</label>
-            <select id="selectGuruLogin" class="form-select rounded-3">
-                <option value="">-- Memuat Data Guru... --</option>
-            </select>
-        </div>
-
-        <!-- Pilihan Kelas (Muncul jika Wali Kelas) -->
-        <div class="mb-3" id="groupSelectKelas" style="display: none;">
-            <label class="form-label fw-semibold small">Wali Kelas Untuk</label>
-            <select id="selectKelasWali" class="form-select rounded-3">
-                <option value="">-- Memuat Data Kelas... --</option>
-            </select>
-        </div>
-
-        <div class="mb-3">
-            <label class="form-label fw-semibold small">Username / NIP</label>
-            <input type="text" id="loginUser" class="form-control rounded-3" placeholder="Masukkan NIP / Username" required>
+            <label class="form-label fw-semibold small">Username / NIP / NIK</label>
+            <input type="text" id="loginUser" class="form-control rounded-3" placeholder="Masukkan NIP, NIK, atau Username" required>
+            <div class="form-text text-muted" style="font-size: 11px;">
+                *Guru Honor dapat login menggunakan NIK
+            </div>
         </div>
 
         <div class="mb-4">
@@ -78,60 +56,5 @@
 
 <script src="../js/db.js"></script>
 <script src="../js/auth.js"></script>
-<script>
-    document.addEventListener('DOMContentLoaded', async () => {
-        await populateDropdownsLogin();
-        handleRoleChange();
-    });
-
-    function handleRoleChange() {
-        const role = document.getElementById('loginRole').value;
-        const groupGuru = document.getElementById('groupSelectGuru');
-        const selectGuru = document.getElementById('selectGuruLogin');
-        const groupKelas = document.getElementById('groupSelectKelas');
-        const selectKelas = document.getElementById('selectKelasWali');
-
-        if (role === 'admin') {
-            groupGuru.style.display = 'none';
-            selectGuru.removeAttribute('required');
-            groupKelas.style.display = 'none';
-            selectKelas.removeAttribute('required');
-        } else if (role === 'wali_kelas') {
-            groupGuru.style.display = 'block';
-            selectGuru.setAttribute('required', 'required');
-            groupKelas.style.display = 'block';
-            selectKelas.setAttribute('required', 'required');
-        } else { // guru_mapel
-            groupGuru.style.display = 'block';
-            selectGuru.setAttribute('required', 'required');
-            groupKelas.style.display = 'none';
-            selectKelas.removeAttribute('required');
-        }
-    }
-
-    async function populateDropdownsLogin() {
-        // Populasikan Data Guru
-        const selectGuru = document.getElementById('selectGuruLogin');
-        let listGuru = await getAllData('guru').catch(() => []);
-        if (!listGuru || listGuru.length === 0) listGuru = await getAllData('data_guru').catch(() => []);
-
-        selectGuru.innerHTML = '<option value="">-- Pilih Guru --</option>';
-        listGuru.forEach(g => {
-            const nama = g.nama || g.namaGuru;
-            selectGuru.innerHTML += `<option value="${nama}">${nama}</option>`;
-        });
-
-        // Populasikan Data Kelas
-        const selectKelas = document.getElementById('selectKelasWali');
-        let listKelas = await getAllData('kelas').catch(() => []);
-        if (!listKelas || listKelas.length === 0) listKelas = await getAllData('data_kelas').catch(() => []);
-
-        selectKelas.innerHTML = '<option value="">-- Pilih Kelas Bimbingan --</option>';
-        listKelas.forEach(k => {
-            const namaKelas = k.nama || k.namaKelas || k.kelas;
-            selectKelas.innerHTML += `<option value="${namaKelas}">${namaKelas}</option>`;
-        });
-    }
-</script>
 </body>
 </html>
