@@ -184,7 +184,7 @@
             </div>
 
             <!-- Panel Akses Cepat Modul -->
-            <div class="card card-custom p-4 bg-white shadow-sm">
+            <div class="card card-custom p-4 bg-white shadow-sm mb-3">
                 <h6 class="fw-bold mb-3 text-dark"><i class="bi bi-grid-fill me-2 text-danger"></i>Akses Cepat Modul Administrasi</h6>
                 <div class="row g-3">
                     <div class="col-md-3 col-6">
@@ -210,6 +210,26 @@
                 </div>
             </div>
 
+            <!-- Panel Backup & Restore Data (TAMBAHAN FITUR DEDIKASI OFFLINE) -->
+            <div class="card card-custom p-4 bg-white shadow-sm">
+                <h6 class="fw-bold mb-3 text-dark">
+                    <i class="bi bi-shield-lock-fill me-2 text-primary"></i>Pengaturan Backup & Pemulihan Data
+                </h6>
+                <p class="text-muted small mb-3">Unduh cadangan seluruh data aplikasi secara berkala untuk menghindari kehilangan data saat offline.</p>
+                <div class="d-flex flex-wrap gap-2">
+                    <!-- Tombol Backup -->
+                    <button onclick="backupDataAplikasi()" class="btn btn-success fw-semibold rounded-3 px-3">
+                        <i class="bi bi-download me-2"></i>Download Backup Data (.JSON)
+                    </button>
+
+                    <!-- Tombol Restore -->
+                    <label class="btn btn-outline-secondary fw-semibold rounded-3 px-3 mb-0" style="cursor: pointer;">
+                        <i class="bi bi-upload me-2"></i>Restore / Pulihkan Data
+                        <input type="file" id="fileRestore" onchange="restoreDataAplikasi(event)" accept=".json" hidden>
+                    </label>
+                </div>
+            </div>
+
         </div>
     </div>
 </div>
@@ -220,10 +240,12 @@
 <script src="../js/db.js"></script>
 <script src="../js/auth.js"></script>
 <script src="../js/dashboard.js"></script>
-    <script>
+
+<!-- SERVICE WORKER UNTUK OFFLINE -->
+<script>
     if ('serviceWorker' in navigator) {
-        navigator.serviceWorker.register('../sw.js')
-            .then(() => console.log('Aplikasi Siap Offline!'))
+        navigator.serviceWorker.register('../sw.js', { scope: '../' })
+            .then(() => console.log('Halaman ini Siap Offline!'))
             .catch((err) => console.log('Gagal Offline:', err));
     }
 </script>
