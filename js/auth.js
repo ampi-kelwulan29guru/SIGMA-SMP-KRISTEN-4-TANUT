@@ -6,23 +6,26 @@ function checkAuthStatus() {
     const session = JSON.parse(localStorage.getItem('sigma_session'));
     const isLoginPage = window.location.pathname.includes('login.html') || window.location.pathname.endsWith('index.html');
 
+    // Jika belum login dan bukan di halaman login/index, lempar ke index.html
     if (!session && !isLoginPage) {
-        window.location.href = 'login.html';
+        window.location.href = '../index.html';
         return;
     }
 
+    // Jika sudah login tapi membuka halaman login, lempar ke dashboard.html
     if (session && isLoginPage) {
-        window.location.href = 'dashboard.html';
+        window.location.href = 'pages/dashboard.html';
         return;
     }
 
+    // Jika sudah login dan berada di halaman internal, jalankan otorisasi & profil
     if (session && !isLoginPage) {
         applyRolePermissions(session);
         renderUserProfileHeader(session);
     }
 }
 
-// Logika Login Otomatis & Password
+// Logika Form Login
 const formLogin = document.getElementById('formLogin');
 if (formLogin) {
     formLogin.addEventListener('submit', async (e) => {
@@ -45,7 +48,7 @@ if (formLogin) {
             return;
         }
 
-        // 2. Ambil Daftar Guru dari Database
+        // 2. Ambil Daftar Guru dari Database Local/IndexedDB
         let listGuru = await getAllData('guru').catch(() => []);
         if (!listGuru || listGuru.length === 0) {
             listGuru = await getAllData('data_guru').catch(() => []);
@@ -109,7 +112,6 @@ function applyRolePermissions(session) {
 
     // 2. Pembatasan Sidebar Navigation
     if (role === 'guru_mapel') {
-        // Guru Mapel tidak diizinkan mengelola Master Data Guru & Kelas
         const navGuru = document.querySelector('a[href="guru.html"]');
         const navKelas = document.querySelector('a[href="kelas.html"]');
         if (navGuru) navGuru.parentElement.style.display = 'none';
@@ -123,7 +125,7 @@ function applyRolePermissions(session) {
         });
     }
 
-    // 4. Kunci Filter Dropdown (Konteks Wali Kelas & Guru Mapel)
+    // 4. Kunci Filter Dropdown
     filterFormOptionsByRole(session);
 }
 
@@ -131,13 +133,11 @@ function filterFormOptionsByRole(session) {
     const selectKelas = document.getElementById('selectKelas');
     const selectMapel = document.getElementById('selectMapel');
 
-    // Kunci Pilihan Kelas untuk Wali Kelas
     if (session.role === 'wali_kelas' && selectKelas && session.kelasBimbingan) {
         selectKelas.value = session.kelasBimbingan;
         selectKelas.setAttribute('disabled', 'disabled');
     }
 
-    // Kunci Pilihan Mapel untuk Guru Mapel
     if (session.role === 'guru_mapel' && selectMapel && session.mapel) {
         selectMapel.value = session.mapel;
         selectMapel.setAttribute('disabled', 'disabled');
@@ -228,9 +228,9 @@ function openChangePasswordModal() {
     };
 }
 
+// ==========================================
+// FUNGSI LOGOUT (Mengarahkan ke logout.html)
+// ==========================================
 function logout() {
-    if (confirm('Apakah Anda yakin ingin keluar?')) {
-        localStorage.removeItem('sigma_session');
-        window.location.href = 'login.html';
-    }
+    window.location.href = 'logout.html';
 }
