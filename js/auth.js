@@ -7,19 +7,19 @@ function checkAuthStatus() {
     const path = window.location.pathname;
     const isLoginPage = path.endsWith('index.html') || path.endsWith('/') || path.endsWith('login.html');
 
-    // Jika belum login dan tidak sedang di halaman utama/login
+    // Jika belum login dan mencoba akses halaman dalam, tendang ke index.html
     if (!session && !isLoginPage) {
-        window.location.href = path.includes('/pages/') ? '../index.html' : 'index.html';
+        window.location.href = '../index.html';
         return;
     }
 
-    // Jika sudah login tapi masih di halaman utama/login
+    // Jika sudah login dan membuka halaman utama/login, arahkan ke dashboard.html
     if (session && isLoginPage) {
-        window.location.href = path.includes('/pages/') ? 'dashboard.html' : 'pages/dashboard.html';
+        window.location.href = 'pages/dashboard.html';
         return;
     }
 
-    // Jalankan hak akses & render profil jika sudah login
+    // Jalankan otorisasi & render profil jika sudah login
     if (session && !isLoginPage) {
         applyRolePermissions(session);
         renderUserProfileHeader(session);
@@ -97,9 +97,9 @@ function saveSessionAndRedirect(sessionData) {
     sessionData.loginTime = new Date().toISOString();
     localStorage.setItem('sigma_session', JSON.stringify(sessionData));
     
-    // Deteksi lokasi path agar tidak terjadi penumpukan '/pages/pages/'
-    const path = window.location.pathname;
-    if (path.includes('/pages/')) {
+    // Gunakan lokasi absolut relatif terhadap domain
+    const currentPath = window.location.pathname;
+    if (currentPath.includes('/pages/')) {
         window.location.href = 'dashboard.html';
     } else {
         window.location.href = 'pages/dashboard.html';
@@ -232,6 +232,5 @@ function openChangePasswordModal() {
 }
 
 function logout() {
-    const path = window.location.pathname;
-    window.location.href = path.includes('/pages/') ? 'logout.html' : 'pages/logout.html';
+    window.location.href = 'logout.html';
 }
