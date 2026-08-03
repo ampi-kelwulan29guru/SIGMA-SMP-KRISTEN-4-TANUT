@@ -4,21 +4,22 @@ document.addEventListener('DOMContentLoaded', () => {
 
 function checkAuthStatus() {
     const session = JSON.parse(localStorage.getItem('sigma_session'));
-    const isLoginPage = window.location.pathname.includes('login.html') || window.location.pathname.endsWith('index.html');
+    const path = window.location.pathname;
+    const isLoginPage = path.endsWith('index.html') || path.endsWith('/') || path.endsWith('login.html');
 
-    // Jika belum login dan bukan di halaman login/index, lempar ke index.html
+    // Jika belum login dan tidak sedang di halaman utama/login
     if (!session && !isLoginPage) {
-        window.location.href = '../index.html';
+        window.location.href = path.includes('/pages/') ? '../index.html' : 'index.html';
         return;
     }
 
-    // Jika sudah login tapi membuka halaman login, lempar ke dashboard.html
+    // Jika sudah login tapi masih di halaman utama/login
     if (session && isLoginPage) {
-        window.location.href = 'pages/dashboard.html';
+        window.location.href = path.includes('/pages/') ? 'dashboard.html' : 'pages/dashboard.html';
         return;
     }
 
-    // Jika sudah login dan berada di halaman internal, jalankan otorisasi & profil
+    // Jalankan hak akses & render profil jika sudah login
     if (session && !isLoginPage) {
         applyRolePermissions(session);
         renderUserProfileHeader(session);
@@ -95,7 +96,14 @@ if (formLogin) {
 function saveSessionAndRedirect(sessionData) {
     sessionData.loginTime = new Date().toISOString();
     localStorage.setItem('sigma_session', JSON.stringify(sessionData));
-    window.location.href = 'dashboard.html';
+    
+    // Deteksi lokasi path agar tidak terjadi penumpukan '/pages/pages/'
+    const path = window.location.pathname;
+    if (path.includes('/pages/')) {
+        window.location.href = 'dashboard.html';
+    } else {
+        window.location.href = 'pages/dashboard.html';
+    }
 }
 
 // ==========================================
@@ -103,14 +111,12 @@ function saveSessionAndRedirect(sessionData) {
 // ==========================================
 
 function applyRolePermissions(session) {
-    const role = session.role; // 'admin', 'wali_kelas', atau 'guru_mapel'
+    const role = session.role;
 
-    // 1. Sembunyikan elemen khusus admin
     if (role !== 'admin') {
         document.querySelectorAll('.admin-only').forEach(el => el.style.display = 'none');
     }
 
-    // 2. Pembatasan Sidebar Navigation
     if (role === 'guru_mapel') {
         const navGuru = document.querySelector('a[href="guru.html"]');
         const navKelas = document.querySelector('a[href="kelas.html"]');
@@ -118,14 +124,12 @@ function applyRolePermissions(session) {
         if (navKelas) navKelas.parentElement.style.display = 'none';
     }
 
-    // 3. Batasi Fitur Operasi (Tambah, Edit, Hapus Master Data)
     if (role !== 'admin') {
         document.querySelectorAll('.btn-tambah-master, .btn-hapus-master, .btn-edit-master').forEach(btn => {
             btn.style.display = 'none';
         });
     }
 
-    // 4. Kunci Filter Dropdown
     filterFormOptionsByRole(session);
 }
 
@@ -162,7 +166,6 @@ function renderUserProfileHeader(session) {
     `;
 }
 
-// Modal Ganti Password
 function openChangePasswordModal() {
     let modalElement = document.getElementById('modalChangePassword');
     if (!modalElement) {
@@ -228,9 +231,7 @@ function openChangePasswordModal() {
     };
 }
 
-// ==========================================
-// FUNGSI LOGOUT (Mengarahkan ke logout.html)
-// ==========================================
 function logout() {
-    window.location.href = 'logout.html';
+    const path = window.location.pathname;
+    window.location.href = path.includes('/pages/') ? 'logout.html' : 'pages/logout.html';
 }
