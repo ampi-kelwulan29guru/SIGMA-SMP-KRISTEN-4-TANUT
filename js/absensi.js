@@ -146,3 +146,90 @@ async function simpanAbsensi() {
         alert('Gagal menyimpan absensi: ' + e);
     }
 }
+document.addEventListener('DOMContentLoaded', async () => {
+    await initKelasDropdownFilter();
+});
+
+// 1. Memuat daftar kelas sesuai dengan Hak Akses / Role Pengguna
+async function initKelasDropdownFilter() {
+    const selectFilter = document.getElementById('selectKelasFilter');
+    if (!selectFilter) return;
+
+    const session = JSON.parse(localStorage.getItem('sigma_session'));
+    if (!session) return;
+
+    // Ambil semua master data kelas dari Database / IndexedDB
+    let listKelas = [];
+    if (typeof getAllData === 'function') {
+        listKelas = await getAllData('kelas').catch(() => []);
+    }
+
+    // Bersihkan opsi lama
+    selectFilter.innerHTML = '<option value="" disabled selected>-- Pilih Kelas --</option>';
+
+    // Jika pengguna adalah WALI KELAS, kunci/prioritaskan kelas bimbingannya
+    if (session.role === 'wali_kelas' && session.kelasBimbingan) {
+        const option = document.createElement('option');
+        option.value = session.kelasBimbingan;
+        option.textContent = `Kelas ${session.kelasBimbingan} (Kelas Anda)`;
+        selectFilter.appendChild(option);
+        
+        // Pilih otomatis kelas bimbingan wali kelas
+        selectFilter.value = session.kelasBimbingan;
+        onKelasFilterChange(); 
+        return;
+    }
+
+    // Jika ADMIN atau GURU MAPEL, tampilkan seluruh daftar kelas yang ada
+    if (listKelas.length > 0) {
+        listKelas.forEach(k => {
+            const namaKelas = k.namaKelas || k.nama || k;
+            const option = document.createElement('option');
+            option.value = namaKelas;
+            option.textContent = `Kelas ${namaKelas}`;
+            selectFilter.appendChild(option);
+        });
+    } else {
+        // Fallback jika belum ada data kelas master
+        ['7A', '7B', '8A', '8B', '9A', '9B'].forEach(k => {
+            const option = document.createElement('option');
+            option.value = k;
+            option.textContent = `Kelas ${k}`;
+            selectFilter.appendChild(option);
+        });
+    }
+}
+
+// 2. Trigger ketika Pilihan Kelas Berubah
+function onKelasFilterChange() {
+    const selectFilter = document.getElementById('selectKelasFilter');
+    const selectedKelas = selectFilter.value;
+
+    const labelInfo = document.getElementById('labelInfoKelas');
+    const namaKelasAktif = document.getElementById('namaKelasAktif');
+
+    if (labelInfo && namaKelasAktif) {
+        labelInfo.classList.remove('d-none');
+        namaKelasAktif.textContent = selectedKelas;
+    }
+
+    // Panggil fungsi muat/filter data spesifik halaman
+    if (typeof loadDataByKelas === 'function') {
+        loadDataByKelas(selectedKelas);
+    }
+}
+
+// 3. Contoh Fungsi Memuat Data Spesifik per Kelas (Siswa/Absensi/Jurnal/Nilai)
+async function loadDataByKelas(kelas) {
+    console.log(`Memuat data untuk Kelas: ${kelas}`);
+
+    // Contoh pengambilan data siswa berdasarkan kelas yang dipilih
+    let listSiswa = [];
+    if (typeof getAllData === 'function') {
+        const allSiswa = await getAllData('siswa').catch(() => []);
+        listSiswa = allSiswa.filter(s => s.kelas === kelas || s.kelasSiswa === kelas);
+    }
+
+    // Tampilkan data ke tabel sesuai modul (Absensi / Jurnal / Nilai)
+    renderTableByKelas(listSiswa, kelas);
+}
