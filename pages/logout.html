@@ -87,6 +87,15 @@
         window.location.href = "../index.html";
     }, 2500);
 </script>
-
+<!-- Register Service Worker untuk Fitur Offline -->
+<script>
+  if ('serviceWorker' in navigator) {
+    window.addEventListener('load', () => {
+      navigator.serviceWorker.register('../sw.js') // ganti './sw.js' jika di index.html
+        .then((reg) => console.log('Aplikasi Siap Digunakan Secara Offline!', reg.scope))
+        .catch((err) => console.log('Gagal mendaftarkan Offline Mode:', err));
+    });
+  }
+</script>
 </body>
 </html>
