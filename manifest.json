@@ -1,0 +1,22 @@
+{
+  "short_name": "SIGMA EDU",
+  "name": "SIGMA EDU PRO - SMP Kristen 4 Tanut",
+  "description": "Sistem Informasi Administrasi Guru & Sekolah",
+  "icons": [
+    {
+      "src": "logo-sekolah.jpg",
+      "type": "image/jpeg",
+      "sizes": "192x192"
+    },
+    {
+      "src": "logo-sekolah.jpg",
+      "type": "image/jpeg",
+      "sizes": "512x512"
+    }
+  ],
+  "start_url": "./index.html",
+  "background_color": "#1e1e2f",
+  "theme_color": "#800020",
+  "display": "standalone",
+  "orientation": "portrait"
+}
