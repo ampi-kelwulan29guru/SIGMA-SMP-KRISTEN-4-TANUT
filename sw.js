@@ -1,59 +1,54 @@
-const CACHE_NAME = 'sigma-edu-v2';
+const CACHE_NAME = 'sigma-edu-v1';
 
-// Asset utama yang wajib ada saat pertama kali dibuka
-const INITIAL_ASSETS = [
-  './',
-  './index.html',
-  './pages/dashboard.html',
-  './pages/guru.html',
-  './pages/siswa.html',
-  './pages/kelas.html',
-  './pages/mapel.html',
-  './pages/absensi.html',
-  './pages/jurnal.html',
-  './pages/nilai.html',
-  './css/dashboard.css',
-  './js/db.js',
-  './js/auth.js',
-  './js/dashboard.js',
+// Daftar file yang disimpan di memori HP/Laptop agar bisa buka Offline
+const urlsToCache = [
+  '/',
+  '/index.html',
+  '/pages/login.html',
+  '/pages/dashboard.html',
+  '/pages/absensi.html',
+  '/pages/siswa.html',
+  '/pages/guru.html',
+  '/pages/nilai.html',
+  '/pages/jurnal.html',
+  '/pages/mapel.html',
+  '/pages/kelas.html',
+  '/logo-sekolah.jpg',
   'https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css',
-  'https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.css',
-  'https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap'
+  'https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.css'
 ];
 
-// 1. Install & simpan asset dasar
+// Process Install Cache
 self.addEventListener('install', (event) => {
   event.waitUntil(
     caches.open(CACHE_NAME).then((cache) => {
-      return cache.addAll(INITIAL_ASSETS);
+      console.log('Menyimpan file aplikasi untuk mode Offline...');
+      return cache.addAll(urlsToCache);
     })
   );
-  self.skipWaiting();
 });
 
-// 2. Aktifkan Service Worker langsung
-self.addEventListener('activate', (event) => {
-  event.waitUntil(clients.claim());
-});
-
-// 3. Strategi Network First dengan Cache Fallback
-// Ambil data terbaru dari jaringan, jika offline langsung ambil dari memori (cache)
+// Fetching Data dari Cache saat Offline
 self.addEventListener('fetch', (event) => {
   event.respondWith(
-    fetch(event.request)
-      .then((response) => {
-        // Jika berhasil konek, simpan update-an halaman ke cache
-        if (response.status === 200) {
-          const responseClone = response.clone();
-          caches.open(CACHE_NAME).then((cache) => {
-            cache.put(event.request, responseClone);
-          });
-        }
-        return response;
-      })
-      .catch(() => {
-        // Jika offline, ambil dari memori cache
-        return caches.match(event.request);
-      })
+    caches.match(event.request).then((response) => {
+      // Mengembalikan file dari cache jika ada, jika tidak ambil dari jaringan
+      return response || fetch(event.request);
+    })
+  );
+});
+
+// Hapus cache lama jika ada update
+self.addEventListener('activate', (event) => {
+  event.waitUntil(
+    caches.keys().then((cacheNames) => {
+      return Promise.all(
+        cacheNames.map((cache) => {
+          if (cache !== CACHE_NAME) {
+            return caches.delete(cache);
+          }
+        })
+      );
+    })
   );
 });
