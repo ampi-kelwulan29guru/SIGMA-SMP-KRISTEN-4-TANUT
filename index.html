@@ -98,17 +98,16 @@
 
 <!-- JavaScript Modul -->
 <script src="js/db.js"></script>
-<script src="js/auth.js?v=1.0.3"></script>
 
-<!-- Skrip Redirect Login ke Dashboard -->
+<!-- Tangani Login & Pindah Halaman Langsung -->
 <script>
     document.getElementById('formLogin').addEventListener('submit', function(e) {
-        e.preventDefault(); // Mencegah form reload halaman
-        
-        // Alihkan langsung ke halaman dashboard
-        window.location.href = "pages/dashboard.html";
+        // 1. Mencegah form melakukan submit standar (mencegah refresh otomatis)
+        e.preventDefault(); 
+
+        // 2. Langsung alihkan halaman ke Dashboard
+        window.location.href = 'pages/dashboard.html';
     });
 </script>
-
 </body>
 </html>
