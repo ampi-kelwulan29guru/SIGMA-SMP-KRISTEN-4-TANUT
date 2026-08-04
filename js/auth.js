@@ -153,10 +153,27 @@ function saveSessionAndRedirect(sessionData) {
 function applyRolePermissions(session) {
     const role = session.role;
 
+    // -----------------------------------------------------------
+    // Sembunyikan Tombol "Sinkron Data" khusus untuk Admin
+    // -----------------------------------------------------------
+    const btnSinkron = Array.from(document.querySelectorAll('button, a')).find(
+        el => el.textContent.toLowerCase().includes('sinkron data')
+    );
+
+    if (btnSinkron) {
+        if (role === 'admin') {
+            btnSinkron.style.display = 'none'; // Sembunyikan jika Admin
+        } else {
+            btnSinkron.style.display = 'inline-flex'; // Tampilkan untuk Guru/Wali Kelas
+        }
+    }
+
+    // Pembatasan elemen khusus admin
     if (role !== 'admin') {
         document.querySelectorAll('.admin-only').forEach(el => el.style.display = 'none');
     }
 
+    // Pembatasan menu navigasi untuk Guru Mapel
     if (role === 'guru_mapel') {
         const navGuru = document.querySelector('a[href="guru.html"]');
         const navKelas = document.querySelector('a[href="kelas.html"]');
@@ -164,6 +181,7 @@ function applyRolePermissions(session) {
         if (navKelas && navKelas.parentElement) navKelas.parentElement.style.display = 'none';
     }
 
+    // Sembunyikan tombol manajemen data master untuk non-admin
     if (role !== 'admin') {
         document.querySelectorAll('.btn-tambah-master, .btn-hapus-master, .btn-edit-master').forEach(btn => {
             btn.style.display = 'none';
