@@ -125,6 +125,7 @@
                     <a class="nav-link text-white opacity-90 rounded-3 py-2 px-3" href="nilai.html">
                         <i class="bi bi-award me-2"></i>Nilai Siswa
                     </a>
+                    <!-- TOMBOL LOGOUT (Aktif memanggil fungsi logout()) -->
                     <button class="btn btn-danger w-100 fw-semibold rounded-3 mt-3 py-2 shadow-sm border-0" onclick="logout()">
                         <i class="bi bi-box-arrow-right me-2"></i>Logout
                     </button>
@@ -258,6 +259,18 @@
 <script src="../js/db.js"></script>
 <script src="../js/auth.js"></script>
 <script src="../js/dashboard.js"></script>
+
+<!-- PENANGANAN FUNGSI LOGOUT -->
+<script>
+    function logout() {
+        // Hapus data sesi login jika ada
+        localStorage.clear();
+        sessionStorage.clear();
+
+        // Arahkan kembali ke halaman utama (index.html)
+        window.location.href = "../index.html";
+    }
+</script>
 
 </body>
 </html>
