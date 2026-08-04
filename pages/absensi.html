@@ -351,6 +351,26 @@
         document.body.removeChild(link);
     }
 </script>
+    document.addEventListener('DOMContentLoaded', () => {
+    // 1. Ambil data user yang sedang login dari Session Storage / Local Storage
+    const userLoggedIn = JSON.parse(sessionStorage.getItem('user')) || JSON.parse(localStorage.getItem('user'));
+    
+    const profileBadge = document.getElementById('userProfileBadge');
+
+    if (userLoggedIn && profileBadge) {
+        // Tampilkan Nama & Peran dari Akun yang Aktif Login
+        profileBadge.innerHTML = `
+            <span class="badge bg-info text-dark mb-1">${userLoggedIn.role || 'GURU MAPEL'}</span>
+            <div class="fw-bold fs-6">${userLoggedIn.nama || userLoggedIn.username || 'Pengguna'}</div>
+        `;
+    } else if (profileBadge) {
+        // Fallback jika belum login/data tidak ditemukan
+        profileBadge.innerHTML = `
+            <span class="badge bg-secondary mb-1">GURU MAPEL</span>
+            <div class="fw-bold fs-6">Pengguna</div>
+        `;
+    }
+});
     <!-- Profile User Badge (Dibuat Dinamis) -->
 <div id="userProfileBadge" class="bg-white bg-opacity-10 p-3 rounded-3 text-start mb-4">
     <!-- Isi nama dan peran akan diisi otomatis oleh JavaScript -->
