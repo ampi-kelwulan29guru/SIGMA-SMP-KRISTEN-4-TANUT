@@ -60,7 +60,7 @@
 
 <div class="card card-login p-4">
     <div class="text-center mb-4">
-        <!-- Logo Sekolah (Di-load dari direktori utama/root) -->
+        <!-- Logo Sekolah -->
         <img src="logo-sekolah.jpg" alt="Logo SMP Kristen 4 Tanut" style="max-height: 85px;" class="mb-3 filter-shadow">
         <h4 class="fw-bold text-dark mb-0">SIGMA EDU PRO</h4>
         <p class="text-muted small">SMP Kristen 4 Tanut</p>
@@ -99,5 +99,16 @@
 <!-- JavaScript Modul -->
 <script src="js/db.js"></script>
 <script src="js/auth.js?v=1.0.3"></script>
+
+<!-- Skrip Redirect Login ke Dashboard -->
+<script>
+    document.getElementById('formLogin').addEventListener('submit', function(e) {
+        e.preventDefault(); // Mencegah form reload halaman
+        
+        // Alihkan langsung ke halaman dashboard
+        window.location.href = "pages/dashboard.html";
+    });
+</script>
+
 </body>
 </html>
