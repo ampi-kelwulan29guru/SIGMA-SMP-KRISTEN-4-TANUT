@@ -47,7 +47,7 @@ function initLoginForm() {
     formLogin.addEventListener('submit', async (e) => {
         e.preventDefault();
 
-        // Mengambil input dari form (Mendukung ID khusus atau selektor tipe)
+        // Mengambil input dari form
         const userInput = document.getElementById('loginUser') || document.querySelector('input[type="text"]');
         const passInput = document.getElementById('loginPass') || document.querySelector('input[type="password"]');
 
@@ -72,7 +72,6 @@ function initLoginForm() {
 
         if (inputIdentity.toLowerCase() === 'admin') {
             if (inputPass === validAdminPass) {
-                // Hapus data sesi lama agar tidak bentrok
                 localStorage.removeItem('sigma_session');
 
                 saveSessionAndRedirect({
@@ -84,7 +83,7 @@ function initLoginForm() {
             } else {
                 alert('Password Admin salah! Silakan coba lagi.');
             }
-            return; // Hentikan eksekusi, jangan lanjut ke pencarian guru
+            return;
         }
 
         // ==========================================
@@ -120,7 +119,6 @@ function initLoginForm() {
             const validPassword = customPass || defaultPass;
 
             if (inputPass === validPassword) {
-                // Hapus data sesi lama agar tidak bentrok
                 localStorage.removeItem('sigma_session');
 
                 saveSessionAndRedirect({
@@ -154,7 +152,7 @@ function applyRolePermissions(session) {
     const role = session.role;
 
     // -----------------------------------------------------------
-    // Sembunyikan Tombol "Sinkron Data" khusus untuk Admin
+    // 1. Sembunyikan Tombol "Sinkron Data" khusus untuk Admin
     // -----------------------------------------------------------
     const btnSinkron = Array.from(document.querySelectorAll('button, a')).find(
         el => el.textContent.toLowerCase().includes('sinkron data')
@@ -162,30 +160,41 @@ function applyRolePermissions(session) {
 
     if (btnSinkron) {
         if (role === 'admin') {
-            btnSinkron.style.display = 'none'; // Sembunyikan jika Admin
+            btnSinkron.style.display = 'none';
         } else {
-            btnSinkron.style.display = 'inline-flex'; // Tampilkan untuk Guru/Wali Kelas
+            btnSinkron.style.display = 'inline-flex';
         }
     }
 
-    // Pembatasan elemen khusus admin
+    // -----------------------------------------------------------
+    // 2. Sembunyikan Elemen Khusus Admin & Tombol "Tambah Siswa Baru"
+    // -----------------------------------------------------------
     if (role !== 'admin') {
+        // Sembunyikan semua elemen dengan class .admin-only
         document.querySelectorAll('.admin-only').forEach(el => el.style.display = 'none');
+
+        // Sembunyikan tombol manajemen/action master (Tambah/Edit/Hapus)
+        document.querySelectorAll('.btn-tambah-master, .btn-hapus-master, .btn-edit-master').forEach(btn => {
+            btn.style.display = 'none';
+        });
+
+        // Deteksi & sembunyikan tombol "Tambah Siswa" secara teks jika tidak bermarkup class
+        Array.from(document.querySelectorAll('button, a')).forEach(el => {
+            const text = el.textContent.toLowerCase();
+            if (text.includes('tambah siswa') || text.includes('tambah peserta')) {
+                el.style.display = 'none';
+            }
+        });
     }
 
-    // Pembatasan menu navigasi untuk Guru Mapel
+    // -----------------------------------------------------------
+    // 3. Pembatasan menu navigasi untuk Guru Mapel
+    // -----------------------------------------------------------
     if (role === 'guru_mapel') {
         const navGuru = document.querySelector('a[href="guru.html"]');
         const navKelas = document.querySelector('a[href="kelas.html"]');
         if (navGuru && navGuru.parentElement) navGuru.parentElement.style.display = 'none';
         if (navKelas && navKelas.parentElement) navKelas.parentElement.style.display = 'none';
-    }
-
-    // Sembunyikan tombol manajemen data master untuk non-admin
-    if (role !== 'admin') {
-        document.querySelectorAll('.btn-tambah-master, .btn-hapus-master, .btn-edit-master').forEach(btn => {
-            btn.style.display = 'none';
-        });
     }
 }
 
