@@ -1,5 +1,5 @@
 const DB_NAME = 'SigmaEduDB';
-const DB_VERSION = 2; // Naikkan versi agar browser memperbarui skema database
+const DB_VERSION = 3; // Naikkan ke versi 3 untuk menambahkan store absensi & riwayat_sync
 
 function openDB() {
     return new Promise((resolve, reject) => {
@@ -8,8 +8,15 @@ function openDB() {
         request.onupgradeneeded = (event) => {
             const db = event.target.result;
             
-            // Daftar store yang wajib ada
-            const stores = ['guru', 'data_guru', 'siswa', 'data_siswa', 'kelas', 'data_kelas', 'mapel', 'data_mapel'];
+            // Daftar store wajib (ditambah 'absensi' dan 'riwayat_sync')
+            const stores = [
+                'guru', 'data_guru', 
+                'siswa', 'data_siswa', 
+                'kelas', 'data_kelas', 
+                'mapel', 'data_mapel',
+                'absensi', 'data_absensi',
+                'riwayat_sync'
+            ];
             
             stores.forEach(storeName => {
                 if (!db.objectStoreNames.contains(storeName)) {
@@ -53,6 +60,19 @@ async function deleteData(storeName, id) {
         const tx = db.transaction(storeName, 'readwrite');
         const store = tx.objectStore(storeName);
         const request = store.delete(id);
+
+        request.onsuccess = () => resolve();
+        request.onerror = (e) => reject(e.target.error);
+    });
+}
+
+// FUNGSI TAMBAHAN: Untuk Mengosongkan Store (Dipakai saat Timpa/Sinkron Data)
+async function clearStore(storeName) {
+    const db = await openDB();
+    return new Promise((resolve, reject) => {
+        const tx = db.transaction(storeName, 'readwrite');
+        const store = tx.objectStore(storeName);
+        const request = store.clear();
 
         request.onsuccess = () => resolve();
         request.onerror = (e) => reject(e.target.error);
