@@ -16,7 +16,6 @@ async function handlePullData() {
     if (!konfirmasi) return;
 
     try {
-        // Tampilkan indikator loading ringan jika diperlukan
         console.log("Memulai proses penarikan data...");
 
         // Panggil fungsi penarikan data yang ada di db.js
@@ -25,12 +24,9 @@ async function handlePullData() {
         if (sukses) {
             alert("✅ Berhasil! Data Siswa dan Absensi terbaru telah ditarik dari Admin.");
 
-            // Perbarui statistik & riwayat tanpa harus mereload seluruh halaman
+            // Perbarui UI statistik & riwayat secara instan tanpa reload halaman
             await loadDashboardStats();
             await loadRiwayatSync();
-
-            // Refresh halaman agar semua variabel dan komponen UI diperbarui penuh
-            location.reload();
         }
     } catch (error) {
         console.error("Gagal menarik data:", error);
@@ -96,8 +92,8 @@ async function loadRiwayatSync() {
             return;
         }
 
-        // Urutkan dari riwayat terbaru (id / timestamp terbesar)
-        riwayatList.reverse().slice(0, 10).forEach(item => {
+        // Salin array dulu dengan [...riwayatList], lalu reverse dan ambil 10 data terbaru
+        [...riwayatList].reverse().slice(0, 10).forEach(item => {
             tbody.innerHTML += `
                 <tr>
                     <td><small class="fw-semibold text-secondary">${item.waktu || '-'}</small></td>
