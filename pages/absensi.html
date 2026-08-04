@@ -1,239 +1,40 @@
-<!-- Card Filter Pilih Kelas -->
-<div class="card shadow-sm border-0 mb-4" style="border-radius: 12px;">
-    <div class="card-body bg-light rounded-3 p-3">
-        <div class="row align-items-center g-3">
-            <div class="col-md-5">
-                <label for="selectKelasFilter" class="form-label fw-bold text-secondary mb-1">
-                    <i class="bi bi-funnel-fill me-1 text-primary"></i> Pilih Kelas Target:
-                </label>
-                <select id="selectKelasFilter" class="form-select form-select-lg fw-semibold" onchange="onKelasFilterChange()">
-                    <option value="" disabled selected>-- Pilih / Cari Kelas --</option>
-                    <!-- Opsi kelas akan diisi otomatis via JavaScript -->
-                </select>
-            </div>
-            <div class="col-md-7 d-flex align-items-end justify-content-md-end">
-                <span id="labelInfoKelas" class="badge bg-info text-dark p-2 fs-6 fw-normal d-none">
-                    Menampilkan data untuk kelas: <strong id="namaKelasAktif">-</strong>
-                </span>
-            </div>
+<!-- Cukup satu baris Filter & Tanggal di dalam Card Formulir -->
+<div class="card p-4 shadow-sm border-0 rounded-4">
+    <div class="row g-3 align-items-end mb-4">
+        <div class="col-md-4">
+            <label class="form-label fw-bold text-secondary">Pilih Kelas</label>
+            <select id="selectKelas" class="form-select" onchange="loadSiswaByKelas()">
+                <option value="" disabled selected>-- Pilih Kelas --</option>
+                <option value="Kelas 7">Kelas 7</option>
+                <option value="Kelas 8">Kelas 8</option>
+                <option value="Kelas 9">Kelas 9</option>
+            </select>
+        </div>
+        <div class="col-md-4">
+            <label class="form-label fw-bold text-secondary">Tanggal Absensi</label>
+            <input type="date" id="tanggalAbsen" class="form-control">
+        </div>
+        <div class="col-md-4 text-end">
+            <button class="btn btn-success fw-bold w-100 py-2" onclick="simpanAbsensi()">
+                <i class="bi bi-floppy me-1"></i> Simpan Absensi
+            </button>
         </div>
     </div>
-</div>
-<!DOCTYPE html>
-<html lang="id">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Input Absensi - SIGMA EDU PRO</title>
 
-    <!-- Bootstrap & Icons -->
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.css" rel="stylesheet">
-    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
-
-    <!-- CSS Lokal -->
-    <link rel="stylesheet" href="../css/style.css">
-    <link rel="stylesheet" href="../css/dashboard.css">
-    <link rel="stylesheet" href="../css/responsive.css">
-
-    <style>
-        body {
-            font-family: 'Poppins', sans-serif;
-            background-color: #f4f6f9;
-            padding-top: 20px;
-            padding-bottom: 40px;
-            margin: 0;
-        }
-
-        /* SIDEBAR STYLING */
-        .sidebar-menu {
-            background: linear-gradient(180deg, #800020 0%, #4a0013 100%);
-            border-radius: 20px;
-            padding: 20px 14px;
-            box-shadow: 0 4px 20px rgba(128, 0, 32, 0.2);
-        }
-
-        .sidebar-menu .nav-link {
-            font-size: 13.5px;
-            font-weight: 500;
-            transition: all 0.2s ease-in-out;
-            display: flex;
-            align-items: center;
-        }
-
-        .sidebar-menu .nav-link:hover {
-            background: rgba(255, 255, 255, 0.15) !important;
-            transform: translateX(3px);
-        }
-
-        /* STYLING PROFIL GURU BAR ATAS */
-        #userProfileBadge {
-            font-weight: 600;
-            color: #212529 !important;
-            margin-bottom: 0 !important;
-        }
-
-        #userProfileBadge * {
-            color: #212529 !important;
-        }
-
-        #userProfileBadge .badge {
-            color: #ffffff !important;
-        }
-
-        /* BANNER MODUL ABSENSI */
-        .banner-modul {
-            background: linear-gradient(135deg, #ffc107 0%, #d39e00 100%);
-            border: none;
-            box-shadow: 0 4px 15px rgba(255, 193, 7, 0.2);
-            border-radius: 16px;
-        }
-
-        .card-custom {
-            border: 1px solid rgba(0, 0, 0, 0.05);
-            border-radius: 16px;
-            box-shadow: 0 4px 15px rgba(0,0,0,0.03);
-        }
-
-        .table thead th {
-            background-color: #f8f9fa;
-            color: #495057;
-            font-weight: 600;
-            text-transform: uppercase;
-            font-size: 12px;
-            letter-spacing: 0.5px;
-            border-bottom: 2px solid #dee2e6;
-        }
-    </style>
-</head>
-<body>
-
-<div class="container-fluid px-4">
-    <div class="row g-3">
-
-        <!-- KIRI: SIDEBAR NAVIGATION -->
-        <div class="col-lg-2 col-md-3">
-            <div class="sidebar-menu text-white">
-                
-                <!-- Logo & Judul -->
-                <div class="text-center mb-3">
-                    <img src="../logo-sekolah.jpg" alt="Logo SMP Kristen 4 Tanut" class="img-fluid mb-2" style="max-height: 65px; filter: drop-shadow(0px 2px 4px rgba(0,0,0,0.3));">
-                    <h6 class="fw-bold mb-0" style="letter-spacing: 0.5px;">SIGMA EDU</h6>
-                    <span class="badge bg-warning text-dark fw-bold my-1 px-2 py-1 rounded-pill" style="font-size: 9px;">PRO</span>
-                    <p class="text-white-50 mb-0" style="font-size: 10.5px;">SMP Kristen 4 Tanut</p>
-                </div>
-
-                <hr class="border-light opacity-25 my-3">
-
-                <!-- Menu Sidebar -->
-                <div class="nav flex-column gap-1">
-                    <a class="nav-link text-white opacity-90 rounded-3 py-2 px-3" href="dashboard.html">
-                        <i class="bi bi-speedometer2 me-2"></i>Dashboard
-                    </a>
-                    <a class="nav-link text-white opacity-90 rounded-3 py-2 px-3" href="guru.html">
-                        <i class="bi bi-person-badge me-2"></i>Data Guru
-                    </a>
-                    <a class="nav-link text-white opacity-90 rounded-3 py-2 px-3" href="siswa.html">
-                        <i class="bi bi-mortarboard me-2"></i>Data Siswa
-                    </a>
-                    <a class="nav-link text-white opacity-90 rounded-3 py-2 px-3" href="kelas.html">
-                        <i class="bi bi-building me-2"></i>Data Kelas
-                    </a>
-                    <a class="nav-link text-white opacity-90 rounded-3 py-2 px-3" href="mapel.html">
-                        <i class="bi bi-book me-2"></i>Mata Pelajaran
-                    </a>
-                    <a class="nav-link active bg-warning text-dark fw-bold rounded-3 py-2 px-3 shadow-sm" href="absensi.html">
-                        <i class="bi bi-calendar-check me-2"></i>Absensi
-                    </a>
-                    <a class="nav-link text-white opacity-90 rounded-3 py-2 px-3" href="jurnal.html">
-                        <i class="bi bi-journal-bookmark me-2"></i>Jurnal Mengajar
-                    </a>
-                    <a class="nav-link text-white opacity-90 rounded-3 py-2 px-3" href="nilai.html">
-                        <i class="bi bi-award me-2"></i>Nilai Siswa
-                    </a>
-                    <button class="btn btn-danger w-100 fw-semibold rounded-3 mt-3 py-2 shadow-sm border-0" onclick="logout()">
-                        <i class="bi bi-box-arrow-right me-2"></i>Logout
-                    </button>
-                </div>
-            </div>
-        </div>
-
-        <!-- KANAN: KONTEN UTAMA ABSENSI -->
-        <div class="col-lg-10 col-md-9">
-
-            <!-- BAR NAVIGASI ATAS: NAMA GURU & IKON HOME (SEJAJAR SAMA PERSIS) -->
-            <div class="bg-white p-3 rounded-4 shadow-sm mb-3 border d-flex justify-content-between align-items-center">
-                <!-- Sisi Kiri: Profil Nama Guru -->
-                <div id="userProfileBadge" class="d-flex align-items-center gap-2"></div>
-
-                <!-- Sisi Kanan: Tombol Home (Hanya Ikon) -->
-                <a href="dashboard.html" class="btn btn-danger rounded-circle p-0 d-inline-flex align-items-center justify-content-center shadow-sm" style="width: 40px; height: 40px;" title="Kembali ke Dashboard">
-                    <i class="bi bi-house-door-fill fs-5"></i>
-                </a>
-            </div>
-
-            <!-- Banner Header Modul Absensi -->
-            <div class="card banner-modul text-dark p-4 mb-3">
-                <div class="d-flex justify-content-between align-items-center flex-wrap gap-2">
-                    <div>
-                        <span class="badge bg-dark text-white fw-bold px-3 py-1 mb-2 rounded-pill">
-                            <i class="bi bi-calendar-check me-1"></i> MODUL ABSENSI
-                        </span>
-                        <h3 class="fw-bold mb-1">Input Absensi Harian 📝</h3>
-                        <p class="mb-0 text-dark-50 small">Pencatatan kehadiran siswa untuk Guru Mata Pelajaran dan Wali Kelas</p>
-                    </div>
-                </div>
-            </div>
-
-            <!-- Card Control & Tabel Absensi -->
-            <div class="card card-custom bg-white p-4">
-                <div class="row g-3 align-items-end mb-4">
-                    <div class="col-md-4">
-                        <label class="form-label fw-semibold text-secondary">Pilih Kelas</label>
-                        <select id="selectKelasAbsensi" class="form-select rounded-3">
-                            <option value="Kelas 7">Kelas 7</option>
-                            <option value="Kelas 8">Kelas 8</option>
-                            <option value="Kelas 9">Kelas 9</option>
-                        </select>
-                    </div>
-                    <div class="col-md-4">
-                        <label class="form-label fw-semibold text-secondary">Tanggal Absensi</label>
-                        <input type="date" id="inputTanggalAbsensi" class="form-control rounded-3">
-                    </div>
-                    <div class="col-md-4 text-end">
-                        <button class="btn btn-success w-100 rounded-3 fw-bold py-2 shadow-sm" onclick="simpanAbsensi()">
-                            <i class="bi bi-box-arrow-down me-1"></i> Simpan Absensi
-                        </button>
-                    </div>
-                </div>
-
-                <div class="table-responsive">
-                    <table class="table table-hover align-middle mb-0">
-                        <thead>
-                            <tr>
-                                <th class="text-center" style="width: 50px;">NO</th>
-                                <th>NISN</th>
-                                <th>NAMA SISWA</th>
-                                <th class="text-center" style="width: 250px;">STATUS KEHADIRAN</th>
-                            </tr>
-                        </thead>
-                        <tbody id="tabelAbsensi">
-                            <!-- Data absensi siswa diisi oleh absensi.js -->
-                        </tbody>
-                    </table>
-                </div>
-            </div>
-
-        </div>
+    <!-- Tabel Daftar Siswa -->
+    <div class="table-responsive">
+        <table class="table table-hover align-middle">
+            <thead class="table-light">
+                <tr>
+                    <th width="5%">NO</th>
+                    <th width="20%">NISN</th>
+                    <th width="45%">NAMA SISWA</th>
+                    <th width="30%" class="text-center">STATUS KEHADIRAN</th>
+                </tr>
+            </thead>
+            <tbody id="tbodyAbsensi">
+                <!-- Data siswa akan dirender otomatis via JavaScript di sini -->
+            </tbody>
+        </table>
     </div>
 </div>
-
-<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
-
-<!-- SCRIPT LOKAL -->
-<script src="../js/db.js"></script>
-<script src="../js/auth.js"></script>
-<script src="../js/absensi.js"></script>
-
-</body>
-</html>
