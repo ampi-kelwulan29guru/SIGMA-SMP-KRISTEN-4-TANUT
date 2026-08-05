@@ -220,3 +220,38 @@ function logout() {
     const repoPath = getRepoPath();
     window.location.href = `${repoPath}/index.html`;
 }
+const users = [
+  // ================= GURU MAPEL =================
+  // Password untuk semua Guru Mapel: guru123
+  {
+    username: "198501012010011001", // Contoh NIP Guru Mapel 1
+    nip: "198501012010011001",
+    password: "guru123",
+    nama: "Guru Mapel 1",
+    role: "GURU MAPEL"
+  },
+  {
+    username: "8171012904000003", // NIK Guru Honor / Guru Mapel 2
+    nip: "8171012904000003",
+    password: "guru123",
+    nama: "Guru Mapel 2",
+    role: "GURU MAPEL"
+  },
+
+  // ================= WALI KELAS =================
+  // Password untuk semua Wali Kelas: wali123
+  {
+    username: "198203152009022002", // Contoh NIP Wali Kelas 1
+    nip: "198203152009022002",
+    password: "wali123",
+    nama: "Wali Kelas 7A",
+    role: "WALI KELAS"
+  },
+  {
+    username: "198705202011011003", // Contoh NIP Wali Kelas 2
+    nip: "198705202011011003",
+    password: "wali123",
+    nama: "Wali Kelas 8A",
+    role: "WALI KELAS"
+  }
+];
