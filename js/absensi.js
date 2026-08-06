@@ -2,7 +2,7 @@ document.addEventListener('DOMContentLoaded', async () => {
     // 1. Cek Sesi Login
     const session = JSON.parse(localStorage.getItem('sigma_session')) || {};
     
-    // Tampilkan Profil Header jika ada fungsinya di auth.js
+    // Tampilkan Profil Header & Batasi Akses Tombol
     if (typeof applyRolePermissions === 'function') applyRolePermissions(session);
     if (typeof renderUserProfileHeader === 'function') renderUserProfileHeader(session);
 
@@ -15,7 +15,7 @@ document.addEventListener('DOMContentLoaded', async () => {
         inputTanggal.value = new Date().toISOString().split('T')[0];
     }
 
-    // Jika Wali Kelas, otomatis kunci ke kelas bimbingannya
+    // Jika Wali Kelas, otomatis kunci dropdown ke kelas bimbingannya
     if (session.role === 'wali_kelas' && session.kelasBimbingan && selectKelas) {
         selectKelas.value = session.kelasBimbingan;
         selectKelas.disabled = true;
@@ -29,11 +29,13 @@ document.addEventListener('DOMContentLoaded', async () => {
         inputTanggal.addEventListener('change', () => muatTabelAbsensi());
     }
 
-    // 4. JALANKAN LANGSUNG SAAT HALAMAN DIBUKA (Buka Block)
+    // 4. Jalankan langsung saat halaman dibuka untuk mengisi tabel
     await muatTabelAbsensi();
 });
 
-// Fungsi Utama Memuat & Menampilkan Data Absensi
+// =========================================================================
+// FUNGSI UTAMA MEMUAT & MENAMPILKAN DATA ABSENSI (DENGAN LANGKAH 3)
+// =========================================================================
 async function muatTabelAbsensi() {
     const session = JSON.parse(localStorage.getItem('sigma_session')) || {};
     const selectKelas = document.getElementById('filterKelas') || document.getElementById('selectKelas');
@@ -42,19 +44,35 @@ async function muatTabelAbsensi() {
 
     if (!tbody) return;
 
-    // Ambil nilai kelas yang dipilih
+    // Ambil nilai kelas yang dipilih dari dropdown
     let kelasTerpilih = selectKelas ? selectKelas.value.trim() : '';
 
-    // Ambil Seluruh Data Siswa
+    // -------------------------------------------------------------
+    // LANGKAH 3: PENCARIAN DATA SISWA 3 LAPIS (PASTI KETEMU DATA)
+    // -------------------------------------------------------------
     let allSiswa = [];
+
+    // Lapis 1: Ambil dari IndexedDB
     if (typeof getAllData === 'function') {
         allSiswa = await getAllData('siswa').catch(() => []);
     }
-    if ((!allSiswa || allSiswa.length === 0) && window.dbSiswa) {
-        allSiswa = window.dbSiswa;
+
+    // Lapis 2: Jika IndexedDB kosong, ambil dari LocalStorage (Hasil Tarik Data)
+    if ((!allSiswa || allSiswa.length === 0)) {
+        const cache = localStorage.getItem('sigma_cache_siswa');
+        if (cache) {
+            try { allSiswa = JSON.parse(cache); } catch(e){}
+        }
     }
 
-    // Jika tidak ada filter kelas yang dipilih, tampilkan semua siswa
+    // Lapis 3: Jika masih kosong, ambil dari variabel master js (window.dbSiswa / window.dataSiswa)
+    if ((!allSiswa || allSiswa.length === 0)) {
+        if (typeof window.dbSiswa !== 'undefined') allSiswa = window.dbSiswa;
+        else if (typeof window.dataSiswa !== 'undefined') allSiswa = window.dataSiswa;
+    }
+    // -------------------------------------------------------------
+
+    // Filter Siswa berdasarkan Kelas yang Dipilih
     let siswaFiltered = allSiswa;
 
     if (kelasTerpilih) {
@@ -62,25 +80,26 @@ async function muatTabelAbsensi() {
             const kSiswa = (s.kelas || s.kelasSiswa || '').toString().toLowerCase().replace(/[^a-z0-9]/g, '');
             const kTarget = kelasTerpilih.toString().toLowerCase().replace(/[^a-z0-9]/g, '');
             
-            // Cocokkan fleksibel (contoh: "kelas7" == "7" atau "7a")
+            // Pengujian fleksibel penulisan kelas (contoh: "kelas7" == "7" atau "7a")
             return kSiswa === kTarget || kSiswa.includes(kTarget) || kTarget.includes(kSiswa);
         });
     }
 
-    // JIKA DATA SISWA BENAR-BENAR KOSONG DI DATABASE
-    if (siswaFiltered.length === 0) {
+    // JIKA DATA SISWA SAMA SEKALI TIDAK ADA
+    if (!siswaFiltered || siswaFiltered.length === 0) {
         tbody.innerHTML = `
             <tr>
                 <td colspan="5" class="text-center py-4 text-muted">
                     <i class="bi bi-info-circle me-1"></i>
-                    Belum ada data siswa untuk kelas <strong>"${kelasTerpilih}"</strong>. Silakan periksa Data Master Siswa.
+                    Belum ada data siswa untuk kelas <strong>"${kelasTerpilih || 'pilihan'}"</strong>.<br>
+                    <small class="text-secondary">Silakan klik tombol <strong>"Tarik Data Siswa"</strong> (Login sebagai Admin) untuk menyinkronkan data.</small>
                 </td>
             </tr>`;
         updateRekap(0, 0, 0, 0);
         return;
     }
 
-    // AMBIL DATA ABSENSI HARI INI (Jika sudah pernah disimpan)
+    // AMBIL DATA ABSENSI TERPINDAH HARI INI (Jika sudah pernah tersimpan)
     const tgl = inputTanggal ? inputTanggal.value : new Date().toISOString().split('T')[0];
     let dataAbsenTersimpan = [];
     if (typeof getAllData === 'function') {
@@ -88,12 +107,12 @@ async function muatTabelAbsensi() {
         dataAbsenTersimpan = allAbsen.filter(a => a.tanggal === tgl);
     }
 
-    // RENDER TABEL UTAMA (HILANGKAN PESAN BLOCKING)
+    // RENDER BARIS TABEL SISWA (BUKA BLOCKING)
     tbody.innerHTML = siswaFiltered.map((siswa, index) => {
         const nisn = siswa.nisn || siswa.nis || '-';
         const nama = siswa.nama || siswa.namaSiswa || 'Tanpa Nama';
         
-        // Cek jika siswa ini sudah ada rekapan absennya
+        // Cek status absen siswa jika pernah disimpan
         const record = dataAbsenTersimpan.find(a => (a.nisn && a.nisn === nisn) || a.nama === nama) || {};
         const status = record.status || 'H'; // Default: Hadir (H)
 
@@ -121,11 +140,61 @@ async function muatTabelAbsensi() {
         `;
     }).join('');
 
-    // Hitung ulang total Hadir, Sakit, Izin, Alfa
+    // Hitung ringkasan status di atas
     hitungRekapOtomatis();
 }
 
-// Fungsi Menghitung Ringkasan (Card Counter Atas)
+// =========================================================================
+// LANGKAH 2: FUNGSI TARIK DATA MASTER (DILAKUKAN OLEH ADMIN)
+// =========================================================================
+async function tarikDataMasterSiswa() {
+    const btn = document.getElementById('btnTarikData');
+    if (btn) {
+        btn.disabled = true;
+        btn.innerHTML = `<span class="spinner-border spinner-border-sm me-1"></span> Menarik Data...`;
+    }
+
+    try {
+        let sourceSiswa = [];
+        
+        // Ambil data dari variabel global (db.js)
+        if (typeof window.dbSiswa !== 'undefined' && Array.isArray(window.dbSiswa)) {
+            sourceSiswa = window.dbSiswa;
+        } else if (typeof window.dataSiswa !== 'undefined' && Array.isArray(window.dataSiswa)) {
+            sourceSiswa = window.dataSiswa;
+        }
+
+        // Simpan ke IndexedDB
+        if (typeof saveData === 'function') {
+            for (const siswa of sourceSiswa) {
+                await saveData('siswa', siswa).catch(() => {});
+            }
+        }
+
+        // Simpan juga ke LocalStorage sebagai cadangan instan
+        if (sourceSiswa.length > 0) {
+            localStorage.setItem('sigma_cache_siswa', JSON.stringify(sourceSiswa));
+        }
+
+        alert(`Berhasil menarik ${sourceSiswa.length} data siswa ke database browser!`);
+        
+        // Muat ulang tabel
+        await muatTabelAbsensi();
+
+    } catch (err) {
+        console.error(err);
+        alert("Gagal menarik data: " + err.message);
+    } finally {
+        if (btn) {
+            btn.disabled = false;
+            btn.innerHTML = `<i class="bi bi-cloud-arrow-down-fill me-1"></i> Tarik Data Siswa`;
+        }
+    }
+}
+
+// =========================================================================
+// FUNGSI HITUNG REKAP & COUNTER ATAS
+// =========================================================================
 function hitungRekapOtomatis() {
     const listRadioChecked = document.querySelectorAll('table tbody input[type="radio"]:checked');
     let h = 0, s = 0, i = 0, a = 0;
@@ -141,75 +210,10 @@ function hitungRekapOtomatis() {
 }
 
 function updateRekap(h, s, i, a) {
-    const elH = document.querySelector('.bg-success-subtle, .text-success, [id*="Hadir"]') || document.getElementById('countHadir');
-    const elS = document.querySelector('.bg-warning-subtle, .text-warning, [id*="Sakit"]') || document.getElementById('countSakit');
-    const elI = document.querySelector('.bg-info-subtle, .text-info, [id*="Izin"]') || document.getElementById('countIzin');
-    const elA = document.querySelector('.bg-danger-subtle, .text-danger, [id*="Alfa"]') || document.getElementById('countAlfa');
-
-    // Update text angka rekap di atas jika elemen ditemukan
     document.querySelectorAll('.row .fw-bold, .card-body').forEach(box => {
         if (box.textContent.includes('Hadir:')) box.innerHTML = `Hadir: <strong>${h}</strong>`;
         if (box.textContent.includes('Sakit:')) box.innerHTML = `Sakit: <strong>${s}</strong>`;
         if (box.textContent.includes('Izin:')) box.innerHTML = `Izin: <strong>${i}</strong>`;
         if (box.textContent.includes('Alfa:')) box.innerHTML = `Alfa: <strong>${a}</strong>`;
     });
-}
-// Fungsi Tarik Data dari Master/Lokal ke IndexedDB (Khusus Admin)
-async function tarikDataMasterSiswa() {
-    const btn = document.getElementById('btnTarikData');
-    if (btn) {
-        btn.disabled = true;
-        btn.innerHTML = `<span class="spinner-border spinner-border-sm me-1"></span> Menarik Data...`;
-    }
-
-    try {
-        // 1. Ambil data siswa dari file db.js / window.dbSiswa / window.dataSiswa
-        let sourceSiswa = [];
-        if (typeof window.dbSiswa !== 'undefined' && Array.isArray(window.dbSiswa)) {
-            sourceSiswa = window.dbSiswa;
-        } else if (typeof window.dataSiswa !== 'undefined' && Array.isArray(window.dataSiswa)) {
-            sourceSiswa = window.dataSiswa;
-        }
-
-        // Jika tidak ada data master di memory, buat data sampel dasar
-        if (sourceSiswa.length === 0) {
-            alert("Warning: Data master siswa (db.js) tidak ditemukan. Memakai data standar.");
-        }
-
-        // 2. Simpan/Update ke IndexedDB jika fungsi saveData/insertData tersedia
-        if (typeof saveData === 'function') {
-            for (const siswa of sourceSiswa) {
-                await saveData('siswa', siswa).catch(() => {});
-            }
-        } else if (typeof addData === 'function') {
-            for (const siswa of sourceSiswa) {
-                await addData('siswa', siswa).catch(() => {});
-            }
-        }
-
-        // 3. Simpan juga cadangannya ke localStorage agar selalu terbaca
-        if (sourceSiswa.length > 0) {
-            localStorage.setItem('sigma_cache_siswa', JSON.stringify(sourceSiswa));
-        }
-
-        alert(`Berhasil menarik ${sourceSiswa.length} data siswa! Tabel akan diperbarui.`);
-        
-        // 4. Muat ulang tabel absensi
-        if (typeof muatTabelAbsensi === 'function') {
-            await muatTabelAbsensi();
-        } else if (typeof loadTabelAbsensi === 'function') {
-            await loadTabelAbsensi();
-        } else {
-            location.reload();
-        }
-
-    } catch (err) {
-        console.error(err);
-        alert("Gagal menarik data: " + err.message);
-    } finally {
-        if (btn) {
-            btn.disabled = false;
-            btn.innerHTML = `<i class="bi bi-cloud-arrow-down-fill me-1"></i> Tarik Data Siswa`;
-        }
-    }
 }
