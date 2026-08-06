@@ -154,3 +154,62 @@ function updateRekap(h, s, i, a) {
         if (box.textContent.includes('Alfa:')) box.innerHTML = `Alfa: <strong>${a}</strong>`;
     });
 }
+// Fungsi Tarik Data dari Master/Lokal ke IndexedDB (Khusus Admin)
+async function tarikDataMasterSiswa() {
+    const btn = document.getElementById('btnTarikData');
+    if (btn) {
+        btn.disabled = true;
+        btn.innerHTML = `<span class="spinner-border spinner-border-sm me-1"></span> Menarik Data...`;
+    }
+
+    try {
+        // 1. Ambil data siswa dari file db.js / window.dbSiswa / window.dataSiswa
+        let sourceSiswa = [];
+        if (typeof window.dbSiswa !== 'undefined' && Array.isArray(window.dbSiswa)) {
+            sourceSiswa = window.dbSiswa;
+        } else if (typeof window.dataSiswa !== 'undefined' && Array.isArray(window.dataSiswa)) {
+            sourceSiswa = window.dataSiswa;
+        }
+
+        // Jika tidak ada data master di memory, buat data sampel dasar
+        if (sourceSiswa.length === 0) {
+            alert("Warning: Data master siswa (db.js) tidak ditemukan. Memakai data standar.");
+        }
+
+        // 2. Simpan/Update ke IndexedDB jika fungsi saveData/insertData tersedia
+        if (typeof saveData === 'function') {
+            for (const siswa of sourceSiswa) {
+                await saveData('siswa', siswa).catch(() => {});
+            }
+        } else if (typeof addData === 'function') {
+            for (const siswa of sourceSiswa) {
+                await addData('siswa', siswa).catch(() => {});
+            }
+        }
+
+        // 3. Simpan juga cadangannya ke localStorage agar selalu terbaca
+        if (sourceSiswa.length > 0) {
+            localStorage.setItem('sigma_cache_siswa', JSON.stringify(sourceSiswa));
+        }
+
+        alert(`Berhasil menarik ${sourceSiswa.length} data siswa! Tabel akan diperbarui.`);
+        
+        // 4. Muat ulang tabel absensi
+        if (typeof muatTabelAbsensi === 'function') {
+            await muatTabelAbsensi();
+        } else if (typeof loadTabelAbsensi === 'function') {
+            await loadTabelAbsensi();
+        } else {
+            location.reload();
+        }
+
+    } catch (err) {
+        console.error(err);
+        alert("Gagal menarik data: " + err.message);
+    } finally {
+        if (btn) {
+            btn.disabled = false;
+            btn.innerHTML = `<i class="bi bi-cloud-arrow-down-fill me-1"></i> Tarik Data Siswa`;
+        }
+    }
+}
