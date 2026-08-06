@@ -1,235 +1,115 @@
-document.addEventListener('DOMContentLoaded', async () => {
-    // Set tanggal hari ini sebagai default
-    const inputTanggal = document.getElementById('filterTanggal');
-    if (inputTanggal) {
-        inputTanggal.value = new Date().toISOString().split('T')[0];
-    }
+// Fungsi Utama Memuat Tabel Absensi
+async function loadTabelAbsensi() {
+    // 1. Ambil Sesi Pengguna
+    const session = JSON.parse(localStorage.getItem('sigma_session')) || {};
+    const role = session.role;
+    const kelasBimbingan = session.kelasBimbingan || '';
 
-    await populasiDropdownKelasAndMapel();
-});
+    // 2. Ambil Elemen Filter Kelas & Tanggal (Jika ada di halaman HTML)
+    const selectKelas = document.getElementById('filterKelas') || document.getElementById('selectKelas');
+    const inputTanggal = document.getElementById('filterTanggal') || document.getElementById('tanggalAbsen');
+    
+    let targetKelas = '';
 
-// Fungsi memuat opsi Dropdown Kelas & Mapel otomatis dari IndexedDB
-async function populasiDropdownKelasAndMapel() {
-    // Opsi Kelas
-    const selectKelas = document.getElementById('filterKelas');
-    if (selectKelas) {
-        let listKelas = await getAllData('kelas').catch(() => []);
-        if (!listKelas || listKelas.length === 0) listKelas = await getAllData('data_kelas').catch(() => []);
-
-        selectKelas.innerHTML = '<option value="">-- Pilih Kelas --</option>';
-        listKelas.forEach(k => {
-            const namaKelas = k.nama || k.namaKelas || k.kelas;
-            selectKelas.innerHTML += `<option value="${namaKelas}">${namaKelas}</option>`;
-        });
-    }
-
-    // Opsi Mapel
-    const selectMapel = document.getElementById('filterMapel');
-    if (selectMapel) {
-        let listMapel = await getAllData('mapel').catch(() => []);
-        if (!listMapel || listMapel.length === 0) listMapel = await getAllData('data_mapel').catch(() => []);
-
-        selectMapel.innerHTML = '<option value="">-- Pilih Mapel --</option>';
-        listMapel.forEach(m => {
-            const namaMapel = m.nama || m.namaMapel;
-            selectMapel.innerHTML += `<option value="${namaMapel}">${namaMapel}</option>`;
-        });
-    }
-}
-
-// Function menampilkan siswa untuk diabsen
-async function muatDaftarSiswaAbsensi() {
-    const kelasSelected = document.getElementById('filterKelas').value;
-    const tbody = document.getElementById('tabelAbsensi');
-    const areaSimpan = document.getElementById('areaSimpanAbsensi');
-
-    if (!kelasSelected) {
-        alert('Silakan pilih kelas terlebih dahulu!');
-        return;
-    }
-
-    try {
-        let listSiswa = await getAllData('siswa').catch(() => []);
-        if (!listSiswa || listSiswa.length === 0) listSiswa = await getAllData('data_siswa').catch(() => []);
-
-        // Filter siswa berdasarkan kelas jika ada properti kelas
-        const siswaFiltered = listSiswa.filter(s => !s.kelas || s.kelas === kelasSelected);
-
-        tbody.innerHTML = '';
-
-        if (siswaFiltered.length === 0) {
-            tbody.innerHTML = `
-                <tr>
-                    <td colspan="4" class="text-center text-muted py-4">
-                        Tidak ada siswa pada kelas ${kelasSelected}.
-                    </td>
-                </tr>`;
-            areaSimpan.style.display = 'none';
-            return;
+    // Tentukan Kelas yang Akan Ditampilkan:
+    if (role === 'wali_kelas') {
+        targetKelas = kelasBimbingan;
+        if (selectKelas) {
+            selectKelas.value = kelasBimbingan;
+            selectKelas.disabled = true; // Lock dropdown kelas untuk wali kelas
         }
-
-        siswaFiltered.forEach((siswa, idx) => {
-            const nisn = siswa.nisn || '-';
-            const nama = siswa.nama || siswa.namaSiswa || '-';
-
-            tbody.innerHTML += `
-                <tr data-id="${siswa.id}">
-                    <td class="text-center fw-bold text-secondary">${idx + 1}</td>
-                    <td><span class="badge bg-light text-dark border font-monospace">${nisn}</span></td>
-                    <td class="fw-bold text-dark">${nama}</td>
-                    <td class="text-center">
-                        <div class="btn-group btn-group-sm w-100" role="group">
-                            <input type="radio" class="btn-check" name="status_${siswa.id}" id="h_${siswa.id}" value="Hadir" checked>
-                            <label class="btn btn-outline-success" for="h_${siswa.id}">Hadir</label>
-
-                            <input type="radio" class="btn-check" name="status_${siswa.id}" id="i_${siswa.id}" value="Izin">
-                            <label class="btn btn-outline-info" for="i_${siswa.id}">Izin</label>
-
-                            <input type="radio" class="btn-check" name="status_${siswa.id}" id="s_${siswa.id}" value="Sakit">
-                            <label class="btn btn-outline-warning" for="s_${siswa.id}">Sakit</label>
-
-                            <input type="radio" class="btn-check" name="status_${siswa.id}" id="a_${siswa.id}" value="Alfa">
-                            <label class="btn btn-outline-danger" for="a_${siswa.id}">Alfa</label>
-                        </div>
-                    </td>
-                </tr>
-            `;
-        });
-
-        areaSimpan.style.display = 'block';
-
-    } catch (err) {
-        console.error("Gagal memuat siswa absensi:", err);
-    }
-}
-
-// Set semua radio button menjadi status yang dipilih
-function setSemuaStatus(status) {
-    const radios = document.querySelectorAll(`input[value="${status}"]`);
-    radios.forEach(r => r.checked = true);
-}
-
-// Simpan data absensi ke IndexedDB
-async function simpanAbsensi() {
-    const tanggal = document.getElementById('filterTanggal').value;
-    const kelas = document.getElementById('filterKelas').value;
-    const mapel = document.getElementById('filterMapel').value;
-
-    const rows = document.querySelectorAll('#tabelAbsensi tr');
-    let rekapAbsensi = [];
-
-    rows.forEach(row => {
-        const idSiswa = row.getAttribute('data-id');
-        if (idSiswa) {
-            const statusChecked = document.querySelector(`input[name="status_${idSiswa}"]:checked`);
-            if (statusChecked) {
-                rekapAbsensi.push({
-                    siswaId: idSiswa,
-                    status: statusChecked.value
-                });
-            }
-        }
-    });
-
-    const dataAbsen = {
-        tanggal,
-        kelas,
-        mapel,
-        detail: rekapAbsensi,
-        createdAt: new Date().toISOString()
-    };
-
-    try {
-        await addData('absensi', dataAbsen).catch(() => addData('data_absensi', dataAbsen));
-        alert('Data absensi berhasil disimpan!');
-    } catch (e) {
-        alert('Gagal menyimpan absensi: ' + e);
-    }
-}
-document.addEventListener('DOMContentLoaded', async () => {
-    await initKelasDropdownFilter();
-});
-
-// 1. Memuat daftar kelas sesuai dengan Hak Akses / Role Pengguna
-async function initKelasDropdownFilter() {
-    const selectFilter = document.getElementById('selectKelasFilter');
-    if (!selectFilter) return;
-
-    const session = JSON.parse(localStorage.getItem('sigma_session'));
-    if (!session) return;
-
-    // Ambil semua master data kelas dari Database / IndexedDB
-    let listKelas = [];
-    if (typeof getAllData === 'function') {
-        listKelas = await getAllData('kelas').catch(() => []);
-    }
-
-    // Bersihkan opsi lama
-    selectFilter.innerHTML = '<option value="" disabled selected>-- Pilih Kelas --</option>';
-
-    // Jika pengguna adalah WALI KELAS, kunci/prioritaskan kelas bimbingannya
-    if (session.role === 'wali_kelas' && session.kelasBimbingan) {
-        const option = document.createElement('option');
-        option.value = session.kelasBimbingan;
-        option.textContent = `Kelas ${session.kelasBimbingan} (Kelas Anda)`;
-        selectFilter.appendChild(option);
-        
-        // Pilih otomatis kelas bimbingan wali kelas
-        selectFilter.value = session.kelasBimbingan;
-        onKelasFilterChange(); 
-        return;
-    }
-
-    // Jika ADMIN atau GURU MAPEL, tampilkan seluruh daftar kelas yang ada
-    if (listKelas.length > 0) {
-        listKelas.forEach(k => {
-            const namaKelas = k.namaKelas || k.nama || k;
-            const option = document.createElement('option');
-            option.value = namaKelas;
-            option.textContent = `Kelas ${namaKelas}`;
-            selectFilter.appendChild(option);
-        });
     } else {
-        // Fallback jika belum ada data kelas master
-        ['7A', '7B', '8A', '8B', '9A', '9B'].forEach(k => {
-            const option = document.createElement('option');
-            option.value = k;
-            option.textContent = `Kelas ${k}`;
-            selectFilter.appendChild(option);
-        });
-    }
-}
-
-// 2. Trigger ketika Pilihan Kelas Berubah
-function onKelasFilterChange() {
-    const selectFilter = document.getElementById('selectKelasFilter');
-    const selectedKelas = selectFilter.value;
-
-    const labelInfo = document.getElementById('labelInfoKelas');
-    const namaKelasAktif = document.getElementById('namaKelasAktif');
-
-    if (labelInfo && namaKelasAktif) {
-        labelInfo.classList.remove('d-none');
-        namaKelasAktif.textContent = selectedKelas;
+        // Untuk Guru Mapel atau Admin, ambil dari Dropdown Filter Kelas
+        targetKelas = selectKelas ? selectKelas.value : '';
     }
 
-    // Panggil fungsi muat/filter data spesifik halaman
-    if (typeof loadDataByKelas === 'function') {
-        loadDataByKelas(selectedKelas);
-    }
-}
-
-// 3. Contoh Fungsi Memuat Data Spesifik per Kelas (Siswa/Absensi/Jurnal/Nilai)
-async function loadDataByKelas(kelas) {
-    console.log(`Memuat data untuk Kelas: ${kelas}`);
-
-    // Contoh pengambilan data siswa berdasarkan kelas yang dipilih
+    // 3. Ambil Master Data Siswa dari IndexedDB / Storage
     let listSiswa = [];
     if (typeof getAllData === 'function') {
-        const allSiswa = await getAllData('siswa').catch(() => []);
-        listSiswa = allSiswa.filter(s => s.kelas === kelas || s.kelasSiswa === kelas);
+        listSiswa = await getAllData('siswa').catch(() => []);
+    } else if (window.dbSiswa) {
+        listSiswa = window.dbSiswa;
     }
 
-    // Tampilkan data ke tabel sesuai modul (Absensi / Jurnal / Nilai)
-    renderTableByKelas(listSiswa, kelas);
+    // 4. Filter Siswa Berdasarkan Kelas Target
+    if (targetKelas) {
+        listSiswa = listSiswa.filter(s => {
+            const kelasSiswa = (s.kelas || s.kelasSiswa || '').toString().replaceAll(' ', '').toUpperCase();
+            const kelasTargetFormatted = targetKelas.toString().replaceAll(' ', '').toUpperCase();
+            return kelasSiswa === kelasTargetFormatted;
+        });
+    }
+
+    // 5. Ambil Data Absensi yang Sudah Tersimpan (Jika ada)
+    const tanggalAktif = inputTanggal ? inputTanggal.value : new Date().toISOString().split('T')[0];
+    let dataAbsensiTersimpan = [];
+    
+    if (typeof getAllData === 'function') {
+        const allAbsen = await getAllData('absensi').catch(() => []);
+        dataAbsensiTersimpan = allAbsen.filter(a => a.tanggal === tanggalAktif);
+    }
+
+    // 6. Render Tabel Absensi
+    renderTabelAbsensi(listSiswa, dataAbsensiTersimpan);
 }
+
+// Fungsi Render Baris Tabel Absensi Ke HTML
+function renderTabelAbsensi(listSiswa, dataAbsensi) {
+    const tbody = document.getElementById('tbodyAbsensi') || document.querySelector('#tabelAbsensi tbody');
+    if (!tbody) return;
+
+    if (!listSiswa || listSiswa.length === 0) {
+        tbody.innerHTML = `
+            <tr>
+                <td colspan="7" class="text-center py-4 text-muted">
+                    <i class="bi bi-exclamation-circle me-1"></i>
+                    Silakan pilih kelas terlebih dahulu atau data siswa untuk kelas ini belum ada.
+                </td>
+            </tr>`;
+        return;
+    }
+
+    tbody.innerHTML = listSiswa.map((siswa, index) => {
+        // Cek status absensi siswa jika sudah pernah diinput sebelumnya
+        const absenSiswa = dataAbsensi.find(a => a.nisn === siswa.nisn || a.nama === siswa.nama) || {};
+        const status = absenSiswa.status || 'H'; // Default: Hadir (H)
+
+        return `
+            <tr>
+                <td class="text-center">${index + 1}</td>
+                <td>${siswa.nisn || siswa.nis || '-'}</td>
+                <td><strong>${siswa.nama || siswa.namaSiswa}</strong></td>
+                <td class="text-center">${siswa.kelas || '-'}</td>
+                <td class="text-center">
+                    <div class="btn-group btn-group-sm" role="group">
+                        <input type="radio" class="btn-check" name="absen_${index}" id="h_${index}" value="H" ${status === 'H' ? 'checked' : ''}>
+                        <label class="btn btn-outline-success" for="h_${index}">H</label>
+
+                        <input type="radio" class="btn-check" name="absen_${index}" id="i_${index}" value="I" ${status === 'I' ? 'checked' : ''}>
+                        <label class="btn btn-outline-info" for="i_${index}">I</label>
+
+                        <input type="radio" class="btn-check" name="absen_${index}" id="s_${index}" value="S" ${status === 'S' ? 'checked' : ''}>
+                        <label class="btn btn-outline-warning" for="s_${index}">S</label>
+
+                        <input type="radio" class="btn-check" name="absen_${index}" id="a_${index}" value="A" ${status === 'A' ? 'checked' : ''}>
+                        <label class="btn btn-outline-danger" for="a_${index}">A</label>
+                    </div>
+                </td>
+                <td>
+                    <input type="text" class="form-control form-control-sm" placeholder="Keterangan..." value="${absenSiswa.keterangan || ''}">
+                </td>
+            </tr>
+        `;
+    }).join('');
+}
+
+// Event Listener Otomatis Jalankan Saat Filter Kelas / Tanggal Berubah
+document.addEventListener('DOMContentLoaded', () => {
+    loadTabelAbsensi();
+
+    const selectKelas = document.getElementById('filterKelas') || document.getElementById('selectKelas');
+    const inputTanggal = document.getElementById('filterTanggal') || document.getElementById('tanggalAbsen');
+
+    if (selectKelas) selectKelas.addEventListener('change', loadTabelAbsensi);
+    if (inputTanggal) inputTanggal.addEventListener('change', loadTabelAbsensi);
+});
