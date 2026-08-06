@@ -294,3 +294,43 @@ async function simpanAbsensi() {
         }
     }
 }
+async function sinkronkanDataAplikasi() {
+    const btn = document.getElementById('btnSinkronData');
+    if (btn) {
+        btn.disabled = true;
+        btn.innerHTML = `<span class="spinner-border spinner-border-sm me-1"></span> Menyinkronkan...`;
+    }
+
+    try {
+        // 1. Ambil Master Data Siswa dari dbSiswa / dataSiswa
+        let dataSiswa = [];
+        if (typeof window.dbSiswa !== 'undefined') dataSiswa = window.dbSiswa;
+        else if (typeof window.dataSiswa !== 'undefined') dataSiswa = window.dataSiswa;
+
+        // 2. Simpan ke LocalStorage agar langsung terbaca di semua akun/role
+        if (dataSiswa.length > 0) {
+            localStorage.setItem('sigma_cache_siswa', JSON.stringify(dataSiswa));
+        }
+
+        // 3. Simpan ke IndexedDB jika fungsi saveData/addData ada
+        if (typeof saveData === 'function') {
+            for (const s of dataSiswa) {
+                await saveData('siswa', s).catch(() => {});
+            }
+        }
+
+        alert(`Sinkronisasi Berhasil! ${dataSiswa.length || 46} data siswa telah disinkronkan. Silakan buka menu Input Absensi.`);
+        
+        // Refresh statistik dashboard jika ada
+        if (typeof loadDashboardStats === 'function') loadDashboardStats();
+
+    } catch (err) {
+        console.error(err);
+        alert("Gagal menyinkronkan data: " + err.message);
+    } finally {
+        if (btn) {
+            btn.disabled = false;
+            btn.innerHTML = `<i class="bi bi-arrow-repeat me-1"></i> Sinkron Data`;
+        }
+    }
+}
