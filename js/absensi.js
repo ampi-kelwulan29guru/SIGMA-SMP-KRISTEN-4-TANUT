@@ -217,3 +217,80 @@ function updateRekap(h, s, i, a) {
         if (box.textContent.includes('Alfa:')) box.innerHTML = `Alfa: <strong>${a}</strong>`;
     });
 }
+// =========================================================================
+// FUNGSI SIMPAN ABSENSI KE DATABASE / INDEXEDDB
+// =========================================================================
+async function simpanAbsensi() {
+    const inputTanggal = document.getElementById('filterTanggal') || document.getElementById('tanggalAbsen');
+    const selectKelas = document.getElementById('filterKelas') || document.getElementById('selectKelas');
+    const btnSimpan = document.querySelector('button[onclick*="simpanAbsensi"]') || document.getElementById('btnSimpanAbsensi');
+
+    const tanggal = inputTanggal ? inputTanggal.value : new Date().toISOString().split('T')[0];
+    const kelas = selectKelas ? selectKelas.value : 'Umum';
+
+    // Ambil seluruh baris absensi yang tercentang di tabel
+    const rows = document.querySelectorAll('#tbodyAbsensi tr, table tbody tr');
+    let dataAbsensiArray = [];
+
+    rows.forEach(row => {
+        const checkedRadio = row.querySelector('input[type="radio"]:checked');
+        const containerGroup = row.querySelector('.btn-group');
+
+        if (checkedRadio && containerGroup) {
+            const nisn = containerGroup.getAttribute('data-nisn') || '';
+            const nama = containerGroup.getAttribute('data-nama') || '';
+            const status = checkedRadio.value; // H, S, I, atau A
+
+            dataAbsensiArray.push({
+                id: `${tanggal}_${nisn || nama}`, // Unique ID untuk mencegah duplikasi
+                tanggal: tanggal,
+                kelas: kelas,
+                nisn: nisn,
+                nama: nama,
+                status: status,
+                updatedAt: new Date().toISOString()
+            });
+        }
+    });
+
+    if (dataAbsensiArray.length === 0) {
+        alert("Tidak ada data absensi yang dapat disimpan!");
+        return;
+    }
+
+    // Ubah status tombol saat proses menyimpan
+    if (btnSimpan) {
+        btnSimpan.disabled = true;
+        btnSimpan.innerHTML = `<span class="spinner-border spinner-border-sm me-1"></span> Menyimpan...`;
+    }
+
+    try {
+        // Simpan setiap entri ke IndexedDB
+        if (typeof saveData === 'function') {
+            for (const item of dataAbsensiArray) {
+                await saveData('absensi', item).catch(() => {});
+            }
+        } else if (typeof addData === 'function') {
+            for (const item of dataAbsensiArray) {
+                await addData('absensi', item).catch(() => {});
+            }
+        }
+
+        // Simpan cadangan ke LocalStorage agar langsung terbaca tanpa reload
+        const existingLocal = JSON.parse(localStorage.getItem('sigma_cache_absensi')) || [];
+        const filteredLocal = existingLocal.filter(a => a.tanggal !== tanggal || a.kelas !== kelas);
+        const mergedLocal = [...filteredLocal, ...dataAbsensiArray];
+        localStorage.setItem('sigma_cache_absensi', JSON.stringify(mergedLocal));
+
+        alert(`Berhasil menyimpan absensi untuk ${dataAbsensiArray.length} siswa!`);
+
+    } catch (err) {
+        console.error(err);
+        alert("Gagal menyimpan absensi: " + err.message);
+    } finally {
+        if (btnSimpan) {
+            btnSimpan.disabled = false;
+            btnSimpan.innerHTML = `<i class="bi bi-save me-1"></i> Simpan Absensi`;
+        }
+    }
+}
