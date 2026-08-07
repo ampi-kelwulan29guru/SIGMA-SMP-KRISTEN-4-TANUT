@@ -34,7 +34,7 @@ document.addEventListener('DOMContentLoaded', async () => {
 });
 
 // =========================================================================
-// FUNGSI UTAMA MEMUAT & MENAMPILKAN DATA ABSENSI (DENGAN LANGKAH 3)
+// FUNGSI UTAMA MEMUAT & MENAMPILKAN DATA ABSENSI (VERSI PERBAIKAN FILTER)
 // =========================================================================
 async function muatTabelAbsensi() {
     const session = JSON.parse(localStorage.getItem('sigma_session')) || {};
@@ -47,74 +47,91 @@ async function muatTabelAbsensi() {
     // Ambil nilai kelas yang dipilih dari dropdown
     let kelasTerpilih = selectKelas ? selectKelas.value.trim() : '';
 
-    // -------------------------------------------------------------
-    // LANGKAH 3: PENCARIAN DATA SISWA 3 LAPIS (PASTI KETEMU DATA)
-    // -------------------------------------------------------------
-    let allSiswa = [];
-
-    // Lapis 1: Ambil dari IndexedDB
-    if (typeof getAllData === 'function') {
-        allSiswa = await getAllData('siswa').catch(() => []);
-    }
-
-    // Lapis 2: Jika IndexedDB kosong, ambil dari LocalStorage (Hasil Tarik Data)
-    if ((!allSiswa || allSiswa.length === 0)) {
-        const cache = localStorage.getItem('sigma_cache_siswa');
-        if (cache) {
-            try { allSiswa = JSON.parse(cache); } catch(e){}
-        }
-    }
-
-    // Lapis 3: Jika masih kosong, ambil dari variabel master js (window.dbSiswa / window.dataSiswa)
-    if ((!allSiswa || allSiswa.length === 0)) {
-        if (typeof window.dbSiswa !== 'undefined') allSiswa = window.dbSiswa;
-        else if (typeof window.dataSiswa !== 'undefined') allSiswa = window.dataSiswa;
-    }
-    // -------------------------------------------------------------
-
-    // Filter Siswa berdasarkan Kelas yang Dipilih
-    let siswaFiltered = allSiswa;
-
-    if (kelasTerpilih) {
-        siswaFiltered = allSiswa.filter(s => {
-            const kSiswa = (s.kelas || s.kelasSiswa || '').toString().toLowerCase().replace(/[^a-z0-9]/g, '');
-            const kTarget = kelasTerpilih.toString().toLowerCase().replace(/[^a-z0-9]/g, '');
-            
-            // Pengujian fleksibel penulisan kelas (contoh: "kelas7" == "7" atau "7a")
-            return kSiswa === kTarget || kSiswa.includes(kTarget) || kTarget.includes(kSiswa);
-        });
-    }
-
-    // JIKA DATA SISWA SAMA SEKALI TIDAK ADA
-    if (!siswaFiltered || siswaFiltered.length === 0) {
+    // Jika belum pilih kelas sama sekali, tampilkan pesan instruksi
+    if (!kelasTerpilih) {
         tbody.innerHTML = `
             <tr>
-                <td colspan="5" class="text-center py-4 text-muted">
-                    <i class="bi bi-info-circle me-1"></i>
-                    Belum ada data siswa untuk kelas <strong>"${kelasTerpilih || 'pilihan'}"</strong>.<br>
-                    <small class="text-secondary">Silakan klik tombol <strong>"Tarik Data Siswa"</strong> (Login sebagai Admin) untuk menyinkronkan data.</small>
+                <td colspan="4" class="text-center py-4 text-muted">
+                    <i class="bi bi-info-circle me-1"></i> Silakan pilih kelas terlebih dahulu untuk menampilkan daftar siswa.
                 </td>
             </tr>`;
         updateRekap(0, 0, 0, 0);
         return;
     }
 
-    // AMBIL DATA ABSENSI TERPINDAH HARI INI (Jika sudah pernah tersimpan)
-    const tgl = inputTanggal ? inputTanggal.value : new Date().toISOString().split('T')[0];
+    // -------------------------------------------------------------
+    // PENCARIAN DATA SISWA 3 LAPIS
+    // -------------------------------------------------------------
+    let allSiswa = [];
+
+    // Lapis 1: IndexedDB
+    if (typeof getAllData === 'function') {
+        allSiswa = await getAllData('siswa').catch(() => []);
+    }
+
+    // Lapis 2: LocalStorage Cache
+    if (!allSiswa || allSiswa.length === 0) {
+        const cache = localStorage.getItem('sigma_cache_siswa');
+        if (cache) {
+            try { allSiswa = JSON.parse(cache); } catch(e){}
+        }
+    }
+
+    // Lapis 3: Master Data JS Global
+    if (!allSiswa || allSiswa.length === 0) {
+        if (typeof window.dbSiswa !== 'undefined') allSiswa = window.dbSiswa;
+        else if (typeof window.dataSiswa !== 'undefined') allSiswa = window.dataSiswa;
+    }
+    // -------------------------------------------------------------
+
+    // Fungsi Pembantu: Normalisasi Teks Kelas (Contoh: "Kelas 7" -> "7", "Kelas VII" -> "7")
+    const normalisasiKelas = (str) => {
+        if (!str) return '';
+        let s = str.toString().toLowerCase().replace(/kelas/g, '').replace(/[^a-z0-9]/g, '');
+        // Konversi Angka Romawi ke Angka Biasa
+        s = s.replace(/vii/g, '7').replace(/viii/g, '8').replace(/ix/g, '9');
+        return s;
+    };
+
+    const targetKelasClean = normalisasiKelas(kelasTerpilih);
+
+    // Filter Siswa berdasarkan Kelas
+    let siswaFiltered = allSiswa.filter(s => {
+        const kSiswaClean = normalisasiKelas(s.kelas || s.kelasSiswa || '');
+        return kSiswaClean === targetKelasClean || 
+               kSiswaClean.includes(targetKelasClean) || 
+               targetKelasClean.includes(kSiswaClean);
+    });
+
+    // JIKA DATA SISWA SAMA SEKALI TIDAK ADA DI KELAS TERPILIH
+    if (!siswaFiltered || siswaFiltered.length === 0) {
+        tbody.innerHTML = `
+            <tr>
+                <td colspan="4" class="text-center py-4 text-muted">
+                    <i class="bi bi-info-circle me-1"></i>
+                    Belum ada data siswa untuk kelas <strong>"${kelasTerpilih}"</strong>.<br>
+                    <small class="text-secondary">Silakan klik tombol <strong>"Sinkron Data"</strong> di Dashboard untuk menyinkronkan data.</small>
+                </td>
+            </tr>`;
+        updateRekap(0, 0, 0, 0);
+        return;
+    }
+
+    // AMBIL DATA ABSENSI TERPINDAH HARI INI
+    const tgl = inputTanggal && inputTanggal.value ? inputTanggal.value : new Date().toISOString().split('T')[0];
     let dataAbsenTersimpan = [];
     if (typeof getAllData === 'function') {
         const allAbsen = await getAllData('absensi').catch(() => []);
         dataAbsenTersimpan = allAbsen.filter(a => a.tanggal === tgl);
     }
 
-    // RENDER BARIS TABEL SISWA (BUKA BLOCKING)
+    // RENDER BARIS TABEL SISWA
     tbody.innerHTML = siswaFiltered.map((siswa, index) => {
         const nisn = siswa.nisn || siswa.nis || '-';
         const nama = siswa.nama || siswa.namaSiswa || 'Tanpa Nama';
         
-        // Cek status absen siswa jika pernah disimpan
         const record = dataAbsenTersimpan.find(a => (a.nisn && a.nisn === nisn) || a.nama === nama) || {};
-        const status = record.status || 'H'; // Default: Hadir (H)
+        const status = record.status || 'H'; // Default: Hadir
 
         return `
             <tr>
