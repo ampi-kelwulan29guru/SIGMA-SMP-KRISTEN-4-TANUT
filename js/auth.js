@@ -13,56 +13,56 @@ const users = [
     username: "Ester Nonia Leanwatu, S.th.Pak",
     nip: "198311062011012016",
     password: "guru123",
-    nama: "Guru Mapel 1",
+    nama: "Ester Nonia Leanwatu, S.th.Pak",
     role: "GURU MAPEL"
   },
   {
     username: "Abraham Kelwulan",
     nip: "8171012904000003",
     password: "guru123",
-    nama: "Guru Mapel 2",
+    nama: "Abraham Kelwulan",
     role: "GURU MAPEL"
   },
     {
     username: "Edy Wenan S. Slarmanat, S.Pd",
     nip: "198203212008041002",
     password: "guru123",
-    nama: "Guru Mapel 2",
+    nama: "Edy Wenan S. Slarmanat, S.Pd",
     role: "GURU MAPEL"
   },
 {
     username: "Yakomina Wahelatoan, S.Pd",
     nip: "8103067112960001",
     password: "guru123",
-    nama: "Guru Mapel 2",
+    nama: "Yakomina Wahelatoan, S.Pd",
     role: "GURU MAPEL"
   },
 {
     username: "Susi Selpisina Enus",
     nip: "8171036508930005",
     password: "guru123",
-    nama: "Guru Mapel 2",
+    nama: "Susi Selpisina Enus",
     role: "GURU MAPEL"
   },
 {
     username: "Desiana Walun, S.Pd",
     nip: "8103067012990001",
     password: "guru123",
-    nama: "Guru Mapel 2",
+    nama: "Desiana Walun, S.Pd",
     role: "GURU MAPEL"
   },
 {
     username: "Baceria Werluka, S.Pd",
     nip: "8103066207030001",
     password: "guru123",
-    nama: "Guru Mapel 2",
+    nama: "Baceria Werluka, S.Pd",
     role: "GURU MAPEL"
   },
 {
     username: "Samuel Lamberth Talik, S.Pd",
     nip: "8103052804940002",
     password: "guru123",
-    nama: "Guru Mapel 2",
+    nama: "Samuel Lamberth Talik, S.Pd",
     role: "GURU MAPEL"
   },
 
@@ -72,7 +72,7 @@ const users = [
     username: "Samuel Lamberth Talik, S.Pd",
     nip: "8103052804940002",
     password: "wali123",
-    nama: "Wali Kelas 7A",
+    nama: "Samuel Lamberth Talik, S.Pd",
     role: "WALI KELAS",
     kelasBimbingan: "7A"
   },
@@ -80,7 +80,7 @@ const users = [
     username: "Ester Nonia Leanwatu, S.th.Pak",
     nip: "198311062011012016",
     password: "wali123",
-    nama: "Wali Kelas 8A",
+    nama: "Ester Nonia Leanwatu, S.th.Pak",
     role: "WALI KELAS",
     kelasBimbingan: "8A"
   },
@@ -88,7 +88,7 @@ const users = [
     username: "Desiana Walun, S.Pd",
     nip: "8103067012990001",
     password: "wali123",
-    nama: "Wali Kelas 9A",
+    nama: "Desiana Walun, S.Pd",
     role: "WALI KELAS",
     kelasBimbingan: "9A"
   },
